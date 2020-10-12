@@ -3,7 +3,7 @@ class CreateOdds < ActiveRecord::Migration[5.2]
   def change
     create_table :odds do |t|
       t.integer :fixture_id
-      t.string :type
+      t.string :odd_type
       t.decimal :ratio
       t.decimal :metric
       t.string :team

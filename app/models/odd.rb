@@ -8,7 +8,7 @@ class Odd < ApplicationRecord
   # active
 
   ODD_TYPES = [
-    :money_line
+    :money_line,
     :over,
     :under,
     :spread
@@ -19,6 +19,10 @@ class Odd < ApplicationRecord
 
   def payout(amount)
     amount * ratio
+  end
+
+  def profit(amount)
+    payout(amount) - amount
   end
 
 end

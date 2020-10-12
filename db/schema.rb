@@ -18,19 +18,28 @@ ActiveRecord::Schema.define(version: 2020_10_11_193434) do
   create_table "bets", force: :cascade do |t|
     t.integer "odd_id"
     t.decimal "amount"
-    t.string "side"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "fixtures", force: :cascade do |t|
     t.datetime "start_time"
-    t.string "home"
-    t.string "away"
+    t.string "home_team"
+    t.string "away_team"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "odds", force: :cascade do |t|
     t.integer "fixture_id"
-    t.string "type"
+    t.string "odd_type"
+    t.decimal "ratio"
+    t.decimal "metric"
+    t.string "team"
+    t.string "player"
     t.boolean "active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end
