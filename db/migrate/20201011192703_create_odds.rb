@@ -4,6 +4,12 @@ class CreateOdds < ActiveRecord::Migration[5.2]
     create_table :odds do |t|
       t.integer :fixture_id
       t.string :type
+      t.decimal :ratio
+      t.decimal :metric
+      t.string :team
+      t.string :player
+      t.boolean :active
+      t.timestamps
     end
   end
 
