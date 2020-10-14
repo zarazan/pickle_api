@@ -29,7 +29,7 @@ class LoadOddsService
       odds_attributes = fixture_attributes.delete(:odds)
       fixture = Fixture.find_or_create_by(fixture_attributes)
       odds_attributes.each do |odd_attributes|
-        Odd.find_or_create_by(odd_attributes.merge(fixture: fixture))
+        Odd.set_odd(odd_attributes.merge(fixture: fixture))
       end
     end
   end
