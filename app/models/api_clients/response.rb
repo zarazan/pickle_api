@@ -1,18 +1,16 @@
 module ApiClients
   class Response
 
-    # This is specific to The-Odds-API and should be
-    # split up when another api is added to parse odds
-
     attr_reader :response, :odd_type
 
     PREFFERED_ODDS_SOURCE = [
       :draftkings,
       :fanduel,
-      :betmgm
+      :betmgm,
+      :bovada
     ]
 
-    def initialize(response, odd_type = nil)
+    def initialize(response, odd_type)
       @response = response
       @odd_type = odd_type
     end
@@ -36,14 +34,23 @@ module ApiClients
         home_team: home_team,
         away_team: away_team,
         start_time: start_time,
-        odds: self.send("parse_#{odd_type}_odds", fixture_json)
+        odds: get_odds(fixture_json)
       }
     end
 
-    def parse_h2h_odds(fixture_json)
+    def get_odds(fixture_json)
+      site = get_site(fixture_json)
+      return [] if !site
+      send("parse_#{odd_type}_odds", fixture_json, site)
+    end
+
+    def get_site(fixture_json)
       sites = fixture_json['sites']
       site = sites.find { |site| PREFFERED_ODDS_SOURCE.include?(site['site_key']) }
-      site ||= sites.first
+      site || sites.first
+    end
+
+    def parse_h2h_odds(fixture_json, site)
       [0, 1].map do |index|
         {
           odd_type: :money_line,
@@ -53,7 +60,25 @@ module ApiClients
       end
     end
 
-    def parse_spreads_odds(fixture_json)
+    def parse_spreads_odds(fixture_json, site)
+      [0, 1].map do |index|
+        {
+          odd_type: :spread,
+          ratio: site['odds']['spreads']['odds'][index],
+          team: fixture_json['teams'][index],
+          metric: site['odds']['spreads']['points'][index]
+        }
+      end
+    end
+
+    def parse_totals_odds(fixture_json, site)
+      [0, 1].map do |index|
+        {
+          odd_type: site['odds']['totals']['position'],
+          ratio: site['odds']['totals']['odds'][index],
+          metric: site['odds']['totals']['points'][index]
+        }
+      end
     end
 
   end

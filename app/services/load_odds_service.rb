@@ -6,28 +6,29 @@ class LoadOddsService
     'soccer_epl',
   ]
 
-  ODD_TYPE_MAPPING = {
-    money_line: 'h2h',
-    spread: 'spreads',
-    over: 'totals',
-    under: 'totals'
-  }
+  ODD_TYPES = [
+    'h2h',
+    'spreads',
+    'totals'
+  ]
 
-  def self.process
-    new.populate_odds
+  def self.test
+    new.populate_odds('americanfootball_ncaaf', 'totals')
   end
 
-  def populate_odds
+  def populate_all_odds
     SPORTS.each do |sport|
-      populate_odds_for_sport(sport)
+      ODD_TYPES.each do |odd_type|
+        populate_odds(sport, odd_type)
+      end
     end
   end
 
-  def populate_odds_for_sport(sport)
-    api_response = ApiClients::TheOddsApi.new.get_odds(sport, 'h2h')
-    raise 'API Request Failed' if !api_response.success?
+  def populate_odds(sport, odd_type)
+    response = ApiClients::TheOddsApi.new.get_odds(sport, odd_type)
+    raise 'API Request Failed' if !response.success?
 
-    fixtures_attributes = api_response.parse_fixtures
+    fixtures_attributes = response.parse_fixtures
     fixtures_attributes.each do |fixture_attributes|
       odds_attributes = fixture_attributes.delete(:odds)
       fixture = Fixture.find_or_create_by(fixture_attributes)
