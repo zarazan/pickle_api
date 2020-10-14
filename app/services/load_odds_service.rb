@@ -12,10 +12,6 @@ class LoadOddsService
     'totals'
   ]
 
-  def self.test
-    new.populate_odds('americanfootball_ncaaf', 'totals')
-  end
-
   def populate_all_odds
     SPORTS.each do |sport|
       ODD_TYPES.each do |odd_type|

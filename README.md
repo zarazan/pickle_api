@@ -9,3 +9,8 @@ API Server:
 Web Client
   Start server: `npm run start`
   Port: `3000`
+
+
+Load Odds from API:
+  - `docker-compose run api rails console`
+  - `LoadOddsService.new.populate_all_odds`
