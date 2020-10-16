@@ -12,6 +12,10 @@ class LoadOddsService
     'totals'
   ]
 
+  def self.process
+    new.populate_all_odds
+  end
+
   def populate_all_odds
     SPORTS.each do |sport|
       ODD_TYPES.each do |odd_type|

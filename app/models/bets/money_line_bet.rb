@@ -1,0 +1,2 @@
+class MoneyLineBet < Bet
+end
