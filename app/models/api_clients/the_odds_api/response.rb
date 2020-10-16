@@ -1,4 +1,4 @@
-module ApiClients
+module ApiClients::TheOddsApi
   class Response
 
     attr_reader :response, :odd_type

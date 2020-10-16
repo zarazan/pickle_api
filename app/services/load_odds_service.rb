@@ -21,7 +21,7 @@ class LoadOddsService
   end
 
   def populate_odds(sport, odd_type)
-    response = ApiClients::TheOddsApi.new.get_odds(sport, odd_type)
+    response = ApiClients::TheOddsApi::Client.new.get_odds(sport, odd_type)
     raise 'API Request Failed' if !response.success?
 
     fixtures_attributes = response.parse_fixtures

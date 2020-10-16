@@ -1,5 +1,5 @@
-module ApiClients
-  class TheOddsApi
+module ApiClients::TheOddsApi
+  class Client
 
     API_KEY = '0a693a1c3ba0561be54cddd459499775'
 
