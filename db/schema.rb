@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_13_011205) do
+ActiveRecord::Schema.define(version: 2020_10_16_000713) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "bets", force: :cascade do |t|
     t.integer "odd_id"
+    t.integer "user_id"
     t.decimal "amount"
     t.boolean "won"
     t.datetime "created_at", null: false
@@ -26,18 +27,21 @@ ActiveRecord::Schema.define(version: 2020_10_13_011205) do
   create_table "fixtures", force: :cascade do |t|
     t.string "sport"
     t.datetime "start_time"
-    t.string "home_team"
-    t.string "away_team"
+    t.bigint "home_team_id"
+    t.bigint "away_team_id"
+    t.integer "home_score"
+    t.integer "away_score"
+    t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "odds", force: :cascade do |t|
-    t.integer "fixture_id"
+    t.bigint "fixture_id"
     t.string "odd_type"
     t.decimal "ratio"
     t.decimal "metric"
-    t.string "team"
+    t.bigint "team_id"
     t.string "player"
     t.boolean "active"
     t.datetime "created_at", null: false
@@ -46,6 +50,15 @@ ActiveRecord::Schema.define(version: 2020_10_13_011205) do
 
   create_table "pools", force: :cascade do |t|
     t.string "name"
+  end
+
+  create_table "teams", force: :cascade do |t|
+    t.string "name"
+    t.string "the_odds_api_key"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "email"
   end
 
 end
