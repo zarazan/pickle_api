@@ -1,14 +1,15 @@
 import React from 'react';
-import './App.css';
+import { Grommet } from 'grommet';
 
 function App() {
 
   return (
     <div className="App">
-      <h1>Project Pickle</h1>
+      <Grommet plain>
+        <h1>Project Pickle</h1>
+      </Grommet>
     </div>
   );
-
 }
 
 export default App;
