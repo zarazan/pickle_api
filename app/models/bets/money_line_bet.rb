@@ -1,2 +1,0 @@
-class MoneyLineBet < Bet
-end

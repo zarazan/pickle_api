@@ -2,6 +2,7 @@ class CreateOdds < ActiveRecord::Migration[5.2]
   
   def change
     create_table :odds do |t|
+      t.string :type
       t.bigint :fixture_id
       t.string :odd_type
       t.decimal :ratio
