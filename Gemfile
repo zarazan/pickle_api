@@ -9,6 +9,8 @@ gem 'puma', '~> 3.11'
 
 gem 'faraday'
 gem 'faraday_middleware'
+gem 'devise_token_auth'
+gem 'omniauth'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.5'
