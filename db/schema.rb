@@ -16,10 +16,10 @@ ActiveRecord::Schema.define(version: 2020_10_16_000713) do
   enable_extension "plpgsql"
 
   create_table "bets", force: :cascade do |t|
-    t.integer "odd_id"
-    t.integer "user_id"
+    t.bigint "odd_id"
+    t.bigint "user_id"
     t.decimal "amount"
-    t.boolean "won"
+    t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

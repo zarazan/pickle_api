@@ -12,6 +12,10 @@ class LoadOddsService
     'totals'
   ]
 
+  def self.process
+    new.populate_all_odds
+  end
+
   def populate_all_odds
     SPORTS.each do |sport|
       ODD_TYPES.each do |odd_type|
@@ -27,7 +31,7 @@ class LoadOddsService
     fixtures_attributes = response.parse_fixtures
     fixtures_attributes.each do |fixture_attributes|
       odds_attributes = fixture_attributes.delete(:odds)
-      fixture = Fixture.find_or_create_by(fixture_attributes)
+      fixture = Fixture.find_or_create_with_status(fixture_attributes)
       odds_attributes.each do |odd_attributes|
         Odd.set_odd(odd_attributes.merge(fixture: fixture))
       end
