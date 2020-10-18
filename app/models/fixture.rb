@@ -42,7 +42,7 @@ class Fixture < ApplicationRecord
   end
 
   def tie?
-    status == 'tie'
+    status.to_sym == :tie
   end
 
   def complete?
