@@ -1,6 +1,6 @@
 class Bet < ApplicationRecord
 
-  RESULTS = [:won, :lost, :tie]
+  RESULTS = [:won, :lost, :draw]
 
   validates :amount, presence: true
 
@@ -21,8 +21,8 @@ class Bet < ApplicationRecord
     result.to_sym == :won
   end
 
-  def tie?
-    result.to_sym == :tie
+  def draw?
+    result.to_sym == :draw
   end
 
   def place_bet(bet_attributes)
@@ -39,7 +39,7 @@ class Bet < ApplicationRecord
       self.result = odd.get_result
       if(result.won?)
         entry.update!(bank: bank + payout)
-      elsif(result.tie?)
+      elsif(result.draw?)
         entry.update!(bank: bank + amount)
       end
       save!

@@ -6,7 +6,7 @@ class Fixture < ApplicationRecord
   # away_score
   # status
 
-  FIXTURE_STATUS = [:home_win, :away_win, :tie, :in_process, :scheduled]
+  FIXTURE_STATUS = [:home_win, :away_win, :draw, :in_process, :scheduled]
 
   validates :sport, presence: true
   validates :home_team_id, presence: true
@@ -41,12 +41,12 @@ class Fixture < ApplicationRecord
     home_score + away_score
   end
 
-  def tie?
-    status.to_sym == :tie
+  def draw?
+    status.to_sym == :draw
   end
 
   def complete?
-    [:home_win, :away_win, :tie].include?(status)
+    [:home_win, :away_win, :draw].include?(status)
   end
 
 end
