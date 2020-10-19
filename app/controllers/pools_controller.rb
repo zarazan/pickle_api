@@ -9,7 +9,7 @@ class PoolsController < ApplicationController
 
   def create
     @pool = current_user.pools.new(pool_params)
-    if @pool.save
+    if @pool.save && @pool.enter_pool(current_user)
       render json: @pool
     else
       render json: @pool.errors, status: :422
