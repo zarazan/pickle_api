@@ -13,6 +13,7 @@ const TEST_POOLS = [
         endDate: "2020-10-17T02:56:08Z",
         sports: ["NFL", "NBA", "NHL"],
         bets: ["ps", "tp", "ml"],
+        participants: 3,
     },
     {
         index: 2,
@@ -24,15 +25,19 @@ const TEST_POOLS = [
         endDate: "2020-09-22T02:56:08Z",
         sports: ["NFL"],
         bets: ["ps", "tp", "ml"],
+        participants: 6,
     },
 ];
 
 const MyPools = props => {
     return (
         <MyPoolsWrapper>
-            <CreatePool>
+            <Header>
+                MY POOLS
+            </Header>
+            <CreatePoolButton>
                 Create Pool
-            </CreatePool>
+            </CreatePoolButton>
             <PoolList>
                 {TEST_POOLS.map((pool) => (
                     <PoolCard
@@ -46,6 +51,7 @@ const MyPools = props => {
                         endDate={pool.endDate}
                         sports={pool.sports}
                         bets={pool.bets}
+                        participants={pool.participants}
                     />
                 ))}
             </PoolList>
@@ -58,17 +64,28 @@ export default MyPools;
 const MyPoolsWrapper = styled.div`
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 2em auto;
+    grid-template-rows: 2em 2em auto;
     grid-template-areas:
+        "header"
         "cta"
         "list";
     height: 100%;
+
+    padding: 1em;
+    box-sizing: border-box;
 `;
 
-const CreatePool = styled.button`
+const Header = styled.h3`
+    grid-area: "header";
+    margin: 0;
+`;
+
+const CreatePoolButton = styled.button`
+    grid-area: "cta";
 `;
 
 const PoolList = styled.section`
+    grid-area: "list";
     display: flex;
     flex-flow: column nowrap;
 `;

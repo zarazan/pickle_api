@@ -10,12 +10,12 @@ const Dashboard = ({ user }) => {
     return (
         <PageWrapper>
             <HeaderWrapper>
-                <Welcome>
-                    Hello {!userName ? "Tony" : userName}!
-                </Welcome>
+                <Welcome/>
                 <FontAwesomeIcon icon={faUser} size="2x"/>
             </HeaderWrapper>
-            <StatsWrapper>Stats</StatsWrapper>
+            <StatsWrapper>
+                Stats
+            </StatsWrapper>
             <MainWrapper>
                 <MyPools/>
             </MainWrapper>
@@ -42,15 +42,22 @@ const HeaderWrapper = styled.header`
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
-    align-content: space-between; 
+    align-content: space-between;
+    align-items: flex-start;
+
+    margin: 1em;
 `;
 
 const StatsWrapper = styled.section`
-    grid-area: "stats"
+    grid-area: "stats";
+
+    padding: 1em;
 `;
 
 const MainWrapper = styled.main`
     grid-area: "main"
 `;
 
-const Welcome = styled.div``;
+const Welcome = styled.div`
+    font-size: 24px;
+`;
