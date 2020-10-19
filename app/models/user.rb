@@ -10,5 +10,6 @@ class User < ApplicationRecord
 
   has_many :bets
   has_many :entries
+  has_many :pools
 
 end
