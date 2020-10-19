@@ -27,6 +27,30 @@ const TEST_POOLS = [
         bets: ["ps", "tp", "ml"],
         participants: 6,
     },
+    {
+        index: 4,
+        name: "DU Hockey",
+        amount: 500,
+        status: "active",
+        privacy: "public",
+        startDate: "2020-10-11T02:56:08Z",
+        endDate: "2020-10-17T02:56:08Z",
+        sports: ["NFL", "NBA", "NHL"],
+        bets: ["ps", "tp", "ml"],
+        participants: 3,
+    },
+    {
+        index: 2,
+        name: "Lorem Ipsum",
+        amount: 500,
+        status: "inactive",
+        privacy: "public",
+        startDate: "2020-09-15T02:56:08Z",
+        endDate: "2020-09-22T02:56:08Z",
+        sports: ["NFL"],
+        bets: ["ps", "tp", "ml"],
+        participants: 6,
+    },
 ];
 
 const MyPools = props => {
