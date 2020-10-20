@@ -34,6 +34,7 @@ const PageWrapper = styled.div`
         "stats"
         "main";
     height: 100vh;
+    box-sizing: border-box;
 `;
 
 const HeaderWrapper = styled.header`
@@ -45,7 +46,8 @@ const HeaderWrapper = styled.header`
     align-content: space-between;
     align-items: flex-start;
 
-    margin: 1em;
+    margin: 2em;
+    box-sizing: border-box;
 `;
 
 const StatsWrapper = styled.section`
