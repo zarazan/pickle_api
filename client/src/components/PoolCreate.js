@@ -11,18 +11,21 @@ const POOL_TYPES = [
         name: "POPULAR",
         description: "Choose from popular pool types created by the community.",
         icon: faFireAlt,
+        disabled: "TRUE",
     },
     {
         index: 2,
         name: "RECENT",
         description: "Reuse one of your pool formats and get your game on!",
         icon: faHistory,
+        disabled: "TRUE",
     },
     {
         index: 3,
         name: "CUSTOM",
         description: "Customize your format for complete control over your pool.",
         icon: faPencilAlt,
+        disabled: "FALSE",
     },
 ];
 
@@ -36,15 +39,17 @@ const PoolCreate = props => {
             <MainWrapper>
                 <div>Select a Pool Type</div>
                 <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-                {POOL_TYPES.map((pool) => (
-                    <PoolType
-                        key={pool.index}
-                        index={pool.index}
-                        icon={pool.icon}
-                        name={pool.name}
-                        description={pool.description}
-                    />
-                ))}
+                <TypeList>
+                    {POOL_TYPES.map((pool) => (
+                        <PoolType
+                            key={pool.index}
+                            index={pool.index}
+                            icon={pool.icon}
+                            name={pool.name}
+                            description={pool.description}
+                        />
+                    ))}
+                </TypeList>
                 <button>NEXT</button>
             </MainWrapper>
         </PageWrapper>
@@ -85,6 +90,12 @@ const Header = styled.h3`
 `;
 
 const MainWrapper = styled.main`
+    display: flex;
+    flex-flow: column nowrap;
+`;
+
+const TypeList = styled.section`
+    grid-area: "list";
     display: flex;
     flex-flow: column nowrap;
 `;
