@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PoolCard from './PoolCard';
+import history from '../history';
 
 const TEST_POOLS = [
     {
@@ -59,9 +60,8 @@ const MyPools = props => {
             <Header>
                 MY POOLS
             </Header>
-            <CreatePoolButton>
-                Create Pool
-            </CreatePoolButton>
+            <CreatePoolButton
+                onClick={() => history.push('/create-pool')}>Create Pool</CreatePoolButton>
             <PoolList>
                 {TEST_POOLS.map((pool) => (
                     <PoolCard

@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import history from '../history';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faFireAlt, faHistory, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
@@ -33,7 +33,7 @@ const PoolCreate = props => {
     return (
         <PageWrapper>
             <HeaderWrapper>
-                <button><FontAwesomeIcon icon={faArrowLeft} size="2x" /></button>
+                <button onClick={() => history.push('/')}><FontAwesomeIcon icon={faArrowLeft} size="2x" /></button>
                 <Header>CREATE POOL</Header>
             </HeaderWrapper>
             <MainWrapper>
