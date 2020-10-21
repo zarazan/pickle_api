@@ -4,9 +4,26 @@ class Pool < ApplicationRecord
   has_many :entries
   belongs_to :user
 
+  def self.create_and_enter(attributes)
+    user = attributes[:user]
+    attributes[:private] = true
+
+    # MVP - REMOVE AFTER
+    attributes[:email_invites] = User.the_first_four.map(&:email)
+
+    pool = user.pools.new(attributes)
+    return pool unless pool.save
+    pool.enter_pool(user)
+
+    # MVP - REMOVE AFTER
+    User.the_first_four.each { |user| pool.enter_pool(user) }
+
+    pool
+  end
+
   def enter_pool(user)
-    if !emails.include?(user.email)
-      self.errors << 'Unauthorized'
+    if !email_invites.include?(user.email)
+      self.errors << PickleException::UnauthorizedEntry.new.message
       return false
     end
     return true if Entry.find_by(user: user, pool: self)

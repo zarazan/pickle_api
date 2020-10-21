@@ -8,8 +8,8 @@ class PoolsController < ApplicationController
   end
 
   def create
-    @pool = current_user.pools.new(pool_params)
-    if @pool.save && @pool.enter_pool(current_user)
+    @pool = Pool.create_and_enter(pool_params.merge(user: current_user))
+    if @pool.errors.empty?
       render json: @pool
     else
       render json: @pool.errors, status: :422

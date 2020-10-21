@@ -13,4 +13,4 @@ Web Client
 
 Load Odds from API:
   - `docker-compose run api rails console`
-  - `LoadOddsService.new.populate_all_odds`
+  - `LoadOddsService.process`

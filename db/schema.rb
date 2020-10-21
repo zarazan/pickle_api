@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 2020_10_18_203536) do
     t.bigint "pool_id"
     t.bigint "user_id"
     t.decimal "bank"
+    t.index ["pool_id", "user_id"], name: "index_entries_on_pool_id_and_user_id", unique: true
   end
 
   create_table "fixtures", force: :cascade do |t|
@@ -59,11 +60,21 @@ ActiveRecord::Schema.define(version: 2020_10_18_203536) do
 
   create_table "pools", force: :cascade do |t|
     t.string "name"
+    t.bigint "user_id"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.decimal "bankroll"
+    t.jsonb "bet_types"
+    t.jsonb "sports"
+    t.jsonb "email_invites"
+    t.boolean "private"
   end
 
   create_table "teams", force: :cascade do |t|
     t.string "name"
+    t.string "sport"
     t.string "the_odds_api_key"
+    t.index ["name", "sport"], name: "index_teams_on_name_and_sport", unique: true
   end
 
   create_table "users", force: :cascade do |t|

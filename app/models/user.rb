@@ -4,12 +4,15 @@ class User < ApplicationRecord
   include DeviseTokenAuth::Concerns::User
 
   # Include default devise modules.
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable,
-         :confirmable, :omniauthable
+  devise :database_authenticatable,
+         :recoverable, :rememberable, :trackable, :validatable
 
   has_many :bets
   has_many :entries
   has_many :pools
+
+  def self.the_first_four
+    User.where(id: [1, 2, 3, 4])
+  end
 
 end
