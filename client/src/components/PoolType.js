@@ -1,22 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const PoolType = ({ icon, name, description, enabled }) => {
+const PoolType = ({ index, icon, name, description, disabled, isSelected, toggleSelected }) => {
     return (
         <TypeWrapper>
-            <button disabled={enabled}>
-                <ClickableCard>
-                    <div>
-                        <FontAwesomeIcon icon={icon} size="2x" />
-                    </div>
-                    <div>
-                        <h4>{name}</h4>
-                        <div>{description}</div>
-                    </div>
-                </ClickableCard>
-            </button>
+            {!isSelected
+                ? (
+                    <InactiveTypeButton
+                        disabled={disabled}
+                        onClick={() => toggleSelected(index)}
+                    >
+                        <ClickableCard>
+                            <div>
+                                <FontAwesomeIcon icon={icon} size="2x" />
+                            </div>
+                            <div>
+                                <h4>{name}</h4>
+                                <div>{description}</div>
+                            </div>
+                        </ClickableCard>
+                    </InactiveTypeButton>
+
+                )
+                : (
+                    <ActiveTypeButton
+                        disabled={disabled}
+                        onClick={() => toggleSelected(index)}
+                    >
+                        <ClickableCard>
+                            <div>
+                                <FontAwesomeIcon icon={icon} size="2x" />
+                            </div>
+                            <div>
+                                <h4>{name}</h4>
+                                <div>{description}</div>
+                            </div>
+                        </ClickableCard>
+                    </ActiveTypeButton>
+                )
+            }
         </TypeWrapper>
     );
 };
@@ -25,6 +49,7 @@ PoolType.propTypes = {
     name: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     enabled: PropTypes.bool.isRequired,
+    setSelected: PropTypes.func.isRequired,
 };
 
 export default PoolType;
@@ -32,6 +57,18 @@ export default PoolType;
 const TypeWrapper = styled.div`
     margin-top: 0.75em;
 `;
+
+const InactiveTypeButton = styled.button`
+    background: none;
+    border: 2px solid grey;
+`;
+
+const ActiveTypeButton = styled(InactiveTypeButton)`
+    background: #b3beff;
+    border: 2px solid #6f46a6;
+`;
+
+
 
 const ClickableCard = styled.div`
     display: grid;

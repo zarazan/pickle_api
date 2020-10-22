@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import history from '../history';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,25 +11,27 @@ const POOL_TYPES = [
         name: "POPULAR",
         description: "Choose from popular pool types created by the community.",
         icon: faFireAlt,
-        disabled: "TRUE",
+        disabled: false,
     },
     {
         index: 2,
         name: "RECENT",
         description: "Reuse one of your pool formats and get your game on!",
         icon: faHistory,
-        disabled: "TRUE",
+        disabled: false,
     },
     {
         index: 3,
         name: "CUSTOM",
         description: "Customize your format for complete control over your pool.",
         icon: faPencilAlt,
-        disabled: "FALSE",
+        disabled: false,
     },
 ];
 
 const PoolCreate = props => {
+    const [selectedType, setSelectedType] = useState(null);
+
     return (
         <PageWrapper>
             <HeaderWrapper>
@@ -47,13 +49,25 @@ const PoolCreate = props => {
                             icon={pool.icon}
                             name={pool.name}
                             description={pool.description}
+                            disabled={pool.disabled}
+                            toggleSelected={setTargetType}
+                            isSelected={selectedType === pool.index ? true : false}
                         />
                     ))}
                 </TypeList>
-                <button>NEXT</button>
+                <button
+                    disabled={selectedType === null}
+                >NEXT</button>
             </MainWrapper>
         </PageWrapper>
     );
+
+    /**
+     * setTargetType: Sets the selected pool type card.
+     */
+    function setTargetType(index) {
+        setSelectedType(index);
+    }
 };
 
 PoolCreate.propTypes = {
