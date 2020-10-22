@@ -5,7 +5,9 @@ class User < ApplicationRecord
 
   # Include default devise modules.
   devise :database_authenticatable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable
+
+  before_save -> { skip_confirmation! }
 
   has_many :bets
   has_many :entries

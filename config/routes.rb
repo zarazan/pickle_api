@@ -4,7 +4,8 @@ Rails.application.routes.draw do
 
   get '/' => 'dashboard#index'
 
-  get 'pools/:id' => 'pools#show'
+  get '/pools' => 'pools#index'
+  get '/pools/:id' => 'pools#show'
   post '/pools' => 'pools#create'
   patch '/pools/:id' => 'pools#update'
   delete '/pools/:id' => 'pools#delete'

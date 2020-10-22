@@ -2,6 +2,11 @@ class PoolsController < ApplicationController
 
   before_action :set_pool, only: [:update, :destroy]
 
+  def index
+    @pools = Pool.joins(:entries).where(entries: {user_id: current_user.id})
+    render json: @pools
+  end
+
   def show
     @pool = current_user.entries.find_by(pool_id: params[:id])&.pool
     render json: @pool
@@ -12,7 +17,7 @@ class PoolsController < ApplicationController
     if @pool.errors.empty?
       render json: @pool
     else
-      render json: @pool.errors, status: :422
+      render json: @pool.errors, status: 422
     end
   end
 
@@ -20,7 +25,7 @@ class PoolsController < ApplicationController
     if @pool.update(pool_params)
       render json: @pool
     else
-      render json: @pool.errors, status: :422
+      render json: @pool.errors, status: 422
     end
   end
 
@@ -34,7 +39,7 @@ class PoolsController < ApplicationController
     if @pool.enter_pool(current_user)
       render json: @pool
     else
-      render json: @pool.errors, status: :422
+      render json: @pool.errors, status: 422
     end
   end
 
@@ -47,7 +52,7 @@ class PoolsController < ApplicationController
   def pool_params
     params.require(:pool).permit(
       :name, :start_date, :end_date,
-      :bankroll, :bet_types, :sports, :private, :emails
+      :bankroll, :bet_types, :sports, :private, :email_invites
     )
   end
 
