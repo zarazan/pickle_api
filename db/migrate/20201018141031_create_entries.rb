@@ -6,6 +6,7 @@ class CreateEntries < ActiveRecord::Migration[5.2]
       t.bigint :user_id
       t.decimal :bank
     end
+    add_index :entries, [:pool_id, :user_id], unique: true
   end
 
 end

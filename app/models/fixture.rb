@@ -9,9 +9,10 @@ class Fixture < ApplicationRecord
   FIXTURE_STATUS = [:home_win, :away_win, :draw, :in_process, :scheduled]
 
   validates :sport, presence: true
-  validates :home_team_id, presence: true
-  validates :away_team_id, presence: true
   validates :start_time, presence: true
+
+  belongs_to :home_team, class: 'Team'
+  belongs_to :away_team, class: 'Team'
 
   has_many :odds
 
