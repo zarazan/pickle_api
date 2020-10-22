@@ -29,7 +29,7 @@ const TEST_POOLS = [
         participants: 6,
     },
     {
-        index: 4,
+        index: 3,
         name: "DU Hockey",
         amount: 500,
         status: "active",
@@ -41,7 +41,7 @@ const TEST_POOLS = [
         participants: 3,
     },
     {
-        index: 2,
+        index: 4,
         name: "Lorem Ipsum",
         amount: 500,
         status: "inactive",
@@ -61,7 +61,7 @@ const MyPools = props => {
                 MY POOLS
             </Header>
             <CreatePoolButton
-                onClick={() => history.push('/create-pool')}>Create Pool</CreatePoolButton>
+                onClick={() => history.push('/create-pool/step-1')}>Create Pool</CreatePoolButton>
             <PoolList>
                 {TEST_POOLS.map((pool) => (
                     <PoolCard

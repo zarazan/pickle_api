@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Router, Switch, Route } from 'react-router-dom';
 
 import Dashboard from './components/Dashboard';
-import CreatePool from './components/PoolCreate';
+import PoolCreateStep from './components/PoolCreate';
 import history from './history';
 
 export default class Routes extends Component {
@@ -11,7 +11,7 @@ export default class Routes extends Component {
             <Router history={history}>
                 <Switch>
                     <Route path = "/" exact component={Dashboard}/>
-                    <Route path = "/create-pool" component={CreatePool}/>
+                    <Route path = "/create-pool" component={PoolCreateStep}/>
                 </Switch>
             </Router>
         )

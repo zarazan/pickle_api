@@ -48,8 +48,9 @@ const PoolType = ({ index, icon, name, description, disabled, isSelected, toggle
 PoolType.propTypes = {
     name: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
-    enabled: PropTypes.bool.isRequired,
-    setSelected: PropTypes.func.isRequired,
+    disabled: PropTypes.bool.isRequired,
+    isSelected: PropTypes.bool.isRequired,
+    setSelected: PropTypes.func,
 };
 
 export default PoolType;
@@ -67,8 +68,6 @@ const ActiveTypeButton = styled(InactiveTypeButton)`
     background: #b3beff;
     border: 2px solid #6f46a6;
 `;
-
-
 
 const ClickableCard = styled.div`
     display: grid;
