@@ -1,5 +1,6 @@
 class PoolsController < ApplicationController
 
+  before_action :authenticate_user!
   before_action :set_pool, only: [:update, :destroy]
 
   def index
