@@ -1,11 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import MyPools from './MyPools';
+import PickleApi from '../services/pickle_api';
 
-const Dashboard = ({ user }) => {
-    const [userName, setUserName] = useState(user);
+const Dashboard = props => {
+
+    const [pools, setPools] = useState([]);
+
+    useEffect(() => {
+        var api = new PickleApi();
+        api.signIn();
+        const attributes = {
+            name: 'Pool Two'
+        }
+        api.createPool(attributes).then(data => console.log(data));
+
+        api.getPools().then(data => setPools(data));
+    }, []);
 
     return (
         <PageWrapper>
@@ -14,10 +27,10 @@ const Dashboard = ({ user }) => {
                 <FontAwesomeIcon icon={faUser} size="2x"/>
             </HeaderWrapper>
             <StatsWrapper>
-                Stats
+                {pools.map(pool => pool.name).join(' ')}
             </StatsWrapper>
             <MainWrapper>
-                <MyPools/>
+                <MyPools />
             </MainWrapper>
         </PageWrapper>
     );
