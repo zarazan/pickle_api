@@ -13,6 +13,10 @@ class PickleApi {
     this.client = this.axios_client();
   }
 
+  getFixtures(data) {
+    const options = {method: 'get', url: '/fixtures', data: data}
+  }
+
   getPools() {
     return this.client.get('/pools')
       .then(response => {
@@ -24,11 +28,7 @@ class PickleApi {
   }
 
   createPool(data) {
-    const options = {
-      method: 'post',
-      url: '/pools',
-      data: data
-    }
+    const options = {method: 'post', url: '/pools', data: data}
     return this.client.request(options)
     .then(response => {
       return response['data']
@@ -39,11 +39,7 @@ class PickleApi {
 
   signIn() {
     const data = {email: 'zarazan@gmail.com', password: 'pickle1' }
-    const options = {
-      method: 'post',
-      url: '/auth/sign_in',
-      data: data
-    }
+    const options = {method: 'post', url: '/auth/sign_in', data: data}
     return this.client.request(options)
       .then(response => {
         this.setSessionData(response['headers']);

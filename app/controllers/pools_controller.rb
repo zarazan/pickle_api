@@ -5,7 +5,6 @@ class PoolsController < ApplicationController
 
   def index
     @pools = Pool.joins(:entries).where(entries: {user_id: current_user.id})
-    render json: @pools
   end
 
   def show
