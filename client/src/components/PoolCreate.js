@@ -30,7 +30,7 @@ const POOL_TYPES = [
 ];
 
 const PoolCreate = props => {
-    const [step, setStep] = useState(0); // used for tracking the current step of the create flow
+    const [step, setStep] = useState(1); // used for tracking the current step of the create flow
     // POOL CONFIGURATION
     const [poolType, setpoolType] = useState(null);
     const [poolAmount, setPoolAmount] = useState(500);
@@ -46,15 +46,14 @@ const PoolCreate = props => {
             <HeaderWrapper>
                 {step <= 1 
                     ? 
-                    (
-                        // Route back to dashboard
+                    ( // Route back to dashboard
                         <button onClick={() => history.push('/')}>
                             <FontAwesomeIcon icon={faArrowLeft} size="2x" />
                         </button>
                     )
                     :
-                    (
-                        // Increment the step to rerender main
+                    ( // Increment the step to rerender the composer
+                        
                         <button onClick={() => decrementStep()}>
                             <FontAwesomeIcon icon={faArrowLeft} size="2x" />
                         </button>
@@ -79,14 +78,16 @@ const PoolCreate = props => {
                         />
                     ))}
                 </TypeList>
+            </MainWrapper>
+            <FooterWrapper>
                 <button
-                    disabled={poolType === null}
+                    disabled={!poolType}
                     onClick={() => incrementStep()}
                     className="form-navigation"
                 >
                     NEXT
                 </button>
-            </MainWrapper>
+            </FooterWrapper>
         </PageWrapper>
     );
 
@@ -94,13 +95,17 @@ const PoolCreate = props => {
      * incrementStep: Increments the pool configuration step
      */
     function incrementStep() {
-        setStep += 1;
+        if (step < 4) {
+            setStep(step + 1);
+        }
     }
     /**
      * decrementStep: Decrements the pool configuration step
      */
     function decrementStep() {
-        setStep -= 1;
+        if (step > 0) {
+            setStep(step - 1);
+        }
     }
     /**
      * setTargetType: Sets the selected pool type card.
@@ -153,7 +158,6 @@ const PoolCreate = props => {
             setBetTypes(bets);
         }
     }
-
 };
 
 PoolCreate.propTypes = {
@@ -165,7 +169,7 @@ export default PoolCreate;
 const PageWrapper = styled.div`
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 4em auto;
+    grid-template-rows: 4em auto 3em;
     grid-template-areas:
         "header"
         "main";
@@ -192,14 +196,16 @@ const Header = styled.h3`
 const MainWrapper = styled.main`
     display: flex;
     flex-flow: column nowrap;
-
-    & button.form-navigation {
-        margin-top: 1em
-    }
 `;
 
 const TypeList = styled.section`
     grid-area: "main";
     display: flex;
     flex-flow: column nowrap;
+`;
+
+const FooterWrapper = styled.footer`
+    display: flex;
+    justify-content: center;    
+    height: 2em;
 `;
