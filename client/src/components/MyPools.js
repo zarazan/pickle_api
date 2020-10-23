@@ -61,7 +61,7 @@ const MyPools = props => {
                 MY POOLS
             </Header>
             <CreatePoolButton
-                onClick={() => history.push('/create-pool/step-1')}>Create Pool</CreatePoolButton>
+                onClick={() => history.push('/create-pool')}>Create Pool</CreatePoolButton>
             <PoolList>
                 {TEST_POOLS.map((pool) => (
                     <PoolCard

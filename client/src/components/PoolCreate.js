@@ -2,32 +2,8 @@ import React, { useState } from 'react';
 import history from '../history';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faFireAlt, faHistory, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
-import PoolType from './PoolType';
-
-const POOL_TYPES = [
-    {
-        index: 1,
-        name: "POPULAR",
-        description: "Choose from popular pool types created by the community.",
-        icon: faFireAlt,
-        disabled: false,
-    },
-    {
-        index: 2,
-        name: "RECENT",
-        description: "Reuse one of your pool formats and get your game on!",
-        icon: faHistory,
-        disabled: false,
-    },
-    {
-        index: 3,
-        name: "CUSTOM",
-        description: "Customize your format for complete control over your pool.",
-        icon: faPencilAlt,
-        disabled: false,
-    },
-];
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import PoolTypeList from './PoolTypeList';
 
 const PoolCreate = props => {
     const [step, setStep] = useState(1); // used for tracking the current step of the create flow
@@ -44,48 +20,67 @@ const PoolCreate = props => {
     return (
         <PageWrapper>
             <HeaderWrapper>
-                {step <= 1 
-                    ? 
-                    ( // Route back to dashboard
-                        <button onClick={() => history.push('/')}>
-                            <FontAwesomeIcon icon={faArrowLeft} size="2x" />
-                        </button>
-                    )
-                    :
-                    ( // Increment the step to rerender the composer
-                        
-                        <button onClick={() => decrementStep()}>
-                            <FontAwesomeIcon icon={faArrowLeft} size="2x" />
-                        </button>
-                    )
-                }
+                <button onClick={step <= 1 ? () => history.push('/') : () => decrementStep()}>
+                    <FontAwesomeIcon icon={faArrowLeft} size="2x" />
+                </button>
                 <Header>CREATE POOL</Header>
             </HeaderWrapper>
+
             <MainWrapper>
-                <h2>Select a Pool Type</h2>
-                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-                <TypeList>
-                    {POOL_TYPES.map((pool) => (
-                        <PoolType
-                            key={pool.index}
-                            index={pool.index}
-                            icon={pool.icon}
-                            name={pool.name}
-                            description={pool.description}
-                            disabled={pool.disabled}
-                            toggleSelected={setTargetType}
-                            isSelected={poolType === pool.index ? true : false}
-                        />
-                    ))}
-                </TypeList>
+                {step && step === 1
+                    ? (
+                        <>
+                            <StepTitle>
+                                <h2>Select a Pool Type</h2>
+                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+                            </StepTitle>
+                            <PoolTypeList
+                                setTargetType={setTargetType}
+                                poolType={poolType}
+                            />
+                        </>)
+                    : step && step === 2
+                    ? (
+                        <>
+                            <StepTitle>
+                                <h2>Select Pool Options</h2>
+                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+                            </StepTitle>
+                            {
+                                /* render conf */
+                            }
+                        </>) 
+                    : step && step === 3
+                    ? (
+                        <>
+                            <StepTitle>
+                                <h2>Select Pool Participants</h2>
+                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+                            </StepTitle>
+                            {
+                                /* render user */
+                            }
+                    </>)
+                    : (
+                        <>
+                             <StepTitle>
+                                <h2>Pool Summary</h2>
+                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+                            </StepTitle>
+                            {
+                                /* render summary */
+                            }
+                        </>)
+                }
             </MainWrapper>
+
             <FooterWrapper>
                 <button
                     disabled={!poolType}
                     onClick={() => incrementStep()}
                     className="form-navigation"
                 >
-                    NEXT
+                    {step === 4 ? 'CREATE POOL' : 'NEXT'}
                 </button>
             </FooterWrapper>
         </PageWrapper>
@@ -193,13 +188,12 @@ const Header = styled.h3`
     margin: 0;
 `;
 
-const MainWrapper = styled.main`
-    display: flex;
-    flex-flow: column nowrap;
+const StepTitle = styled.div`
+
+
 `;
 
-const TypeList = styled.section`
-    grid-area: "main";
+const MainWrapper = styled.main`
     display: flex;
     flex-flow: column nowrap;
 `;
