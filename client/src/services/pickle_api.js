@@ -19,12 +19,27 @@ class PickleApi {
         return response['data']
       }, (error) => {
         console.log(error);
+        return [];
       });
   }
 
+  createPool(data) {
+    const options = {
+      method: 'post',
+      url: '/pools',
+      data: data
+    }
+    return this.client.request(options)
+    .then(response => {
+      return response['data']
+    }, (error) => {
+      console.log(error);
+    })
+  }
+
   signIn() {
-    var data = {email: 'zarazan@gmail.com', password: 'pickle1' }
-    var options = {
+    const data = {email: 'zarazan@gmail.com', password: 'pickle1' }
+    const options = {
       method: 'post',
       url: '/auth/sign_in',
       data: data
@@ -45,7 +60,7 @@ class PickleApi {
   }
 
   getAuthHeaders() {
-    var headers = {}
+    let headers = {}
     headers['access-token'] = sessionStorage.getItem('access-token');
     headers['client'] = sessionStorage.getItem('client');
     headers['uid'] = sessionStorage.getItem('uid');

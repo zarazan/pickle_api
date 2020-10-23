@@ -12,6 +12,11 @@ const Dashboard = props => {
     useEffect(() => {
         var api = new PickleApi();
         api.signIn();
+        const attributes = {
+            name: 'Pool Two'
+        }
+        api.createPool(attributes).then(data => console.log(data));
+
         api.getPools().then(data => setPools(data));
     }, []);
 
