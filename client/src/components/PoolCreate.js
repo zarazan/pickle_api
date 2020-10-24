@@ -209,8 +209,9 @@ const PoolCreate = props => {
         console.log(resp);
 
         let api = new PickleApi();
-        api.signIn();
-        api.createPool(resp);
+        api.signIn().next(() => 
+            api.createPool(resp)
+        );
     };
 };
 
