@@ -4,11 +4,13 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import PoolTypeList from './PoolTypeList';
+import PoolOptionList from './PoolOptionList';
 
 const PoolCreate = props => {
     const [step, setStep] = useState(1); // used for tracking the current step of the create flow
     // POOL CONFIGURATION
     const [poolType, setpoolType] = useState(null);
+    const [poolName, setPoolName] = useState(null);
     const [poolAmount, setPoolAmount] = useState(500);
     const [visibility, setPoolVisibility] = useState('private');
     const [poolStart, setPoolStart] = useState(null);
@@ -46,9 +48,18 @@ const PoolCreate = props => {
                                 <h2>Select Pool Options</h2>
                                 <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
                             </StepTitle>
-                            {
-                                /* render conf */
-                            }
+                            <PoolOptionList 
+                                setName={setName}
+                                visibility={visibility}
+                                setVisibility={setVisibility}
+                                startValue={poolStart}
+                                endValue={poolEnd}
+                                setStart={setStart}
+                                setEnd={setEnd}
+                                poolAmount={poolAmount}
+                                setBankroll={setBankroll}
+                                bets={betTypes}
+                            />
                         </>) 
                     : step && step === 3
                     ? (
@@ -109,50 +120,84 @@ const PoolCreate = props => {
         setpoolType(index);
     }
     /**
+     * setName: Sets the pool name.
+     */
+    function setName(name) {
+        setPoolName(name);
+    }
+    /**
      * setPoolAmount: Sets the starting pool bankroll.
      */
     function setBankroll(amount) {
         setPoolAmount(amount);
     }
     /**
-     * toggleVisibility: Toggles the pool between private and public.
+     * setVisibility: Toggles the pool between private and public.
      */
-    function toggleVisibility() {
-        setPoolVisibility(!visibility);
+    function setVisibility(visibility) {
+        setPoolVisibility(visibility);
     }
     /**
-     * addBet: Adds a bet type to the pool.
+     * setStart: Sets the pool start date.
      */
-    function addBet(bet) {
-        // get the existing cache
-        let updatedBets = [ ...betTypes ];
-        // if bet is not included add it; otherwise do nothing
-        if (!updatedBets.includes(bet)) {
-            // add the bet
-            setBetTypes([ ...betTypes, bet]);
-        }
+    function setStart(date) {
+        setPoolStart(date);
     }
-    /**
-     * removeBet: Removes a bet type from the pool.
-     */
-    function removeBet(bet) {
+    /** setEnd: Sets the pool end date. * */
+    function setEnd(date) {
+        setPoolEnd(date);
+    }
+    /** handleCheckboxChange: Event handler for the checkboxes * */
+    function handleCheckboxChange(e) {
+        const { name } = e.target;
+        let currentBets = [ ...betTypes ];
         let indexToRemove;
-        let bets;
-        // get the existing cache
-        let updatedBets = [ ...betTypes ];
-        // if bet is included, remove it; otherwise do nothing
-        if (updatedBets.includes(bet)) {
-            // find the index
-            indexToRemove = updatedBets.indexOf(bet);
+        let newBets;
+        if (currentBets && currentBets.includes(name)) {
+            indexToRemove = currentBets.indexOf(name);
             if (indexToRemove === 0) { // result was first item; remove it
-                bets = updatedBets.slice(1);
+                newBets = currentBets.slice(1);
             } else {
-                updatedBets.splice(indexToRemove, 1);
-                bets = updatedBets;
+                currentBets.splice(indexToRemove, 1);
+                newBets = currentBets;
             }
-            setBetTypes(bets);
+        } else {
+            setBetTypes([ ...betTypes, name]);
         }
     }
+    // /**
+    //  * addBet: Adds a bet type to the pool.
+    //  */
+    // function addBet(bet) {
+    //     // get the existing cache
+    //     let updatedBets = [ ...betTypes ];
+    //     // if bet is not included add it; otherwise do nothing
+    //     if (!updatedBets.includes(bet)) {
+    //         // add the bet
+    //         setBetTypes([ ...betTypes, bet]);
+    //     }
+    // }
+    // /**
+    //  * removeBet: Removes a bet type from the pool.
+    //  */
+    // function removeBet(bet) {
+    //     let indexToRemove;
+    //     let bets;
+    //     // get the existing cache
+    //     let updatedBets = [ ...betTypes ];
+    //     // if bet is included, remove it; otherwise do nothing
+    //     if (updatedBets.includes(bet)) {
+    //         // find the index
+    //         indexToRemove = updatedBets.indexOf(bet);
+    //         if (indexToRemove === 0) { // result was first item; remove it
+    //             bets = updatedBets.slice(1);
+    //         } else {
+    //             updatedBets.splice(indexToRemove, 1);
+    //             bets = updatedBets;
+    //         }
+    //         setBetTypes(bets);
+    //     }
+    // }
 };
 
 PoolCreate.propTypes = {
