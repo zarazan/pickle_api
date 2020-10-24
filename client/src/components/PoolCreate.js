@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import PoolTypeList from './PoolTypeList';
 import PoolOptionList from './PoolOptionList';
+import PickleApi from '../services/pickle_api';
 
 const PoolCreate = props => {
     const [step, setStep] = useState(1); // used for tracking the current step of the create flow
@@ -90,7 +91,7 @@ const PoolCreate = props => {
             <FooterWrapper>
                 <button
                     disabled={!poolType}
-                    onClick={() => incrementStep()}
+                    onClick={step === 4 ? () => incrementStep() : () => incrementStep()}
                     className="form-navigation"
                 >
                     {step === 4 ? 'CREATE POOL' : 'NEXT'}
@@ -187,6 +188,28 @@ const PoolCreate = props => {
             setSports([ ...sports, name]);
         }
     }
+
+    function createPool() {
+        let resp = {};
+        /*
+            name: 'Friends & Family Pool',
+            start_date: @start_date,
+            end_date: @end_date,
+            bankroll: 500,
+            bet_types: ['money_line'],
+            sports: ['americanfootball_nfl'],
+        */
+        resp.name = poolName;
+        resp.start_date = poolStart;
+        resp.end_date = poolEnd;
+        resp.bankroll = poolAmount;
+        resp.bet_types = betTypes;
+        resp.sports = sports;
+
+        let api = new PickleApi();
+        api.signIn();
+        api.createPool(resp);
+    };
 };
 
 PoolCreate.propTypes = {
