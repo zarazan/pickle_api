@@ -21,7 +21,7 @@ const Checkbox = ({ label, handleCheckChange }) => {
     /** toggleCheckbox: Toggles the checkbox selected state. */
     function toggleCheckbox(e) {
         setisChecked(!isChecked);
-        handleCheckChange(e.target.name);
+        handleCheckChange(e.target.name, );
     }
 }
 

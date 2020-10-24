@@ -17,6 +17,7 @@ const PoolOptionList = ({
     poolAmount,
     setBankroll,
     handleCheckChange,
+    handleSportChange,
 }) => {
     return (
         <OptionForm>
@@ -104,17 +105,17 @@ const PoolOptionList = ({
                 <span>Set the sports available in the pool</span>
             </Subtitle>
             <div>
-            <Checkbox 
+                <Checkbox 
                     label="NFL"
-                    handleCheckChange={handleCheckChange}
+                    handleCheckChange={handleSportChange}
                 />
                 <Checkbox 
                     label="NHL"
-                    handleCheckChange={handleCheckChange}
+                    handleCheckChange={handleSportChange}
                 />
                 <Checkbox 
                     label="PGA"
-                    handleCheckChange={handleCheckChange}
+                    handleCheckChange={handleSportChange}
                 />
             </div>
 

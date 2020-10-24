@@ -60,6 +60,7 @@ const PoolCreate = props => {
                                 setBankroll={setBankroll}
                                 bets={betTypes}
                                 handleCheckChange={handleCheckChange}
+                                handleSportChange={handleSportChange}
                             />
                         </>) 
                     : step && step === 3
@@ -150,7 +151,7 @@ const PoolCreate = props => {
     }
 
     /** handleCheckboxChange: Event handler for the checkboxes * */
-    function handleCheckChange(name) {
+    function handleCheckChange(name, obj) {
         let currentBets = [ ...betTypes ];
         let indexToRemove;
         let newBets;
@@ -169,7 +170,7 @@ const PoolCreate = props => {
     }
     
     /** handleCheckboxChange: Event handler for the checkboxes * */
-    function handleCheckChange(name) {
+    function handleSportChange(name) {
         let currentSports = [ ...sports ];
         let indexToRemove;
         let newSports;
