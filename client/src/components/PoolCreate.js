@@ -91,7 +91,7 @@ const PoolCreate = props => {
             <FooterWrapper>
                 <button
                     disabled={!poolType}
-                    onClick={step === 4 ? () => incrementStep() : () => incrementStep()}
+                    onClick={step === 4 ? () => createPool() : () => incrementStep()}
                     className="form-navigation"
                 >
                     {step === 4 ? 'CREATE POOL' : 'NEXT'}
@@ -205,6 +205,8 @@ const PoolCreate = props => {
         resp.bankroll = poolAmount;
         resp.bet_types = betTypes;
         resp.sports = sports;
+
+        console.log(resp);
 
         let api = new PickleApi();
         api.signIn();
