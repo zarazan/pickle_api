@@ -16,7 +16,7 @@ const PoolOptionList = ({
     setEnd, 
     poolAmount,
     setBankroll,
-    bets,
+    handleCheckChange,
 }) => {
     return (
         <OptionForm>
@@ -75,7 +75,7 @@ const PoolOptionList = ({
                 <span>Set the seed bankrool for each team</span>
             </Subtitle>
             <div>
-                <label for="bank-default">
+                <label htmlFor="bank-default">
                     <input id="bank-default" type="number" value={poolAmount} onChange={e => setBankroll(e.target.value)}/>
                 </label>
             </div>
@@ -86,25 +86,17 @@ const PoolOptionList = ({
             </Subtitle>
             <div>
                 <Checkbox 
-
-                
+                    label="Point Spread"
+                    handleCheckChange={handleCheckChange}
                 />
-                <label for="point-spread">
-                    <input 
-                        id="point-spread" 
-                        type="checkbox" 
-                        name="point-spread" 
-                        onChange={e => bets && bets.includes(e.target.name)}/>
-                    Point Spread
-                </label>
-                <label for="total-points">
-                    <input id="total-points" type="checkbox" name="total-points"/>
-                    Total Points
-                </label>
-                <label for="money-line">
-                    <input id="money-line" type="checkbox" name="money-line"/>
-                    Money Line
-                </label>
+                <Checkbox 
+                    label="Total Points"
+                    handleCheckChange={handleCheckChange}
+                />
+                <Checkbox 
+                    label="Money Line"
+                    handleCheckChange={handleCheckChange}
+                />
             </div>
 
             <Subtitle>
@@ -112,18 +104,18 @@ const PoolOptionList = ({
                 <span>Set the sports available in the pool</span>
             </Subtitle>
             <div>
-                <label for="nfl">
-                    <input id="nfl" type="checkbox" name="nfl"/>
-                    NFL
-                </label>
-                <label for="nhl">
-                    <input id="nfl" type="checkbox" name="nhl"/>
-                    NHL
-                </label>
-                <label for="nba">
-                    <input id="nfl" type="checkbox" name="nba"/>
-                    NBA
-                </label>
+            <Checkbox 
+                    label="NFL"
+                    handleCheckChange={handleCheckChange}
+                />
+                <Checkbox 
+                    label="NHL"
+                    handleCheckChange={handleCheckChange}
+                />
+                <Checkbox 
+                    label="PGA"
+                    handleCheckChange={handleCheckChange}
+                />
             </div>
 
         </OptionForm>

@@ -59,6 +59,7 @@ const PoolCreate = props => {
                                 poolAmount={poolAmount}
                                 setBankroll={setBankroll}
                                 bets={betTypes}
+                                handleCheckChange={handleCheckChange}
                             />
                         </>) 
                     : step && step === 3
@@ -147,9 +148,9 @@ const PoolCreate = props => {
     function setEnd(date) {
         setPoolEnd(date);
     }
+
     /** handleCheckboxChange: Event handler for the checkboxes * */
-    function handleCheckboxChange(e) {
-        const { name } = e.target;
+    function handleCheckChange(name) {
         let currentBets = [ ...betTypes ];
         let indexToRemove;
         let newBets;
@@ -161,43 +162,30 @@ const PoolCreate = props => {
                 currentBets.splice(indexToRemove, 1);
                 newBets = currentBets;
             }
+            setBetTypes(newBets);
         } else {
             setBetTypes([ ...betTypes, name]);
         }
     }
-    // /**
-    //  * addBet: Adds a bet type to the pool.
-    //  */
-    // function addBet(bet) {
-    //     // get the existing cache
-    //     let updatedBets = [ ...betTypes ];
-    //     // if bet is not included add it; otherwise do nothing
-    //     if (!updatedBets.includes(bet)) {
-    //         // add the bet
-    //         setBetTypes([ ...betTypes, bet]);
-    //     }
-    // }
-    // /**
-    //  * removeBet: Removes a bet type from the pool.
-    //  */
-    // function removeBet(bet) {
-    //     let indexToRemove;
-    //     let bets;
-    //     // get the existing cache
-    //     let updatedBets = [ ...betTypes ];
-    //     // if bet is included, remove it; otherwise do nothing
-    //     if (updatedBets.includes(bet)) {
-    //         // find the index
-    //         indexToRemove = updatedBets.indexOf(bet);
-    //         if (indexToRemove === 0) { // result was first item; remove it
-    //             bets = updatedBets.slice(1);
-    //         } else {
-    //             updatedBets.splice(indexToRemove, 1);
-    //             bets = updatedBets;
-    //         }
-    //         setBetTypes(bets);
-    //     }
-    // }
+    
+    /** handleCheckboxChange: Event handler for the checkboxes * */
+    function handleCheckChange(name) {
+        let currentSports = [ ...sports ];
+        let indexToRemove;
+        let newSports;
+        if (currentSports && currentSports.includes(name)) {
+            indexToRemove = currentSports.indexOf(name);
+            if (indexToRemove === 0) { // result was first item; remove it
+                newSports = currentSports.slice(1);
+            } else {
+                currentSports.splice(indexToRemove, 1);
+                newSports = currentSports;
+            }
+            setSports(newSports);
+        } else {
+            setSports([ ...sports, name]);
+        }
+    }
 };
 
 PoolCreate.propTypes = {
