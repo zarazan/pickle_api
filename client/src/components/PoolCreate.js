@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import PoolTypeList from './PoolTypeList';
 import PoolOptionList from './PoolOptionList';
+import PickleApi from '../services/pickle_api';
 
 const PoolCreate = props => {
     const [step, setStep] = useState(1); // used for tracking the current step of the create flow
@@ -59,6 +60,8 @@ const PoolCreate = props => {
                                 poolAmount={poolAmount}
                                 setBankroll={setBankroll}
                                 bets={betTypes}
+                                handleCheckChange={handleCheckChange}
+                                handleSportChange={handleSportChange}
                             />
                         </>) 
                     : step && step === 3
@@ -88,7 +91,7 @@ const PoolCreate = props => {
             <FooterWrapper>
                 <button
                     disabled={!poolType}
-                    onClick={() => incrementStep()}
+                    onClick={step === 4 ? () => incrementStep() : () => incrementStep()}
                     className="form-navigation"
                 >
                     {step === 4 ? 'CREATE POOL' : 'NEXT'}
@@ -147,9 +150,9 @@ const PoolCreate = props => {
     function setEnd(date) {
         setPoolEnd(date);
     }
+
     /** handleCheckboxChange: Event handler for the checkboxes * */
-    function handleCheckboxChange(e) {
-        const { name } = e.target;
+    function handleCheckChange(name, obj) {
         let currentBets = [ ...betTypes ];
         let indexToRemove;
         let newBets;
@@ -161,43 +164,52 @@ const PoolCreate = props => {
                 currentBets.splice(indexToRemove, 1);
                 newBets = currentBets;
             }
+            setBetTypes(newBets);
         } else {
             setBetTypes([ ...betTypes, name]);
         }
     }
-    // /**
-    //  * addBet: Adds a bet type to the pool.
-    //  */
-    // function addBet(bet) {
-    //     // get the existing cache
-    //     let updatedBets = [ ...betTypes ];
-    //     // if bet is not included add it; otherwise do nothing
-    //     if (!updatedBets.includes(bet)) {
-    //         // add the bet
-    //         setBetTypes([ ...betTypes, bet]);
-    //     }
-    // }
-    // /**
-    //  * removeBet: Removes a bet type from the pool.
-    //  */
-    // function removeBet(bet) {
-    //     let indexToRemove;
-    //     let bets;
-    //     // get the existing cache
-    //     let updatedBets = [ ...betTypes ];
-    //     // if bet is included, remove it; otherwise do nothing
-    //     if (updatedBets.includes(bet)) {
-    //         // find the index
-    //         indexToRemove = updatedBets.indexOf(bet);
-    //         if (indexToRemove === 0) { // result was first item; remove it
-    //             bets = updatedBets.slice(1);
-    //         } else {
-    //             updatedBets.splice(indexToRemove, 1);
-    //             bets = updatedBets;
-    //         }
-    //         setBetTypes(bets);
-    //     }
-    // }
+    
+    /** handleCheckboxChange: Event handler for the checkboxes * */
+    function handleSportChange(name) {
+        let currentSports = [ ...sports ];
+        let indexToRemove;
+        let newSports;
+        if (currentSports && currentSports.includes(name)) {
+            indexToRemove = currentSports.indexOf(name);
+            if (indexToRemove === 0) { // result was first item; remove it
+                newSports = currentSports.slice(1);
+            } else {
+                currentSports.splice(indexToRemove, 1);
+                newSports = currentSports;
+            }
+            setSports(newSports);
+        } else {
+            setSports([ ...sports, name]);
+        }
+    }
+
+    function createPool() {
+        let resp = {};
+        /*
+            name: 'Friends & Family Pool',
+            start_date: @start_date,
+            end_date: @end_date,
+            bankroll: 500,
+            bet_types: ['money_line'],
+            sports: ['americanfootball_nfl'],
+        */
+        resp.name = poolName;
+        resp.start_date = poolStart;
+        resp.end_date = poolEnd;
+        resp.bankroll = poolAmount;
+        resp.bet_types = betTypes;
+        resp.sports = sports;
+
+        let api = new PickleApi();
+        api.signIn();
+        api.createPool(resp);
+    };
 };
 
 PoolCreate.propTypes = {
