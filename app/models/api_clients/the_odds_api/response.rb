@@ -26,13 +26,15 @@ module ApiClients::TheOddsApi
     end
 
     def parse_fixture(fixture_json)
+      sport = fixture_json['sport_key']
       home_team = fixture_json['home_team']
       away_team = fixture_json['teams'].find { |name| name != home_team }
       start_time = DateTime.parse(fixture_json['commence_time'].to_s)
 
       fixture = {
-        home_team: home_team,
-        away_team: away_team,
+        sport: sport
+        home_team_name: home_team,
+        away_team_name: away_team,
         start_time: start_time,
         odds: get_odds(fixture_json)
       }
