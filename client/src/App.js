@@ -1,12 +1,10 @@
 import React from 'react';
-import Dashboard from './components/Dashboard';
-import PoolCreate from './components/PoolCreate';
+import Routes from './Routes';
 
 function App() {
-
   return (
     <div className="App">
-      <PoolCreate/>
+      <Routes />
     </div>
   );
 }
