@@ -8,6 +8,12 @@ class Fixture < ApplicationRecord
 
   FIXTURE_STATUS = [:home_win, :away_win, :draw, :in_process, :scheduled]
 
+  SPORTS = [
+    'americanfootball_nfl',
+    'americanfootball_ncaaf',
+    'soccer_epl'
+  ]
+
   validates :sport, presence: true
   validates :start_time, presence: true
 
@@ -17,6 +23,9 @@ class Fixture < ApplicationRecord
   has_many :odds
 
   def self.find_or_create_with_status(attributes)
+    sport = attributes[:sport]
+    attributes[:home_team] = Team.find_or_create_by(name: attributes.delete(:home_team_name), sport: sport)
+    attributes[:away_team] = Team.find_or_create_by(name: attributes.delete(:away_team_name), sport: sport)
     fixture = Fixture.find_by(attributes)
     return fixture if fixture
     attributes.merge!(status: :scheduled)

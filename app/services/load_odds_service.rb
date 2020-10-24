@@ -29,6 +29,10 @@ class LoadOddsService
     raise 'API Request Failed' if !response.success?
 
     fixtures_attributes = response.parse_fixtures
+    load_fixtures(fixtures_attributes)
+  end
+
+  def load_fixtures(fixtures_attributes)
     fixtures_attributes.each do |fixture_attributes|
       odds_attributes = fixture_attributes.delete(:odds)
       fixture = Fixture.find_or_create_with_status(fixture_attributes)

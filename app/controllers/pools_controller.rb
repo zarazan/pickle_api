@@ -5,18 +5,16 @@ class PoolsController < ApplicationController
 
   def index
     @pools = Pool.joins(:entries).where(entries: {user_id: current_user.id})
-    render json: @pools
   end
 
   def show
     @pool = current_user.entries.find_by(pool_id: params[:id])&.pool
-    render json: @pool
   end
 
   def create
     @pool = Pool.create_and_enter(pool_params.merge(user: current_user))
     if @pool.errors.empty?
-      render json: @pool
+      render :show
     else
       render json: @pool.errors, status: 422
     end
@@ -24,7 +22,7 @@ class PoolsController < ApplicationController
 
   def update
     if @pool.update(pool_params)
-      render json: @pool
+      render :show
     else
       render json: @pool.errors, status: 422
     end
@@ -38,7 +36,7 @@ class PoolsController < ApplicationController
   def enter_pool
     @pool = Pool.find(params[:id])
     if @pool.enter_pool(current_user)
-      render json: @pool
+      render :show
     else
       render json: @pool.errors, status: 422
     end

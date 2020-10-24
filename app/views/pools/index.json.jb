@@ -1,0 +1,3 @@
+@pools.map do |pool|
+  pool.attributes.merge(user_count: pool.entries.count)
+end
