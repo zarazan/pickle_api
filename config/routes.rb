@@ -11,9 +11,8 @@ Rails.application.routes.draw do
     patch '/pools/:id' => 'pools#update'
     delete '/pools/:id' => 'pools#delete'
     post '/pools/:id/enter_pool' => 'pools#enter_pool'
-
-    '/pools/:id/fixtures'
-    '/pools/:id/entries'
+    get '/pools/:id/fixtures'
+    get '/pools/:id/entries'
   end
 
 end
