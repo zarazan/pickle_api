@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import RadioButton from '../stories/RadioButton';
 import DatePicker from '../stories/DatePicker';
 import Checkbox from '../stories/Checkbox';
-import { faBorderStyle } from '@fortawesome/free-solid-svg-icons';
 
 const PoolOptionList = ({ 
     setName, 
@@ -124,7 +123,15 @@ const PoolOptionList = ({
 };
 
 PoolOptionList.propTypes = {
-    
+    setName: PropTypes.func,
+    visibility: PropTypes.bool, 
+    setVisibility: PropTypes.func,
+    setStart: PropTypes.func,
+    setEnd: PropTypes.func,
+    poolAmount: PropTypes.number,
+    setBankroll: PropTypes.func,
+    handleCheckChange: PropTypes.func,
+    handleSportChange: PropTypes.func,
 };
 
 export default PoolOptionList;
