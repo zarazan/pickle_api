@@ -4,8 +4,6 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUsers, faFootballBall, faClock } from '@fortawesome/free-solid-svg-icons';
 
-// TODO: poll users pools and render them as cards
-
 const PoolCard = ({ 
     name,
     startDate,

@@ -3,18 +3,8 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import MyPools from './MyPools';
-import PickleApi from '../services/pickle_api';
 
 const Dashboard = props => {
-
-    const [pools, setPools] = useState([]);
-
-    useEffect(() => {
-        var api = new PickleApi();
-        api.signIn();
-        api.getPools().then(data => setPools(data));
-    }, []);
-
     return (
         <PageWrapper>
             <HeaderWrapper>
@@ -22,7 +12,7 @@ const Dashboard = props => {
                 <FontAwesomeIcon icon={faUser} size="2x"/>
             </HeaderWrapper>
             <StatsWrapper>
-                {pools.map(pool => pool.name).join(' ')}
+                {'future stats'}
             </StatsWrapper>
             <MainWrapper>
                 <MyPools />
