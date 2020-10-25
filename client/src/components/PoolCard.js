@@ -7,15 +7,10 @@ import { faUsers, faFootballBall, faClock } from '@fortawesome/free-solid-svg-ic
 // TODO: poll users pools and render them as cards
 
 const PoolCard = ({ 
-    index,
     name,
-    amount,
-    status,
-    privacy,
     startDate,
-    endDate,
     sports,
-    bets,
+    privacy,
     participants,
 }) => {
     return (
@@ -26,11 +21,11 @@ const PoolCard = ({
             </CardHeader>
             <RowBaseWrapper>
                 <FontAwesomeIcon icon={faUsers} size="sm"/>
-                {participants} users
+                {participants ? participants.length : 0} users
             </RowBaseWrapper>
             <RowBaseWrapper>
                 <FontAwesomeIcon icon={faFootballBall} size="sm"/>
-                {sports.length} sports
+                {sports ? sports.length : 0} sports
             </RowBaseWrapper>
             <RowBaseWrapper>
                 <FontAwesomeIcon icon={faClock} size="sm"/> Deadline
@@ -41,16 +36,11 @@ const PoolCard = ({
 };
 
 PoolCard.propTypes = {
-    index: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
-    amount: PropTypes.number.isRequired,
-    status: PropTypes.string.isRequired,
-    privacy: PropTypes.string.isRequired,
-    startDate: PropTypes.string.isRequired,
-    endDate: PropTypes.string.isRequired,
-    sports: PropTypes.arrayOf(PropTypes.string).isRequired,
-    bets: PropTypes.arrayOf(PropTypes.string).isRequired,
-    participants: PropTypes.number.isRequired,
+    privacy: PropTypes.bool,
+    startDate: PropTypes.string,
+    sports: PropTypes.arrayOf(PropTypes.string),
+    participants: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default PoolCard;

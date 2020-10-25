@@ -1,60 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import PoolCard from './PoolCard';
 import history from '../history';
+import PickleApi from '../services/pickle_api';
 
-const TEST_POOLS = [
-    {
-        index: 1,
-        name: "Friends & Family",
-        amount: 500,
-        status: "active",
-        privacy: "private",
-        startDate: "2020-10-11T02:56:08Z",
-        endDate: "2020-10-17T02:56:08Z",
-        sports: ["NFL", "NBA", "NHL"],
-        bets: ["ps", "tp", "ml"],
-        participants: 3,
-    },
-    {
-        index: 2,
-        name: "Pickle Test",
-        amount: 500,
-        status: "inactive",
-        privacy: "private",
-        startDate: "2020-09-15T02:56:08Z",
-        endDate: "2020-09-22T02:56:08Z",
-        sports: ["NFL"],
-        bets: ["ps", "tp", "ml"],
-        participants: 6,
-    },
-    {
-        index: 3,
-        name: "DU Hockey",
-        amount: 500,
-        status: "active",
-        privacy: "public",
-        startDate: "2020-10-11T02:56:08Z",
-        endDate: "2020-10-17T02:56:08Z",
-        sports: ["NFL", "NBA", "NHL"],
-        bets: ["ps", "tp", "ml"],
-        participants: 3,
-    },
-    {
-        index: 4,
-        name: "Lorem Ipsum",
-        amount: 500,
-        status: "inactive",
-        privacy: "public",
-        startDate: "2020-09-15T02:56:08Z",
-        endDate: "2020-09-22T02:56:08Z",
-        sports: ["NFL"],
-        bets: ["ps", "tp", "ml"],
-        participants: 6,
-    },
-];
+let api = new PickleApi();
+api.signIn();
 
 const MyPools = props => {
+    const [pools, setPools] = useState([]);
+    
+    useEffect(() => {
+        async function fetchData() {
+            const results = await api.getPools();
+            setPools(results);
+        }
+        fetchData();
+      }, []);
+
     return (
         <MyPoolsWrapper>
             <Header>
@@ -63,19 +26,16 @@ const MyPools = props => {
             <CreatePoolButton
                 onClick={() => history.push('/create-pool')}>Create Pool</CreatePoolButton>
             <PoolList>
-                {TEST_POOLS.map((pool) => (
+                {pools.map((pool) => (
                     <PoolCard
-                        key={pool.index}
-                        index={pool.index}
+                        key={pool.id}
+                        index={pool.id}
                         name={pool.name}
-                        amount={pool.amount}
-                        status={pool.status}
-                        privacy={pool.privacy}
-                        startDate={pool.startDate}
-                        endDate={pool.endDate}
+                        amount={500}
+                        privacy={pool.private}
+                        startDate={pool.start_date}
                         sports={pool.sports}
-                        bets={pool.bets}
-                        participants={pool.participants}
+                        participants={pool.email_invites}
                     />
                 ))}
             </PoolList>

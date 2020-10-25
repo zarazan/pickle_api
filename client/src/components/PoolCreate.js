@@ -13,12 +13,12 @@ const PoolCreate = props => {
     const [poolType, setpoolType] = useState(null);
     const [poolName, setPoolName] = useState(null);
     const [poolAmount, setPoolAmount] = useState(500);
-    const [visibility, setPoolVisibility] = useState('private');
+    const [visibility, setPoolVisibility] = useState(true);
     const [poolStart, setPoolStart] = useState(null);
     const [poolEnd, setPoolEnd] = useState(null);
     const [betTypes, setBetTypes] = useState([]);
     const [sports, setSports] = useState([]);
-    const [participants, setParticipants] = useState([]);
+    // const [participants, setParticipants] = useState([]);
 
     return (
         <PageWrapper>
@@ -213,10 +213,6 @@ const PoolCreate = props => {
             api.createPool(resp)
         );
     };
-};
-
-PoolCreate.propTypes = {
-    
 };
 
 export default PoolCreate;
