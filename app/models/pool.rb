@@ -4,9 +4,19 @@ class Pool < ApplicationRecord
   has_many :entries
   belongs_to :user
 
+  BET_TYPES = [
+    :money_line,
+    :total_points,
+    :spread
+  ]
+
   def self.create_and_enter(attributes)
     user = attributes[:user]
     attributes[:private] = true
+
+    # TODO - validate attributes[:bet_types]
+
+    # TODO - date = turn into start and end of day
 
     # MVP - REMOVE AFTER
     attributes[:email_invites] = User.the_first_four.map(&:email)
