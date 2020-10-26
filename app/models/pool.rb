@@ -4,6 +4,13 @@ class Pool < ApplicationRecord
   has_many :entries
   belongs_to :user
 
+  validates :name, presence: true
+  validates :start_date, presence: true
+  validates :end_date, presence: true
+  validates :bankroll, presence: true
+  # validates :bet_types_validation
+  # validates :sports_validation
+
   BET_TYPES = [
     :money_line,
     :total_points,
