@@ -11,18 +11,18 @@ class Fixture < ApplicationRecord
   SPORTS = [
     'americanfootball_nfl',
     'americanfootball_ncaaf',
-    'soccer_epl'
+    'baseball_mlb'
   ]
 
   validates :sport, presence: true
   validates :start_time, presence: true
 
-  belongs_to :home_team, class: 'Team'
-  belongs_to :away_team, class: 'Team'
+  belongs_to :home_team, class_name: 'Team'
+  belongs_to :away_team, class_name: 'Team'
 
   has_many :odds
 
-  def self.find_or_create_with_status(attributes)
+  def self.import(attributes)
     sport = attributes[:sport]
     attributes[:home_team] = Team.find_or_create_by(name: attributes.delete(:home_team_name), sport: sport)
     attributes[:away_team] = Team.find_or_create_by(name: attributes.delete(:away_team_name), sport: sport)
@@ -57,6 +57,10 @@ class Fixture < ApplicationRecord
 
   def complete?
     [:home_win, :away_win, :draw].include?(status)
+  end
+
+  def get_team_by_name(team_name)
+    [home_team, away_team].find { |team| team.name == team_name }
   end
 
 end

@@ -3,7 +3,7 @@ class LoadOddsService
   SPORTS = [
     'americanfootball_ncaaf',
     'americanfootball_nfl',
-    'soccer_epl',
+    'baseball_mlb',
   ]
 
   ODD_TYPES = [
@@ -35,9 +35,9 @@ class LoadOddsService
   def load_fixtures(fixtures_attributes)
     fixtures_attributes.each do |fixture_attributes|
       odds_attributes = fixture_attributes.delete(:odds)
-      fixture = Fixture.find_or_create_with_status(fixture_attributes)
+      fixture = Fixture.import(fixture_attributes)
       odds_attributes.each do |odd_attributes|
-        Odd.set_odd(odd_attributes.merge(fixture: fixture))
+        Odd.import(odd_attributes.merge(fixture: fixture))
       end
     end
   end

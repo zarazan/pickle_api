@@ -48,7 +48,6 @@ ActiveRecord::Schema.define(version: 2020_10_18_203536) do
   create_table "odds", force: :cascade do |t|
     t.string "type"
     t.bigint "fixture_id"
-    t.string "odd_type"
     t.decimal "ratio"
     t.decimal "metric"
     t.bigint "team_id"
@@ -73,7 +72,6 @@ ActiveRecord::Schema.define(version: 2020_10_18_203536) do
   create_table "teams", force: :cascade do |t|
     t.string "name"
     t.string "sport"
-    t.string "the_odds_api_key"
     t.index ["name", "sport"], name: "index_teams_on_name_and_sport", unique: true
   end
 

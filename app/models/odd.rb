@@ -10,8 +10,9 @@ class Odd < ApplicationRecord
   belongs_to :fixture
   has_many :bets
 
-  validates :odd_type, presence: true
   validates :ratio, presence: true
+
+  belongs_to :team
 
   ODD_TYPES = [
     :money_line,
@@ -20,14 +21,21 @@ class Odd < ApplicationRecord
     :spread
   ]
 
-  def self.set_odd(attributes)
+  def self.import(attributes)
     attributes.merge!(active: true)
+
+    team_name = attributes.delete(:team_name)
+    fixture = attributes[:fixture]
+
+    attributes[:team] = fixture.get_team_by_name(team_name)
+
+    duplicate_odd = Odd.find_by(attributes)
+    return duplicate_odd if duplicate_odd
+
     transaction do
-      duplicate_odd = Odd.find_by(attributes)
-      return if duplicate_odd
-      active_odds = Odd.where(attributes.slice(:ratio, :metric))
+      active_odds = Odd.where(attributes.slice(:fixture, :type, :ratio, :metric, :team))
       active_odds.update_all(active: false)
-      Odd.create!(attributes)
+      return Odd.create(attributes)
     end
   end
 

@@ -1,5 +1,5 @@
 @now = DateTime.current
-@start_date = @now.beginning_of_day
+@today = @now.beginning_of_day
 @end_date = (@now + 7.days).end_of_day
 
 user = User.create!(email: 'zarazan@gmail.com', password: 'pickle1', name: 'Kyle Zarazan')
@@ -10,7 +10,7 @@ User.create!(email: 'bezektaylor@gmail.com', password: 'pickle4', name: 'Taylor 
 pool = Pool.create_and_enter(
   user: user,
   name: 'Friends & Family Pool',
-  start_date: @start_date,
+  start_date: @today,
   end_date: @end_date,
   bankroll: 500,
   bet_types: ['money_line'],
@@ -19,3 +19,27 @@ pool = Pool.create_and_enter(
   private: true
 )
 raise "Error creating pool #{pool.errors.join(' ')}" if pool.errors.any?
+
+fixtures_attributes = [
+
+  {
+    sport: 'americanfootball_nfl',
+    home_team_name: 'Kansas City Chiefs',
+    away_team_name: 'Denver Broncos',
+
+    start_time: (@now + 1.day),
+    odds: [
+      {
+        type: 'MoneyLineOdd',
+        ratio: '1.2',
+        team_name: 'Kansas City Chiefs'
+      },
+      {
+        type: 'MoneyLineOdd',
+        ratio: '1.6',
+        team_name: 'Denver Broncos'
+      }
+    ]
+  }
+]
+LoadOddsService.new.load_fixtures(fixtures_attributes)
