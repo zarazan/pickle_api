@@ -17,6 +17,12 @@ class Pool < ApplicationRecord
     :spread
   ]
 
+  SPORTS = [
+    'americanfootball_ncaaf',
+    'americanfootball_nfl',
+    'baseball_mlb',
+  ]
+
   def self.create_and_enter(attributes)
     user = attributes[:user]
     attributes[:private] = true
