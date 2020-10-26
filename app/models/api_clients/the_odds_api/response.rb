@@ -55,7 +55,7 @@ module ApiClients::TheOddsApi
     def parse_h2h_odds(fixture_json, site)
       [0, 1].map do |index|
         {
-          odd_type: :money_line,
+          type: 'MoneyLineOdd',
           ratio: site['odds']['h2h'][index],
           team: fixture_json['teams'][index]
         }
@@ -65,7 +65,7 @@ module ApiClients::TheOddsApi
     def parse_spreads_odds(fixture_json, site)
       [0, 1].map do |index|
         {
-          odd_type: :spread,
+          type: 'SpreadOdd',
           ratio: site['odds']['spreads']['odds'][index],
           team: fixture_json['teams'][index],
           metric: site['odds']['spreads']['points'][index]
@@ -75,8 +75,9 @@ module ApiClients::TheOddsApi
 
     def parse_totals_odds(fixture_json, site)
       [0, 1].map do |index|
+        odd_type = site['odds']['totals']['position'] == 'over' ? 'OverOdd' : 'UnderOdd'
         {
-          odd_type: site['odds']['totals']['position'],
+          type: odd_type,
           ratio: site['odds']['totals']['odds'][index],
           metric: site['odds']['totals']['points'][index]
         }
