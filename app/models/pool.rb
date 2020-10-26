@@ -8,8 +8,9 @@ class Pool < ApplicationRecord
   validates :start_date, presence: true
   validates :end_date, presence: true
   validates :bankroll, presence: true
-  # validates :bet_types_validation
-  # validates :sports_validation
+
+  validate :validate_bet_types
+  validate :validate_sport_types
 
   BET_TYPES = [
     :money_line,
@@ -51,6 +52,22 @@ class Pool < ApplicationRecord
     end
     return true if Entry.find_by(user: user, pool: self)
     Entry.create(user: user, pool: self, bank: bankroll)
+  end
+
+  private
+
+  def validate_bet_types
+    invalid_bet_types = self.bet_types - BET_TYPES
+    if invalid_bet_types.any?
+      errors.add(:bet_types, "#{invalid_bet_types.join(' ')} are invalid")
+    end
+  end
+
+  def validate_sport_types
+    invalid_sports = self.sports - SPORTS
+    if invalid_sports.any?
+      errors.add(:sports, "#{invalid_sports.join(' ')} are invalid")
+    end
   end
 
 end
