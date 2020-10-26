@@ -21,23 +21,41 @@ pool = Pool.create_and_enter(
 raise "Error creating pool #{pool.errors.join(' ')}" if pool.errors.any?
 
 fixtures_attributes = [
-
   {
     sport: 'americanfootball_nfl',
     home_team_name: 'Kansas City Chiefs',
     away_team_name: 'Denver Broncos',
-
     start_time: (@now + 1.day),
     odds: [
       {
         type: 'MoneyLineOdd',
-        ratio: '1.2',
+        ratio: '1.5',
         team_name: 'Kansas City Chiefs'
       },
       {
         type: 'MoneyLineOdd',
-        ratio: '1.6',
+        ratio: '2.3',
         team_name: 'Denver Broncos'
+      }
+    ]
+  },
+  {
+    sport: 'americanfootball_nfl',
+    home_team_name: 'Arizona Cardinals',
+    away_team_name: 'Seattle Seahawks',
+    start_time: (@now + 2.days),
+    odds: [
+      {
+        type: 'SpreadOdd',
+        metric: '-3.5',
+        ratio: '1.9',
+        team_name: 'Seattle Seahawks'
+      },
+      {
+        type: 'SpreadOdd',
+        metric: '3.5',
+        ratio: '1.9',
+        team_name: 'Arizona Cardinals'
       }
     ]
   }
