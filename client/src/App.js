@@ -63,12 +63,13 @@ const AppNavigation = styled.nav`
   justify-content: space-evenly;
   padding: 0.75em;
 
-  background: #f5f5f5;
+  background: white;
   border-bottom: 1px solid #cccccc;
 `;
 
 const AppMain = styled.main`
   grid-area: main;
+  background: #f6f7fa;
 `;
 
 const StyledLink = styled.div`
@@ -80,14 +81,14 @@ const StyledLink = styled.div`
   & span {
     margin-top: 0.30em;
     font-size: 0.75em;
-    color: #b3b3b3;
+    color: #a2abb9;
   }
 
   & a {
-    color: #b3b3b3;
+    color: #a2abb9;
   }
 
   & a:hover {
-    color: #560bad;
+    color: #082344;
   }
 `;

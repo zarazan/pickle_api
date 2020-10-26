@@ -19,13 +19,11 @@ const MyPools = props => {
       }, []);
 
     return (
-        <MyPoolsWrapper>
-            <Header>
-                MY POOLS
-            </Header>
+        <MyPoolsWrapper className='my-pools'>
+            <PoolsHeader className='my-pools__header'>My Pools</PoolsHeader>
             <CreatePoolButton
                 onClick={() => history.push('/create-pool')}>Create Pool</CreatePoolButton>
-            <PoolList>
+            <PoolList className='my-pools__cardlist'>
                 {pools.map((pool) => (
                     <PoolCard
                         key={pool.id}
@@ -50,26 +48,26 @@ const MyPoolsWrapper = styled.div`
     grid-template-columns: 1fr;
     grid-template-rows: 2em 2em auto;
     grid-template-areas:
-        "header"
-        "cta"
-        "list";
-    height: 100%;
-
-    padding: 1em;
+        'header'
+        'cta'
+        'list';
     box-sizing: border-box;
 `;
 
-const Header = styled.h3`
-    grid-area: "header";
-    margin: 0;
+const PoolsHeader = styled.h2`
+    font-family: 'Poppins', 'Sans Serif';
+    font-size: 1em;
+    color: #121621;
+
+    margin-bottom: 1em;
 `;
 
 const CreatePoolButton = styled.button`
-    grid-area: "cta";
+    grid-area: cta;
 `;
 
-const PoolList = styled.section`
-    grid-area: "list";
+const PoolList = styled.div`
+    grid-area: list;
     display: flex;
     flex-flow: column nowrap;
 `;
