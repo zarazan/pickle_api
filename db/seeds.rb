@@ -20,24 +20,24 @@ pool = Pool.create_and_enter(
 )
 raise "Error creating pool #{pool.errors.join(' ')}" if pool.errors.any?
 
-fixtures = [
+fixtures_attributes = [
   {
     sport: 'americanfootball_nfl',
     home_team_name: 'Kansas City Chiefs',
     away_team_name: 'Denver Broncos',
-    start_time: @now + 1.day
+    start_time: (@now + 1.day),
     odds: [
       {
-        odd_type: :money_line,
+        type: 'MoneyLineOdd',
         ratio: '1.2',
         team_name: 'Kansas City Chiefs'
       },
-      [
-        odd_type: :money_line,
+      {
+        type: 'MoneyLineOdd',
         ratio: '1.6',
         team_name: 'Denver Broncos'
-      ]
+      }
     ]
   }
 ]
-LoadOddsService.load_fixtures(fixtures)
+LoadOddsService.new.load_fixtures(fixtures_attributes)

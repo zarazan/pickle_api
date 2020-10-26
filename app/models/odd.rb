@@ -10,8 +10,9 @@ class Odd < ApplicationRecord
   belongs_to :fixture
   has_many :bets
 
-  validates :odd_type, presence: true
   validates :ratio, presence: true
+
+  belongs_to :team
 
   ODD_TYPES = [
     :money_line,
@@ -32,7 +33,7 @@ class Odd < ApplicationRecord
     return duplicate_odd if duplicate_odd
 
     transaction do
-      active_odds = Odd.where(attributes.slice(:ratio, :metric))
+      active_odds = Odd.where(attributes.slice(:fixture, :type, :ratio, :metric, :team))
       active_odds.update_all(active: false)
       return Odd.create(attributes)
     end
