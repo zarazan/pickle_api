@@ -18,3 +18,9 @@ Start over and re-seed database:
   - `docker-compose up -d postgres`
   - `docker-compose run api rake db:migrate`
   - `docker-compose run api rake db:seed`
+
+Start over and re-seed database using one line script:
+  - `scripts/reset`
+
+Rails console:
+  -  `scripts/console`
