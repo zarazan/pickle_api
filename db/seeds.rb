@@ -21,10 +21,12 @@ pool = Pool.create_and_enter(
 raise "Error creating pool #{pool.errors.join(' ')}" if pool.errors.any?
 
 fixtures_attributes = [
+
   {
     sport: 'americanfootball_nfl',
     home_team_name: 'Kansas City Chiefs',
     away_team_name: 'Denver Broncos',
+
     start_time: (@now + 1.day),
     odds: [
       {
