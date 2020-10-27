@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from'styled-components';
 import Leaderboard from './leaderboard/Leaderboard';
-import BetSlip from './BetSlip';
+import BetSlip from './betslip/BetSlip';
 
 const ViewPool = props => {
-    const [display, setDisplay] = useState('leaderboard');
+    const [display, setDisplay] = useState('bet-slip');
 
     return (
         <ViewPoolWrapper className='pool-view-container'>
@@ -52,7 +52,7 @@ export default ViewPool;
 
 const ViewPoolWrapper = styled.div`
     box-sizing: border-box;
-    padding: 1em 1em 0em 1em;
+    padding: 0.5em 0.5em 0em 0.5em;
     height: 100%;
     overflow: auto;
 `;
