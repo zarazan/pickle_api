@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import history from '../history';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faArrowRight, faPlus } from '@fortawesome/free-solid-svg-icons';
 import PoolTypeList from './PoolTypeList';
 import PoolOptionList from './PoolOptionList';
 import PickleApi from '../services/pickle_api';
@@ -13,13 +13,13 @@ const PoolCreate = props => {
     // POOL CONFIGURATION
     const [poolType, setpoolType] = useState(null);
     const [poolName, setPoolName] = useState(null);
-    const [poolAmount, setPoolAmount] = useState(500);
+    const [bankroll, setbankroll] = useState(500);
     const [visibility, setPoolVisibility] = useState(true);
     const [poolStart, setPoolStart] = useState(null);
     const [poolEnd, setPoolEnd] = useState(null);
     const [betTypes, setBetTypes] = useState([]);
     const [sports, setSports] = useState([]);
-    // const [participants, setParticipants] = useState([]);
+    const [participants, setParticipants] = useState(['troy.c.jennings@gmail.com', 'knowak14@gmail.com', 'Bezektaylor@gmail.com', 'zarazan@gmail.com']);
 
     return (
         <PoolCreateWrapper className='pool-create'>
@@ -71,7 +71,7 @@ const PoolCreate = props => {
                                 endValue={poolEnd}
                                 setStart={setStart}
                                 setEnd={setEnd}
-                                poolAmount={poolAmount}
+                                bankroll={bankroll}
                                 setBankroll={setBankroll}
                                 bets={betTypes}
                                 handleCheckChange={handleCheckChange}
@@ -96,15 +96,21 @@ const PoolCreate = props => {
                             <VerifyPool 
                                 name={poolName}
                                 visibility={visibility}
-                            />
+                                bankroll={bankroll}
+                                start={poolStart}
+                                end={poolEnd}
+                                bets={betTypes}
+                                sports={sports}
+                                participants={participants}
 
-                                <button
-                                    disabled={!poolType}
-                                    onClick={() => createPool()}
-                                    className="form-navigation"
-                                >
-                                    <span>Create Pool</span>
-                                </button>
+                            />
+                            <button
+                                disabled={!poolType}
+                                onClick={() => createPool()}
+                                className='btn pool-create'
+                            >
+                                <span><FontAwesomeIcon icon={faPlus} size='s' />   Create Pool</span>
+                            </button>
                         </>)
                 }
             </MainWrapper>
@@ -134,9 +140,9 @@ const PoolCreate = props => {
     function setName(name) {
         setPoolName(name);
     }
-    /** setPoolAmount: Sets the starting pool bankroll. **/
+    /** setbankroll: Sets the starting pool bankroll. **/
     function setBankroll(amount) {
-        setPoolAmount(amount);
+        setbankroll(amount);
     }
     /** setVisibility: Toggles the pool between private and public. **/
     function setVisibility(visibility) {
@@ -202,7 +208,7 @@ const PoolCreate = props => {
         resp.name = poolName;
         resp.start_date = poolStart;
         resp.end_date = poolEnd;
-        resp.bankroll = poolAmount;
+        resp.bankroll = bankroll;
         resp.bet_types = betTypes;
         resp.sports = sports;
 
@@ -289,7 +295,14 @@ const StepTitle = styled.div`
 const MainWrapper = styled.main`
     display: flex;
     flex-flow: column nowrap;
+    align-items: center;
     overflow: auto;
+
+    & .pool-create {
+        margin-top: 2em;
+        width: 12em;
+        height: 3em;
+    }
 `;
 
 const FooterWrapper = styled.footer`

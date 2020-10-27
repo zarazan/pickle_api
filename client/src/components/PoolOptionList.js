@@ -117,6 +117,7 @@ PoolOptionList.propTypes = {
 export default PoolOptionList;
 
 const OptionForm = styled.section`
+    width: 100%;
     box-sizing: border-box;
     padding: 1em;
     overflow: scroll;
@@ -128,7 +129,7 @@ const OptionForm = styled.section`
     & .form-label {
         font-family: 'Inter','Sans Serif';
         color: #272829;
-        font-size: 0.7em;
+        font-size: 0.9em;
     }
 
     & .form-datepicker > input, .bankroll-container input {

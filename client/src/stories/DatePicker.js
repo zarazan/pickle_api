@@ -7,7 +7,7 @@ const DatePicker = (props) => {
                 id={props.id}
                 onChange={props.changed}
                 value={props.value}
-                type='datetime-local' 
+                type='date' 
                 min={props.min}
                 max={props.max}
             />
