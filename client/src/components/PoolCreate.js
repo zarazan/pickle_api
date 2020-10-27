@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import history from '../history';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import PoolTypeList from './PoolTypeList';
 import PoolOptionList from './PoolOptionList';
 import PickleApi from '../services/pickle_api';
+import VerifyPool from './VerifyPool';
 
 const PoolCreate = props => {
     const [step, setStep] = useState(1); // used for tracking the current step of the create flow
@@ -21,21 +22,35 @@ const PoolCreate = props => {
     // const [participants, setParticipants] = useState([]);
 
     return (
-        <PageWrapper>
-            <HeaderWrapper>
-                <button onClick={step <= 1 ? () => history.push('/') : () => decrementStep()}>
+        <PoolCreateWrapper className='pool-create'>
+            <FormControls className='pool-create__controls'>
+                <button className='btn btn__back' onClick={step <= 1 ? () => history.push('/') : () => decrementStep()}>
                     <FontAwesomeIcon icon={faArrowLeft} size="2x" />
                 </button>
-                <Header>CREATE POOL</Header>
-            </HeaderWrapper>
+                <Header>
+                {step && step === 1 ? 'Select a Type'
+                : step && step === 2
+                    ? 'Select Options'
+                    : step && step === 3
+                        ? 'Invite Participants'
+                        : 'Summary'
+                }
+                </Header>
+                {step < 4 
+                ? 
+                    <button className='btn btn__forward' onClick={() => incrementStep()}>
+                        <FontAwesomeIcon icon={faArrowRight} size="2x" />
+                    </button>
+                : null
+                }
+            </FormControls>
 
             <MainWrapper>
                 {step && step === 1
                     ? (
                         <>
-                            <StepTitle>
-                                <h2>Select a Pool Type</h2>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+                            <StepTitle className='step'>
+                                <span className='step__description'>Select which type of pool you'd like to create.</span>
                             </StepTitle>
                             <PoolTypeList
                                 setTargetType={setTargetType}
@@ -45,9 +60,8 @@ const PoolCreate = props => {
                     : step && step === 2
                     ? (
                         <>
-                            <StepTitle>
-                                <h2>Select Pool Options</h2>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+                            <StepTitle className='step'>
+                                <span className='step__description'>Set your pool's options.</span>
                             </StepTitle>
                             <PoolOptionList 
                                 setName={setName}
@@ -67,9 +81,8 @@ const PoolCreate = props => {
                     : step && step === 3
                     ? (
                         <>
-                            <StepTitle>
-                                <h2>Select Pool Participants</h2>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+                            <StepTitle className='step'>
+                                <span className='step__description'>Invite others to participate in your pool.</span>
                             </StepTitle>
                             {
                                 /* render user */
@@ -77,81 +90,67 @@ const PoolCreate = props => {
                     </>)
                     : (
                         <>
-                             <StepTitle>
-                                <h2>Pool Summary</h2>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+                             <StepTitle className='step'>
+                                <span className='step__description'>Verify your pool settings.</span>
                             </StepTitle>
-                            {
-                                /* render summary */
-                            }
+                            <VerifyPool 
+                                name={poolName}
+                                visibility={visibility}
+                            />
+
+                                <button
+                                    disabled={!poolType}
+                                    onClick={() => createPool()}
+                                    className="form-navigation"
+                                >
+                                    <span>Create Pool</span>
+                                </button>
                         </>)
                 }
             </MainWrapper>
 
             <FooterWrapper>
-                <button
-                    disabled={!poolType}
-                    onClick={step === 4 ? () => createPool() : () => incrementStep()}
-                    className="form-navigation"
-                >
-                    {step === 4 ? 'CREATE POOL' : 'NEXT'}
-                </button>
             </FooterWrapper>
-        </PageWrapper>
+        </PoolCreateWrapper>
     );
 
-    /**
-     * incrementStep: Increments the pool configuration step
-     */
+    /** incrementStep: Increments the pool configuration step. **/
     function incrementStep() {
         if (step < 4) {
             setStep(step + 1);
         }
     }
-    /**
-     * decrementStep: Decrements the pool configuration step
-     */
+    /** decrementStep: Decrements the pool configuration step. **/
     function decrementStep() {
         if (step > 0) {
             setStep(step - 1);
         }
     }
-    /**
-     * setTargetType: Sets the selected pool type card.
-     */
+    /** setTargetType: Sets the selected pool type card. **/
     function setTargetType(index) {
         setpoolType(index);
     }
-    /**
-     * setName: Sets the pool name.
-     */
+    /** setName: Sets the pool name. **/
     function setName(name) {
         setPoolName(name);
     }
-    /**
-     * setPoolAmount: Sets the starting pool bankroll.
-     */
+    /** setPoolAmount: Sets the starting pool bankroll. **/
     function setBankroll(amount) {
         setPoolAmount(amount);
     }
-    /**
-     * setVisibility: Toggles the pool between private and public.
-     */
+    /** setVisibility: Toggles the pool between private and public. **/
     function setVisibility(visibility) {
         setPoolVisibility(visibility);
     }
-    /**
-     * setStart: Sets the pool start date.
-     */
+    /** setStart: Sets the pool start date. **/
     function setStart(date) {
         setPoolStart(date);
     }
-    /** setEnd: Sets the pool end date. * */
+    /** setEnd: Sets the pool end date. **/
     function setEnd(date) {
         setPoolEnd(date);
     }
-
-    /** handleCheckboxChange: Event handler for the checkboxes * */
+    /** handleCheckboxChange: Event handler for the checkboxes. **/
     function handleCheckChange(name, obj) {
         let currentBets = [ ...betTypes ];
         let indexToRemove;
@@ -170,7 +169,7 @@ const PoolCreate = props => {
         }
     }
     
-    /** handleCheckboxChange: Event handler for the checkboxes * */
+    /** handleCheckboxChange: Event handler for the checkboxes. **/
     function handleSportChange(name) {
         let currentSports = [ ...sports ];
         let indexToRemove;
@@ -189,6 +188,7 @@ const PoolCreate = props => {
         }
     }
 
+    /** createPool: Sends Pickle API request for fetching pools.**/
     function createPool() {
         let resp = {};
         /*
@@ -217,41 +217,79 @@ const PoolCreate = props => {
 
 export default PoolCreate;
 
-const PageWrapper = styled.div`
+const PoolCreateWrapper = styled.div`
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 4em auto 3em;
+    grid-template-rows: 2.5em auto 3em;
     grid-template-areas:
         "header"
         "main";
     height: 100vh;
+    overflow: scroll;
+    padding: 1em 1em 1em 1em;
 `;
 
-const HeaderWrapper = styled.div`
+const FormControls = styled.div`
     grid-area: header;
     
     display: grid;
     grid-template-columns: 2em auto 2em;
     grid-template-areas:
-        "nav title .";
+        "decr title incr";
+
+    & .btn {
+        background: none;
+        border: none;
+        outline: none;
+        color: #202122;
+
+        & :active {
+            color: #446eff
+        }
+
+        & :selected {
+            border: none;
+        }
+
+        & :focus {
+        }
+    }
 `;
 
-const Header = styled.h3`
+const Header = styled.h2`
     grid-area: title;
     display: flex;
     justify-content: center;
     align-content: center;
+    align-items: center;
+    
+    font-family: 'Poppins', 'Sans Serif';
+    font-size: 1.25em;
+    font-weight: 900;
+    color: #202122;
+
     margin: 0;
 `;
 
 const StepTitle = styled.div`
+    display: flex;
+    flex-flow: column nowrap;
 
+    align-items: center;
+    margin: 1.5em 0 1.5em 0;
 
+    font-family: 'Inter', 'Sans Serif';
+
+    & .step__description {
+        font-size: 0.8em;
+        color: #7b7ca1;
+    }
 `;
 
 const MainWrapper = styled.main`
     display: flex;
     flex-flow: column nowrap;
+    overflow: auto;
 `;
 
 const FooterWrapper = styled.footer`

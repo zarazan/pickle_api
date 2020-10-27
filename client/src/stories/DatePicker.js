@@ -2,16 +2,16 @@ import React from 'react';
 
 const DatePicker = (props) => {
     return (
-        <div className="DatePicker">
+        <div className='form-datepicker'>
             <input 
                 id={props.id}
                 onChange={props.changed}
                 value={props.value}
-                type="datetime-local" 
+                type='datetime-local' 
                 min={props.min}
                 max={props.max}
             />
-            <label htmlFor={props.id}>{props.label}</label>
+            <label className='form-label' htmlFor={props.id}>{props.label}</label>
         </div>
     )
 }

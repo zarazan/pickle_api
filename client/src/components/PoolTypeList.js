@@ -7,22 +7,19 @@ import PoolType from './PoolType';
 const POOL_TYPES = [
     {
         index: 1,
-        name: "POPULAR",
-        description: "Choose from popular pool types created by the community.",
+        name: "Popular",
         icon: faFireAlt,
         disabled: false,
     },
     {
         index: 2,
-        name: "RECENT",
-        description: "Reuse one of your pool formats and get your game on!",
+        name: "Recent",
         icon: faHistory,
         disabled: false,
     },
     {
         index: 3,
-        name: "CUSTOM",
-        description: "Customize your format for complete control over your pool.",
+        name: "Custom",
         icon: faPencilAlt,
         disabled: false,
     },
@@ -37,7 +34,6 @@ const PoolTypeList = ({ setTargetType, poolType }) => {
                     index={pool.index}
                     icon={pool.icon}
                     name={pool.name}
-                    description={pool.description}
                     disabled={pool.disabled}
                     toggleSelected={setTargetType}
                     isSelected={poolType === pool.index ? true : false}
