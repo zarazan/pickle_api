@@ -1,20 +1,18 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 const Checkbox = ({ label, handleCheckChange }) => {
     const [isChecked, setisChecked] = useState(false);
 
     return (
-      <div className="form-check">
-        <label>
+      <div className='form-check'>
           <input
-            type="checkbox"
+            type='checkbox'
             name={label}
             checked={isChecked}
             onChange={(e) => toggleCheckbox(e)}
-            className="form-check-input"
+            className='form-check-input'
           />
-          {label}
-        </label>
+        <label className='form-label'>{label}</label>
       </div>
     );
 

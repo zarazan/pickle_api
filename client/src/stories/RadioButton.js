@@ -2,7 +2,7 @@ import React from "react";
 
 const RadioButton = (props) => {
     return (
-        <div className="RadioButton">
+        <div className='form-radio'>
             <input 
                 id={props.id}
                 onChange={props.changed}
@@ -10,7 +10,7 @@ const RadioButton = (props) => {
                 type="radio"
                 checked={props.isSelected}
             />
-            <label htmlFor={props.id}>{props.label}</label>
+            <label className='form-label' htmlFor={props.id}>{props.label}</label>
         </div>
     );
 }

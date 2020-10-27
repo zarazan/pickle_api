@@ -69,7 +69,7 @@ const AppNavigation = styled.nav`
 
 const AppMain = styled.main`
   grid-area: main;
-  background: #f6f7fa;
+  background: #ffffff;
 `;
 
 const StyledLink = styled.div`
