@@ -9,10 +9,11 @@ class Odd < ApplicationRecord
 
   belongs_to :fixture
   has_many :bets
+  belongs_to :team
 
   validates :ratio, presence: true
 
-  belongs_to :team
+  scope :active, ->{ where(active: true) }
 
   ODD_TYPES = [
     :money_line,
@@ -20,6 +21,10 @@ class Odd < ApplicationRecord
     :under,
     :spread
   ]
+
+  def odd_type
+    self.class.name.underscore.chomp('_odd')
+  end
 
   def self.import(attributes)
     attributes.merge!(active: true)
