@@ -6,6 +6,7 @@ import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import PoolTypeList from './PoolTypeList';
 import PoolOptionList from './PoolOptionList';
 import PickleApi from '../services/pickle_api';
+import VerifyPool from './VerifyPool';
 
 const PoolCreate = props => {
     const [step, setStep] = useState(1); // used for tracking the current step of the create flow
@@ -92,9 +93,10 @@ const PoolCreate = props => {
                              <StepTitle className='step'>
                                 <span className='step__description'>Verify your pool settings.</span>
                             </StepTitle>
-                            {
-                                /* render summary */
-                            }
+                            <VerifyPool 
+                                name={poolName}
+                                visibility={visibility}
+                            />
 
                                 <button
                                     disabled={!poolType}
