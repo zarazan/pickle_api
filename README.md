@@ -24,3 +24,6 @@ Start over and re-seed database using one line script:
 
 Rails console:
   -  `scripts/console`
+
+Run the test suite:
+  - `scripts/test`
