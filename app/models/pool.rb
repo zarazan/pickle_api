@@ -13,9 +13,9 @@ class Pool < ApplicationRecord
   validate :validate_sport_types
 
   BET_TYPES = [
-    :money_line,
-    :total_points,
-    :spread
+    'money_line',
+    'total_points',
+    'spread'
   ]
 
   SPORTS = [
@@ -57,14 +57,22 @@ class Pool < ApplicationRecord
   private
 
   def validate_bet_types
-    invalid_bet_types = self.bet_types - BET_TYPES
+    if bet_types.blank?
+      errors.add(:bet_types, "must include at least one valid bet type")
+      return
+    end
+    invalid_bet_types = bet_types - BET_TYPES
     if invalid_bet_types.any?
       errors.add(:bet_types, "#{invalid_bet_types.join(' ')} are invalid")
     end
   end
 
   def validate_sport_types
-    invalid_sports = self.sports - SPORTS
+    if sports.blank?
+      errors.add(:sports, "must include at least one valid sport")
+      return
+    end
+    invalid_sports = sports - SPORTS
     if invalid_sports.any?
       errors.add(:sports, "#{invalid_sports.join(' ')} are invalid")
     end
