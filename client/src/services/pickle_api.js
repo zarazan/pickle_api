@@ -8,17 +8,17 @@ class PickleApi {
 
   getFixtures(pool_id, params) {
     const options = {method: 'get', url: `/pools/${pool_id}/fixtures`, data: params}
-    this.sendRequest(options);
+    return this.sendRequest(options);
   }
 
   getPools() {
     const options = {method: 'get', url: '/pools'}
-    this.sendRequest(options);
+    return this.sendRequest(options);
   }
 
   createPool(data) {
     const options = {method: 'post', url: '/pools', data: data}
-    this.sendRequest(options);
+    return this.sendRequest(options);
   }
 
   signIn() {
