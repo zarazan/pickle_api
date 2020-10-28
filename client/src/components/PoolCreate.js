@@ -215,9 +215,11 @@ const PoolCreate = props => {
         console.log(resp);
 
         let api = new PickleApi();
-        api.signIn().then(() => 
-            api.createPool(resp)
-        );
+        api.signIn().then(() => {
+            api.createPool(resp).then(() => {
+                history.push('/')
+            });
+        });
     };
 };
 
