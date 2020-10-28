@@ -25,7 +25,8 @@ class Bet < ApplicationRecord
     result.to_sym == :draw
   end
 
-  def place_bet(bet_attributes)
+  def self.place_bet(bet_attributes)
+    bet_attributes[:entry] = Entry.find_by(pool_id: bet_attributes[:pool_id], user: bet_attributes[:user])
     transaction do
       entry.update!(bank: bank - bet_attributes[:amount])
       Bet.create!(bet_attributes)

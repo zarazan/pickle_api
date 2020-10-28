@@ -1,0 +1,3 @@
+@bets.map do |bet|
+  bet.attributes.merge(odd: bet.odd)
+end
