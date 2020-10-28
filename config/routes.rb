@@ -10,9 +10,11 @@ Rails.application.routes.draw do
     post '/pools' => 'pools#create'
     patch '/pools/:id' => 'pools#update'
     delete '/pools/:id' => 'pools#delete'
+
     post '/pools/:id/enter_pool' => 'pools#enter_pool'
-    get '/pools/:id/fixtures' => 'pools#fixtures'
-    get '/pools/:id/entries' => 'pools#entries'
+
+    get '/pools/:id/fixtures' => 'fixtures#pool_fixtures'
+    get '/pools/:id/entries' => 'entries#pool_entries'
   end
 
 end

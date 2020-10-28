@@ -1,0 +1,6 @@
+@pool.fixtures.map do |fixture|
+  odds = fixture.odds.active.map do |odd|
+    odd.attributes.merge(type: odd.odd_type)
+  end
+  fixture.attributes.merge(odds: odds)
+end

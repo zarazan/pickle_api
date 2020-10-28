@@ -54,6 +54,10 @@ class Pool < ApplicationRecord
     Entry.create(user: user, pool: self, bank: bankroll)
   end
 
+  def fixtures
+    Fixture.where('start_time > ? AND start_time < ?', start_date, end_date)
+  end
+
   private
 
   def validate_bet_types

@@ -1,9 +1,11 @@
 class FixturesController < ApplicationController
 
-  def index
-    params[:pool_id]
-    @fixtures = Fixture.order('start_time desc').limit(10)
-    render json: @fixtures
+  before_action :authenticate_user!
+
+  def pool_fixtures
+    @pool = current_user.entries.find_by(pool_id: params[:id])&.pool
+    @start_after = params[:start_after]
+    @start_before = params[:start_before]
   end
 
 end
