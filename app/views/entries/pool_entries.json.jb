@@ -1,0 +1,6 @@
+@pool.entries.map do |entry|
+  {
+    user_name: entry.user.name
+    bankroll_plus_active_bets: entry.bankroll_plus_active_bets
+  }
+end
