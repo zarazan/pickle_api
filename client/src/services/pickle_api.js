@@ -1,40 +1,24 @@
 import axios from 'axios'
 
-// import PickleApi from '../services/pickle_api';
-// useEffect(() => {
-//   var api = new PickleApi();
-//   api.signIn();
-//   api.getPools();
-// });
-
 class PickleApi {
 
   constructor() {
     this.client = this.axios_client();
   }
 
-  getFixtures(data) {
-    const options = {method: 'get', url: '/fixtures', data: data}
+  getFixtures(pool_id, params) {
+    const options = {method: 'get', url: `/pools/${pool_id}/fixtures`, data: params}
+    this.sendRequest(options);
   }
 
   getPools() {
-    return this.client.get('/pools')
-      .then(response => {
-        return response['data']
-      }, (error) => {
-        console.log(error);
-        return [];
-      });
+    const options = {method: 'get', url: '/pools'}
+    this.sendRequest(options);
   }
 
   createPool(data) {
     const options = {method: 'post', url: '/pools', data: data}
-    return this.client.request(options)
-    .then(response => {
-      return response['data']
-    }, (error) => {
-      console.log(error);
-    })
+    this.sendRequest(options);
   }
 
   signIn() {
@@ -47,6 +31,16 @@ class PickleApi {
       }, (error) => {
         console.log(error);
       });
+  }
+
+  sendRequest(options) {
+    return this.client.request(options)
+    .then(response => {
+      return response['data']
+    }, (error) => {
+      console.log(error)
+      return error
+    })
   }
 
   setSessionData(headers) {
