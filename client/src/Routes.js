@@ -13,6 +13,7 @@ export default class Routes extends Component {
                 <Switch>
                     <Route path = "/" exact component={Dashboard}/>
                     <Route path = "/create-pool" component={PoolCreateStep}/>
+                    <Route path = "/pool" component={ViewPool}/>
                 </Switch>
             </Router>
         )

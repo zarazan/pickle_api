@@ -50,4 +50,8 @@ class Odd < ApplicationRecord
     get_result
   end
 
+  def as_json(options = {})
+    super.merge(type: odd_type)
+  end
+
 end

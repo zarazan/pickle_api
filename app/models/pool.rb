@@ -50,12 +50,16 @@ class Pool < ApplicationRecord
       self.errors << PickleException::UnauthorizedEntry.new.message
       return false
     end
-    return true if Entry.find_by(user: user, pool: self)
+    return true if get_entry_for_user(user)
     Entry.create(user: user, pool: self, bank: bankroll)
   end
 
   def fixtures
     Fixture.where('start_time > ? AND start_time < ?', start_date, end_date)
+  end
+
+  def get_entry_for_user(user)
+    entries.find_by(user: user)
   end
 
   private

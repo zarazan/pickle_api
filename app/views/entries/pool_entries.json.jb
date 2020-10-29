@@ -1,0 +1,14 @@
+entries = @pool.entries.map do |entry|
+  {
+    userName: entry.user.name,
+    bankrollPlusActiveBets: entry.bankroll_plus_active_bets
+  }
+end
+entries.sort_by { |entry| entry[:bankrollPlusActiveBets] }
+
+response = {}
+entries.each_with_index do |entry, index|
+  response[index] = entry
+end
+
+response
