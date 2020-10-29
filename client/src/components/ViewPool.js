@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from'styled-components';
 import Leaderboard from './leaderboard/Leaderboard';
-import BetSlip from './betslip/BetSlip';
+import GameOdds from './betslip/GameOdds';
 
 const ViewPool = props => {
     const [display, setDisplay] = useState('bet-slip');
@@ -25,7 +25,7 @@ const ViewPool = props => {
             {display && display === 'leaderboard' ? (
                 <Leaderboard />
             ) : (
-                <BetSlip />
+                <GameOdds />
             )}
 
         </ViewPoolWrapper>

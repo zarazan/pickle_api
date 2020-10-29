@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import BetCard from './BetCard';
-import BetCart from './BetCart';
+import BetCart from './EnterWager';
 
-const BetSlip = props => {
+const GameOdds = props => {
     const [betSlip, setBetSlip] = useState([]);
     const [multibet, setMultibet] = useState(false);
     const [showBetCart, setShowBetCart] = useState(false);
@@ -22,8 +22,8 @@ const BetSlip = props => {
     }
 };
 
-BetSlip.propTypes = {
+GameOdds.propTypes = {
     
 };
 
-export default BetSlip; 
+export default GameOdds; 
