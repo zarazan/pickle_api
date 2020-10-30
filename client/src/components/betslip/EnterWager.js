@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const EnterWager = ({ toggleBetCart, betCount, odds, currentBankroll }) => { 
+const EnterWager = ({ toggleBetCart, toggleMultiBet, betCount, odds, currentBankroll }) => { 
     const [wager, setWager] = useState(0);
     const [payout, setPayout] = useState(0);
 
@@ -19,8 +19,13 @@ const EnterWager = ({ toggleBetCart, betCount, odds, currentBankroll }) => {
     return (
         <EnterWagerWrapper className='enter-wager-container'>
             <CalculatorHeader className='wager-row header'>
-                <div className='enter-wager__counter'>{`${betCount ? betCount : 1} Bet Slip`}</div>
-                <div className='enter-wager__toggle-multibet'>+ Add More</div>
+                <div className='enter-wager__counter'>
+                    <div className='counter__number'>{betCount ? betCount : 1}</div>
+                    <div>Bet Slip</div>
+                </div>
+                <div className='enter-wager__toggle-multibet'>
+                    <AddMoreButton disabled>+ Add More</AddMoreButton>
+                </div>
             </CalculatorHeader>            
             <CalculatorSummary className='wager-row summary'>
                 <div className='enter-wager__bet-summary summary-item'>
@@ -99,13 +104,6 @@ const EnterWager = ({ toggleBetCart, betCount, odds, currentBankroll }) => {
         setPayout(parseInt(currentWager + profit, 10));
     }
 
-    // function deleteNumber() {
-    //     let currentWager = wager;
-    //     let strRepresentation = currentWager.toString();
-    //     strRepresentation.slice(0, -1);
-    //     setWager(parseInt(strRepresentation, 10));
-    // }
-
     function clearWager() {
         setWager(0);
         setPayout(0);
@@ -130,11 +128,41 @@ const EnterWagerWrapper = styled.div`
 const CalculatorHeader = styled.div`
     display: flex;
     justify-content: space-between;
+    align-content: center;
+    align-items: center;
     font-family: 'Poppins', 'Sans Serif';
     font-size: 0.7em;
     padding: 1em 0 1em 0;
     margin-bottom: 2em;
     border-bottom: 1px solid lightgrey;
+
+    & .enter-wager__counter {
+        display: flex;
+
+        & > * {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        & .counter__number {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+            width: 2em;
+            height: 2em;
+            border-radius: 1em;
+            background: green;
+            color: white;
+        }
+
+        & div:last-of-type{
+            margin-left: 1em;
+            font-weight: 700;
+        }
+    }
+    
 `;
 
 const CalculatorSummary = styled.div`
@@ -165,6 +193,7 @@ const CalculatorSummary = styled.div`
             width: 100%;
             text-align: right;
             font-family: 'Inter', 'Sans Serif';
+            color: lightgrey;
             background: white;
             border: 1px solid lightgrey;
             font-size: 0.7rem;
@@ -211,6 +240,19 @@ const CalculatorFooter = styled.div`
     grid-column-gap: 0.5em;
     margin-top: 1em;
     box-sizing: border-box;
+`;
+
+const AddMoreButton = styled.button`
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    font-family: 'Inter', 'Sans Serif';
+    color: green;
+    font-weight: 700;
+    border: none;
+    outline: none;
+    background: white;
+    font-size: 1em;
 `;
 
 const CalculatorButton = styled.button`

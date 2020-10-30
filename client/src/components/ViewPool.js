@@ -5,7 +5,7 @@ import Leaderboard from './leaderboard/Leaderboard';
 import GameOdds from './betslip/GameOdds';
 
 const ViewPool = props => {
-    const [display, setDisplay] = useState('bet-slip');
+    const [display, setDisplay] = useState('games');
 
     return (
         <ViewPoolWrapper className='pool-view-container'>
@@ -15,9 +15,9 @@ const ViewPool = props => {
                         Leaderboard
                     </ClickableToggle>
                 </div>
-                <div className={`toggle-container${display && display === 'bet-slip' ? '-selected' : ''}`}>
-                <ClickableToggle className='btn btn-toggle' name='bet-slip' onClick={e => toggleDisplay(e.target.name)}>
-                    Bet Slip
+                <div className={`toggle-container${display && display === 'games' ? '-selected' : ''}`}>
+                <ClickableToggle className='btn btn-toggle' name='games' onClick={e => toggleDisplay(e.target.name)}>
+                    Games
                 </ClickableToggle>
                 </div>
             </ViewToggle>
