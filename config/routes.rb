@@ -18,6 +18,8 @@ Rails.application.routes.draw do
 
     post '/bets' => 'bets#create'
     get '/pools/:id/bets' => 'bets#pool_bets'
+
+    get '/teams' => 'teams#index'
   end
 
 end

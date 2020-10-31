@@ -51,7 +51,10 @@ class Odd < ApplicationRecord
   end
 
   def as_json(options = {})
-    super.merge(type: odd_type)
+    super.merge({
+      type: odd_type,
+      team_name: team.name
+    })
   end
 
 end

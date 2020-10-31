@@ -1,3 +1,7 @@
 @pool.fixtures.map do |fixture|
-  fixture.as_json.merge(odds: fixture.odds.active)
+  fixture.as_json.merge({
+    homeTeamName: home_team.name,
+    awayTeamName: away_team.name,
+    odds: fixture.odds.active
+  })
 end
