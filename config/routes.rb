@@ -15,6 +15,11 @@ Rails.application.routes.draw do
 
     get '/pools/:id/fixtures' => 'fixtures#pool_fixtures'
     get '/pools/:id/entries' => 'entries#pool_entries'
+
+    post '/bets' => 'bets#create'
+    get '/pools/:id/bets' => 'bets#pool_bets'
+
+    get '/teams' => 'teams#index'
   end
 
 end
