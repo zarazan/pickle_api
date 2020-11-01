@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PickleApi from '../services/pickle_api';
 
 const SignIn = props => {
 
@@ -30,8 +31,11 @@ const SignIn = props => {
 
   function handleLogin(e) {
     e.preventDefault();
-    console.log(userEmail);
-    console.log(userPassword);
+    let api = new PickleApi();
+    api.signIn(userEmail, userPassword)
+    .then(() => {
+        history.push('/')
+    })
   }
 
 }
