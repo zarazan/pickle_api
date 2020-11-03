@@ -1,4 +1,5 @@
 import axios from 'axios'
+import history from '../history';
 
 class PickleApi {
 
@@ -36,25 +37,34 @@ class PickleApi {
     return this.sendRequest(options);
   }
 
-  signIn() {
-    const data = {email: 'zarazan@gmail.com', password: 'pickle1' }
+  signIn(email, password) {
+    const data = {email: email, password: password }
     const options = {method: 'post', url: '/auth/sign_in', data: data}
     return this.client.request(options)
       .then(response => {
         this.setSessionData(response['headers']);
-        return response['data'];
-      }, (error) => {
-        console.log(error);
+        return response.data.data;
       });
   }
 
+  signOut() {
+    sessionStorage.setItem('access-token', "");
+    sessionStorage.setItem('client', "");
+    sessionStorage.setItem('uid', "");
+  }
+
   sendRequest(options) {
+    options = { ...options, headers: this.getAuthHeaders() };
     return this.client.request(options)
     .then(response => {
-      return response['data']
-    }, (error) => {
-      console.log(error)
-      return error
+      return response.data;
+    })
+    .catch(error => {
+      if(error.response && error.response.status === 401) {
+        history.push('/sign-in');
+      } else {
+        throw error;
+      }
     })
   }
 
@@ -78,11 +88,10 @@ class PickleApi {
 
   axios_client() {
     return axios.create({
-      baseURL: 'http://localhost:3001',
-      headers: this.getAuthHeaders()
+      baseURL: 'http://localhost:3001'
     });
   }
 
 }
 
-export default PickleApi;
+export default new PickleApi();

@@ -2,17 +2,14 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import PoolCard from './PoolCard';
 import history from '../history';
-import PickleApi from '../services/pickle_api';
-
-let api = new PickleApi();
-api.signIn();
+import pickleApi from '../services/pickle_api';
 
 const MyPools = props => {
     const [pools, setPools] = useState([]);
     
     useEffect(() => {
         async function fetchData() {
-            const results = await api.getPools();
+            const results = await pickleApi.getPools();
             setPools(results);
         }
         fetchData();

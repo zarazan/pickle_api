@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, NavLink } from 'react-router-dom';
 import Routes from './Routes';
 import styled from 'styled-components';
+import { UserProvider } from './contexts/UserContext'
+import history from './history';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faChartLine, faTrophy, faHome } from '@fortawesome/free-solid-svg-icons';
@@ -9,37 +11,40 @@ import { faUser, faChartLine, faTrophy, faHome } from '@fortawesome/free-solid-s
 function App() {
   return (
     <AppWrapper className='app'>
-      <Router>
-        <AppNavigation>
-          <StyledLink>
-            <NavLink to='/' className='home'>
-              <FontAwesomeIcon icon={faHome} size='lg' />
-            </NavLink>
-            <span>Home</span>
-          </StyledLink>
-          <StyledLink>
-            <NavLink to='/' className='user-pools'>
-              <FontAwesomeIcon icon={faTrophy} size='lg' />
-            </NavLink>
-            <span>Pools</span>
-          </StyledLink>
-          <StyledLink>
-            <NavLink to='/' className='user-statistics'>
-              <FontAwesomeIcon icon={faChartLine} size='lg' />
-            </NavLink>
-            <span>Stats</span>
-          </StyledLink>
-          <StyledLink>
-            <NavLink to='/' className='user-profile'>
-              <FontAwesomeIcon icon={faUser} size='lg' />
-            </NavLink>
-            <span>Profile</span>
-          </StyledLink>
-        </AppNavigation>
-        <AppMain>
-          <Routes />
-        </AppMain>
-      </Router>
+      <UserProvider>
+        <Router>
+          <AppNavigation>
+            <StyledLink>
+              <NavLink to='/' className='home'>
+                <FontAwesomeIcon icon={faHome} size='lg' />
+              </NavLink>
+              <span>Home</span>
+            </StyledLink>
+            <StyledLink>
+              <NavLink to='/' className='user-pools'>
+                <FontAwesomeIcon icon={faTrophy} size='lg' />
+              </NavLink>
+              <span>Pools</span>
+            </StyledLink>
+            <StyledLink>
+              <NavLink to='/' className='user-statistics'>
+                <FontAwesomeIcon icon={faChartLine} size='lg' />
+              </NavLink>
+              <span>Stats</span>
+            </StyledLink>
+            <StyledLink>
+              <NavLink to='/' className='user-profile'>
+                <FontAwesomeIcon icon={faUser} size='lg' />
+              </NavLink>
+              <span>Profile</span>
+            </StyledLink>
+            <button onClick={() => history.push('/sign-in')}>Sign In</button>
+          </AppNavigation>
+          <AppMain>
+            <Routes />
+          </AppMain>
+        </Router>
+      </UserProvider>
     </AppWrapper>
   );
 }

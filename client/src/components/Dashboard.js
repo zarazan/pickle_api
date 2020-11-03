@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import MyPools from './MyPools';
 import StatCardLite from './StatCardLite';
+import { UserContext } from '../contexts/UserContext';
 
 import { faArrowCircleUp, faArrowCircleDown } from '@fortawesome/free-solid-svg-icons';
 
@@ -36,11 +37,14 @@ const SAMPLE_STATS = [
 ];
 
 const Dashboard = () => {
+
+    const [user, setUser] = useContext(UserContext);
+
     return (
         <DashboardWrapper className='dashboard'>
             <Welcome className='welcome'>
                 <span className='welcome__intro'>Welcome back, </span>
-                <span className='welcome__name'>Larry</span>
+                <span className='welcome__name'>{user.name}</span>
             </Welcome>
             <StatsWrapper className='stats'>
                 <StatsHeader className='stats__header'>My Stats</StatsHeader>
