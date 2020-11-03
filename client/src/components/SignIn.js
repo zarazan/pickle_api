@@ -1,15 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import history from '../history';
-import PickleApi from '../services/pickle_api';
+import pickleApi from '../services/pickle_api';
+import { UserContext } from '../contexts/UserContext';
 
 const SignIn = props => {
 
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const [user, setUser] = useContext(UserContext);
+
   return (
     <div>
       <h2>Sign In</h2>
+      <h3>{errorMessage}</h3>
       <form onSubmit={handleLogin}>
         <input 
             type="email" 
@@ -32,11 +39,18 @@ const SignIn = props => {
 
   function handleLogin(e) {
     e.preventDefault();
-    let api = new PickleApi();
-    api.signIn(userEmail, userPassword)
-    .then(() => {
-        history.push('/')
-    })
+    setIsLoading(true);
+    setErrorMessage("");
+    pickleApi.signIn(userEmail, userPassword)
+      .then(data => {
+        console.log(data);
+        setIsLoading(false);
+        setUser(data);
+        history.push('/');
+      })
+      .catch(error => {
+        setErrorMessage(error.toString());
+      })
   }
 
 }
