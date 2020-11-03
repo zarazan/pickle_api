@@ -2,14 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import RowResult from './RowResult';
 import WinnerCard from './WinnerCard';
-import DEFAULT_LEADERBOARD_RESULTS from '../../constants/leaderboardDefaultResults';
+import MOCK_ENTRIES from '../../constants/mockEntries';
 
 const Leaderboard = props => {
     return (
         <LeaderboardWrapper className='leaderboard-container'>
             <Header className='leaderboard__header subsection'>Leaderboard</Header>
             <WinnerCircle className='leaderboard__leader subsection'>
-                {DEFAULT_LEADERBOARD_RESULTS.slice(0, 3).map((result, index) => (
+                {MOCK_ENTRIES.slice(0, 3).map((result, index) => (
                     <WinnerCard 
                         key={index}
                         rank={index + 1}
@@ -20,7 +20,7 @@ const Leaderboard = props => {
                 ))}
             </WinnerCircle>
             <div className='leaderboard__places subsection'>
-                {DEFAULT_LEADERBOARD_RESULTS.map((result, index) => (
+                {MOCK_ENTRIES.map((result, index) => (
                     <RowResult 
                         key={index}
                         rank={index}

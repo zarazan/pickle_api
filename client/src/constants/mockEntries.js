@@ -1,4 +1,4 @@
-const DEFAULT_LEADERBOARD_RESULTS = [
+const MOCK_ENTRIES = [
     {
         name: 'Larry David',
         wins: 0,
@@ -50,4 +50,4 @@ const DEFAULT_LEADERBOARD_RESULTS = [
     },
 ];
 
-export default DEFAULT_LEADERBOARD_RESULTS;
+export default MOCK_ENTRIES;
