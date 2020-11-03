@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import MyPools from './MyPools';
 import StatCardLite from './StatCardLite';
 import { UserContext } from '../contexts/UserContext';
+import useAuthHandler from '../hooks/AuthHandler';
 
 import { faArrowCircleUp, faArrowCircleDown } from '@fortawesome/free-solid-svg-icons';
 
@@ -39,6 +40,7 @@ const SAMPLE_STATS = [
 const Dashboard = () => {
 
     const [user, setUser] = useContext(UserContext);
+    const isLoadingUser = useAuthHandler(user, setUser);
 
     return (
         <DashboardWrapper className='dashboard'>

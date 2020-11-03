@@ -37,6 +37,11 @@ class PickleApi {
     return this.sendRequest(options);
   }
 
+  getAuth() {
+    const options = {method: 'get', url: '/user'}
+    return this.sendRequest(options);
+  }
+
   signIn(email, password) {
     const data = {email: email, password: password }
     const options = {method: 'post', url: '/auth/sign_in', data: data}
@@ -82,8 +87,10 @@ class PickleApi {
     return headers;
   }
 
-  signedIn() {
-    return !!sessionStorage.getItem('access-token');
+  hasSessionInfo() {
+    return !!sessionStorage.getItem('access-token') &&
+      !!sessionStorage.getItem('client') &&
+      !!sessionStorage.getItem('uid');
   }
 
   axios_client() {

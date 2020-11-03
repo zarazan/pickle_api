@@ -2,18 +2,19 @@ import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import pickleApi from '../services/pickle_api';
 import { UserContext } from '../contexts/UserContext';
+import useAuthHandler from '../hooks/AuthHandler';
 
 const SignIn = props => {
-  const history = useHistory();
-  const [userEmail, setUserEmail] = useState('zarazan@gmail.com');
-  const [userPassword, setUserPassword] = useState('pickle1');
 
+  const [userEmail, setUserEmail] = useState("");
+  const [userPassword, setUserPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
   const [user, setUser] = useContext(UserContext);
+  const isLoadingUser = useAuthHandler(user, setUser);
 
-  return user.name ? renderSignOut() : renderSignIn()
+  return user && user.name ? renderSignOut() : renderSignIn()
 
   function renderSignIn() {
     return(
@@ -35,7 +36,7 @@ const SignIn = props => {
               placeholder='Password' 
               onChange={e => setUserPassword(e.target.value)}
           />
-          <input type='submit' name='Sign In' />
+          <input type="submit" value="Sign In"/>
         </form>
       </div>
     )
@@ -56,7 +57,6 @@ const SignIn = props => {
     setErrorMessage('');
     pickleApi.signIn(userEmail, userPassword)
       .then(data => {
-        // console.log(data);
         setIsLoading(false);
         setUser(data);
         history.push('/');
