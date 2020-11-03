@@ -1,18 +1,50 @@
 import React from 'react';
-import { BrowserRouter as Router, NavLink } from 'react-router-dom';
-import Routes from './Routes';
+import { NavLink, useHistory } from 'react-router-dom';
+import ROUTES, { RenderRoutes} from './constants/routes';
 import styled from 'styled-components';
 import { UserProvider } from './contexts/UserContext'
-import history from './history';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faChartLine, faTrophy, faHome } from '@fortawesome/free-solid-svg-icons';
 
-function App() {
+const App = () => {
+  const history = useHistory();
+  
   return (
     <AppWrapper className='app'>
       <UserProvider>
-        <Router>
+        <AppNavigation>
+          <StyledLink>
+            <NavLink to='/' className='home'>
+              <FontAwesomeIcon icon={faHome} size='lg' />
+            </NavLink>
+            <span>Home</span>
+          </StyledLink>
+          <StyledLink>
+            <NavLink to='/' className='user-pools'>
+              <FontAwesomeIcon icon={faTrophy} size='lg' />
+            </NavLink>
+            <span>Pools</span>
+          </StyledLink>
+          <StyledLink>
+            <NavLink to='/' className='user-statistics'>
+              <FontAwesomeIcon icon={faChartLine} size='lg' />
+            </NavLink>
+            <span>Stats</span>
+          </StyledLink>
+          <StyledLink>
+            <NavLink to='/' className='user-profile'>
+              <FontAwesomeIcon icon={faUser} size='lg' />
+            </NavLink>
+            <span>Profile</span>
+          </StyledLink>
+          <button onClick={() => history.push('/sign-in')}>Sign In</button>
+        </AppNavigation>
+
+        <AppMain>
+          <RenderRoutes routes={ROUTES} />
+        </AppMain>
+        {/* <Router>
           <AppNavigation>
             <StyledLink>
               <NavLink to='/' className='home'>
@@ -40,10 +72,8 @@ function App() {
             </StyledLink>
             <button onClick={() => history.push('/sign-in')}>Sign In</button>
           </AppNavigation>
-          <AppMain>
-            <Routes />
-          </AppMain>
-        </Router>
+          
+        </Router> */}
       </UserProvider>
     </AppWrapper>
   );

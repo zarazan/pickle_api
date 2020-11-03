@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import PoolCard from './PoolCard';
-import history from '../history';
+import { useHistory } from 'react-router-dom';
 import pickleApi from '../services/pickle_api';
 
 const MyPools = props => {
     const [pools, setPools] = useState([]);
+    let history = useHistory();
     
     useEffect(() => {
         async function fetchData() {
