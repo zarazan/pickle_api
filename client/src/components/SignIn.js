@@ -14,7 +14,7 @@ const SignIn = props => {
   const [user, setUser] = useContext(UserContext);
   const isLoadingUser = useAuthHandler(user, setUser);
 
-  return user ? renderSignOut() : renderSignIn()
+  return user && user.name ? renderSignOut() : renderSignIn()
 
   function renderSignIn() {
     return(
