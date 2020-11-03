@@ -4,7 +4,7 @@ import PoolCard from './PoolCard';
 import { useHistory } from 'react-router-dom';
 import pickleApi from '../services/pickle_api';
 
-const MyPools = props => {
+const MyPools = ({ displayPool }) => {
     const [pools, setPools] = useState([]);
     let history = useHistory();
     
@@ -32,11 +32,16 @@ const MyPools = props => {
                         startDate={pool.start_date}
                         sports={pool.sports}
                         participants={pool.email_invites}
+                        displayPool={displayPool}
                     />
                 ))}
             </PoolList>
         </MyPoolsWrapper>
     );
+
+    function displayPool(index) {
+        history.push(`/pools/${index}`)
+    }
 };
 
 export default MyPools;

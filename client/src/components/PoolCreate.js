@@ -213,7 +213,7 @@ const PoolCreate = props => {
         resp.bet_types = betTypes;
         resp.sports = sports;
 
-        console.log(resp);
+        // console.log(resp);
 
         let api = new PickleApi();
         api.signIn().then(() => {

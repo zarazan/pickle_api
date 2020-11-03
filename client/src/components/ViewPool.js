@@ -1,11 +1,30 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from 'react';
+// import PropTypes from 'prop-types';
 import styled from'styled-components';
 import Leaderboard from './leaderboard/Leaderboard';
 import GameOdds from './betslip/GameOdds';
+import { useParams } from 'react-router-dom';
+import pickleApi from '../services/pickle_api';
 
-const ViewPool = props => {
-    const [display, setDisplay] = useState('games');
+const ViewPool = () => {
+    let { poolId } = useParams();
+    const [display, setDisplay] = useState('leaderboard');
+    const [entries, setEntries] = useState(null);
+    const [fixtures, setFixtures] = useState(null);
+
+    useEffect(() => {
+        async function fetchEntries() {
+            const results = await pickleApi.getEntries(poolId);
+            setEntries(results);
+        }
+
+        async function fetchFixtures() {
+            const results = await pickleApi.getFixtures(poolId);
+            setFixtures(results);
+        }
+        fetchEntries();
+        fetchFixtures();
+      }, []);
 
     return (
         <ViewPoolWrapper className='pool-view-container'>
@@ -23,9 +42,9 @@ const ViewPool = props => {
             </ViewToggle>
 
             {display && display === 'leaderboard' ? (
-                <Leaderboard />
+                <Leaderboard leaderboard={entries}/>
             ) : (
-                <GameOdds />
+                <GameOdds fixtures={fixtures}/>
             )}
 
         </ViewPoolWrapper>
@@ -35,8 +54,8 @@ const ViewPool = props => {
     function toggleDisplay(value) {
         // get current display
         const currentDisplay = display;
-        console.log(currentDisplay);
-        console.log(value);
+        // console.log(currentDisplay);
+        // console.log(value);
         // if display is not the same, then change it
         if (currentDisplay !== value) {
             setDisplay(value);

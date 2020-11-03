@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import BetButton from '../../stories/BetButton'
+import BetButton from '../../stories/BetButton';
+import MOCK_TEAMS from '../../constants/mockFixtureMap'; 
+import decToAmerican from '../../utilities/helpers';
 
-const BetCard = ({ toggleBetCart, id, home, away, odds, gameDate, toggleSelectedBet }) => {
+
+const BetCard = ({ selectBet, id, home, away, odds, gameDate, toggleSelectedBet }) => {
     console.log(typeof(gameDate));
     return (
         <BetCardWrapper className='bet-card'>
@@ -11,20 +14,20 @@ const BetCard = ({ toggleBetCart, id, home, away, odds, gameDate, toggleSelected
                 <div className='header date-time'>{gameDate}</div>
             </div>
             <div className='card-row bet-card__home'>
-                <Team className='team-home'>{home}</Team>
+                <Team className='team-home'>{MOCK_TEAMS[home].name}</Team>
                     <OddsContainer className='odds-container'>
                         {odds.map((odd, index) => (
                             <BetButton
                                 key={index}
                                 className='odd money-line'
                                 value={odd.ratio}
-                                callback={toggleBetCart}
+                                callback={() => selectBet(odd.id)}
                             />
                             ))}
                     </OddsContainer>
             </div>
             <div className='card-row bet-card__away'>
-                <Team className='team-away'>{away}</Team>
+                <Team className='team-away'>{MOCK_TEAMS[away].name}</Team>
                 <OddsContainer className='odds-container'>
                     <Odd className='odd point-spread'>+6</Odd>
                     <Odd className='odd total-points'>U 54.5</Odd>

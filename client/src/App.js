@@ -9,7 +9,7 @@ import { faUser, faChartLine, faTrophy, faHome } from '@fortawesome/free-solid-s
 
 const App = () => {
   const history = useHistory();
-  
+
   return (
     <AppWrapper className='app'>
       <UserProvider>
@@ -44,36 +44,7 @@ const App = () => {
         <AppMain>
           <RenderRoutes routes={ROUTES} />
         </AppMain>
-        {/* <Router>
-          <AppNavigation>
-            <StyledLink>
-              <NavLink to='/' className='home'>
-                <FontAwesomeIcon icon={faHome} size='lg' />
-              </NavLink>
-              <span>Home</span>
-            </StyledLink>
-            <StyledLink>
-              <NavLink to='/' className='user-pools'>
-                <FontAwesomeIcon icon={faTrophy} size='lg' />
-              </NavLink>
-              <span>Pools</span>
-            </StyledLink>
-            <StyledLink>
-              <NavLink to='/' className='user-statistics'>
-                <FontAwesomeIcon icon={faChartLine} size='lg' />
-              </NavLink>
-              <span>Stats</span>
-            </StyledLink>
-            <StyledLink>
-              <NavLink to='/' className='user-profile'>
-                <FontAwesomeIcon icon={faUser} size='lg' />
-              </NavLink>
-              <span>Profile</span>
-            </StyledLink>
-            <button onClick={() => history.push('/sign-in')}>Sign In</button>
-          </AppNavigation>
-          
-        </Router> */}
+        
       </UserProvider>
     </AppWrapper>
   );

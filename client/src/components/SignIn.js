@@ -56,7 +56,7 @@ const SignIn = props => {
     setErrorMessage('');
     pickleApi.signIn(userEmail, userPassword)
       .then(data => {
-        console.log(data);
+        // console.log(data);
         setIsLoading(false);
         setUser(data);
         history.push('/');
