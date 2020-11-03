@@ -7,11 +7,11 @@ const SignIn = props => {
 
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
-
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   const [user, setUser] = useContext(UserContext);
+  const isLoadingUser = useAuthHandler(user, setUser);
 
   return user.name ? renderSignOut() : renderSignIn()
 
@@ -35,7 +35,7 @@ const SignIn = props => {
               placeholder="Password" 
               onChange={e => setUserPassword(e.target.value)}
           />
-          <input type="submit" name="Sign In" />
+          <input type="submit" value="Sign In"/>
         </form>
       </div>
     )
@@ -56,7 +56,6 @@ const SignIn = props => {
     setErrorMessage("");
     pickleApi.signIn(userEmail, userPassword)
       .then(data => {
-        console.log(data);
         setIsLoading(false);
         setUser(data);
         history.push('/');

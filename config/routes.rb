@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   defaults format: :json do
     get '/' => 'dashboard#index'
+    get '/user' => 'dashboard#user'
 
     get '/pools' => 'pools#index'
     get '/pools/:id' => 'pools#show'
