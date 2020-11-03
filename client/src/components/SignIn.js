@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import history from '../history';
 import pickleApi from '../services/pickle_api';
 import { UserContext } from '../contexts/UserContext';
+import useAuthHandler from '../hooks/AuthHandler';
 
 const SignIn = props => {
 
@@ -13,7 +14,7 @@ const SignIn = props => {
   const [user, setUser] = useContext(UserContext);
   const isLoadingUser = useAuthHandler(user, setUser);
 
-  return user.name ? renderSignOut() : renderSignIn()
+  return user ? renderSignOut() : renderSignIn()
 
   function renderSignIn() {
     return(
