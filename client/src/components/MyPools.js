@@ -24,7 +24,7 @@ const MyPools = props => {
             <CreatePoolButton
                 onClick={() => history.push('/create-pool')}>Create Pool</CreatePoolButton>
             <PoolList className='my-pools__cardlist'>
-                {pools.map((pool) => (
+                {(pools || []).map((pool) => (
                     <PoolCard
                         key={pool.id}
                         index={pool.id}
