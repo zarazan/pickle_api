@@ -3,6 +3,7 @@ import { BrowserRouter as Router, NavLink } from 'react-router-dom';
 import Routes from './Routes';
 import styled from 'styled-components';
 import { UserProvider } from './contexts/UserContext'
+import history from './history';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faChartLine, faTrophy, faHome } from '@fortawesome/free-solid-svg-icons';
@@ -37,6 +38,7 @@ function App() {
               </NavLink>
               <span>Profile</span>
             </StyledLink>
+            <button onClick={() => history.push('/sign-in')}>Sign In</button>
           </AppNavigation>
           <AppMain>
             <Routes />

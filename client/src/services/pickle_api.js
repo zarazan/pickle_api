@@ -1,4 +1,5 @@
 import axios from 'axios'
+import history from '../history';
 
 class PickleApi {
 
@@ -46,11 +47,24 @@ class PickleApi {
       });
   }
 
+  signOut() {
+    sessionStorage.setItem('access-token', "");
+    sessionStorage.setItem('client', "");
+    sessionStorage.setItem('uid', "");
+  }
+
   sendRequest(options) {
     options = { ...options, headers: this.getAuthHeaders() };
     return this.client.request(options)
     .then(response => {
       return response.data;
+    })
+    .catch(error => {
+      if(error.response && error.response.status === 401) {
+        history.push('/sign-in');
+      } else {
+        throw error;
+      }
     })
   }
 

@@ -4,8 +4,6 @@ import PoolCard from './PoolCard';
 import history from '../history';
 import pickleApi from '../services/pickle_api';
 
-//pickleApi.signIn();
-
 const MyPools = props => {
     const [pools, setPools] = useState([]);
     

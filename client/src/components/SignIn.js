@@ -13,29 +13,42 @@ const SignIn = props => {
 
   const [user, setUser] = useContext(UserContext);
 
-  return (
-    <div>
-      <h2>Sign In</h2>
-      <h3>{errorMessage}</h3>
-      <form onSubmit={handleLogin}>
-        <input 
-            type="email" 
-            name="email" 
-            value={userEmail} 
-            placeholder="name@mail.com" 
-            onChange={e => setUserEmail(e.target.value)}
-        />
-        <input 
-            type="password" 
-            name="password" 
-            value={userPassword} 
-            placeholder="Password" 
-            onChange={e => setUserPassword(e.target.value)}
-        />
-        <input type="submit" />
-      </form>
-    </div>
-  )
+  return user.name ? renderSignOut() : renderSignIn()
+
+  function renderSignIn() {
+    return(
+      <div>
+        <h2>Sign In</h2>
+        <h3>{errorMessage}</h3>
+        <form onSubmit={handleLogin}>
+          <input 
+              type="email" 
+              name="email" 
+              value={userEmail} 
+              placeholder="name@mail.com" 
+              onChange={e => setUserEmail(e.target.value)}
+          />
+          <input 
+              type="password" 
+              name="password" 
+              value={userPassword} 
+              placeholder="Password" 
+              onChange={e => setUserPassword(e.target.value)}
+          />
+          <input type="submit" name="Sign In" />
+        </form>
+      </div>
+    )
+  }
+
+  function renderSignOut() {
+    return (
+      <>
+        <button onClick={handleSignOut}>Sign Out</button>
+        <button onClick={() => history.push('/')}>Dashboard</button>
+      </>
+    )
+  }
 
   function handleLogin(e) {
     e.preventDefault();
@@ -51,6 +64,11 @@ const SignIn = props => {
       .catch(error => {
         setErrorMessage(error.toString());
       })
+  }
+
+  function handleSignOut(e) {
+    setUser({});
+    pickleApi.signOut();
   }
 
 }
