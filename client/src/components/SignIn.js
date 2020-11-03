@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import history from '../history';
 import PickleApi from '../services/pickle_api';
 
 const SignIn = props => {
