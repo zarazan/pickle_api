@@ -3,26 +3,28 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import BetButton from '../../stories/BetButton'
 
-const BetCard = ({ toggleBetCart }) => {
+const BetCard = ({ toggleBetCart, id, home, away, odds, gameDate, toggleSelectedBet }) => {
+    console.log(typeof(gameDate));
     return (
         <BetCardWrapper className='bet-card'>
             <div className='card-row bet-card__headers'>
-                <div className='header date-time'>Sun 11:00 AM</div>
+                <div className='header date-time'>{gameDate}</div>
             </div>
             <div className='card-row bet-card__home'>
-                <Team className='team-home'>TEN Titans</Team>
-                <OddsContainer className='odds-container'>
-                    <BetButton
-                        className='odd point-spread'
-                        value='-6'
-                        callback={toggleBetCart}
-                    />
-                    <Odd className='odd total-points'>O 54.5</Odd>
-                    <Odd className='odd money-line'>-250</Odd>
-                </OddsContainer>
+                <Team className='team-home'>{home}</Team>
+                    <OddsContainer className='odds-container'>
+                        {odds.map((odd, index) => (
+                            <BetButton
+                                key={index}
+                                className='odd money-line'
+                                value={odd.ratio}
+                                callback={toggleBetCart}
+                            />
+                            ))}
+                    </OddsContainer>
             </div>
             <div className='card-row bet-card__away'>
-                <Team className='team-away'>CIN Bengals</Team>
+                <Team className='team-away'>{away}</Team>
                 <OddsContainer className='odds-container'>
                     <Odd className='odd point-spread'>+6</Odd>
                     <Odd className='odd total-points'>U 54.5</Odd>

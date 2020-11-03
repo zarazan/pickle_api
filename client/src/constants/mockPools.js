@@ -1,0 +1,26 @@
+const TEST_POOLS = [
+    {
+        index: 1,
+        name: "Friends & Family",
+        amount: 500,
+        status: "active",
+        privacy: "private",
+        startDate: "2020-10-11T02:56:08Z",
+        endDate: "2020-10-17T02:56:08Z",
+        sports: ["NFL", "NBA", "NHL"],
+        bets: ["ps", "tp", "ml"],
+        participants: 3,
+    },
+    {
+        index: 2,
+        name: "Pickle Test",
+        amount: 500,
+        status: "inactive",
+        privacy: "private",
+        startDate: "2020-09-15T02:56:08Z",
+        endDate: "2020-09-22T02:56:08Z",
+        sports: ["NFL"],
+        bets: ["ps", "tp", "ml"],
+        participants: 6,
+    },
+];
