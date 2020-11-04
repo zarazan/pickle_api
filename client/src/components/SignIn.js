@@ -5,9 +5,9 @@ import { UserContext } from '../contexts/UserContext';
 import useAuthHandler from '../hooks/AuthHandler';
 
 const SignIn = props => {
-
-  const [userEmail, setUserEmail] = useState("");
-  const [userPassword, setUserPassword] = useState("");
+  const history = useHistory();
+  const [userEmail, setUserEmail] = useState('zarazan@gmail.com');
+  const [userPassword, setUserPassword] = useState('pickle1');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 

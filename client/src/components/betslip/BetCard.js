@@ -5,7 +5,6 @@ import BetButton from '../../stories/BetButton';
 import MOCK_TEAMS from '../../constants/mockFixtureMap'; 
 import decToAmerican from '../../utilities/helpers';
 
-
 const BetCard = ({ selectBet, id, home, away, odds, gameDate, toggleSelectedBet }) => {
     console.log(typeof(gameDate));
     return (

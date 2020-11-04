@@ -44,7 +44,7 @@ const ViewPool = () => {
             {display && display === 'leaderboard' ? (
                 <Leaderboard leaderboard={entries}/>
             ) : (
-                <GameOdds fixtures={fixtures}/>
+                <GameOdds poolId={poolId} fixtures={fixtures}/>
             )}
 
         </ViewPoolWrapper>

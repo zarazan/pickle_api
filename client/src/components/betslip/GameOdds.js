@@ -4,9 +4,8 @@ import pickleApi from '../../services/pickle_api';
 import BetCard from './BetCard';
 import EnterWager from './EnterWager';
 import MOCK_FIXTURES from '../../constants/mockFixtures';
-import decToAmerican from '../../utilities/helpers';
 
-const GameOdds = props => {
+const GameOdds = ({ poolId }) => {
     const [betSlip, setBetSlip] = useState([]);
     // const [multibet, setMultibet] = useState(false);
     const [currentBet, setCurrentBet] = useState(null);
@@ -56,6 +55,7 @@ const GameOdds = props => {
     function enterBet(betId, betAmount) {
         // /pools/:id/place_bet data: { odd_id: 1, amount: '50' }
         let resp = {};
+        resp.pool_id = poolId;
         resp.odd_id = betId;
         resp.amount = betAmount;
 
@@ -63,7 +63,7 @@ const GameOdds = props => {
 
         pickleApi.createBet(resp)
             .then(data => {
-                //console.log(data)
+                console.log(data);
                 setBetSlip([...betSlip, data]);
                 setToggleBetSlip(false);
             })
