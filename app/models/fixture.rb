@@ -60,7 +60,7 @@ class Fixture < ApplicationRecord
   end
 
   def locked?
-    start_time > DateTime.current
+    start_time < DateTime.current
   end
 
   def get_team_by_name(team_name)
