@@ -9,7 +9,7 @@ const WinnerCard = ({ rank, avatar, name, bankroll }) => {
 
     useEffect(() => (
         determineIfLeader(rank)
-    ), []);
+    ), [rank]);
 
     return (
         <WinnerCardWrapper className={`winner-card-${rank}`}>
@@ -28,7 +28,7 @@ const WinnerCard = ({ rank, avatar, name, bankroll }) => {
 };
 
 WinnerCard.propTypes = {
-    rank: PropTypes.number.isRequired,
+    rank: PropTypes.number,
     avatar: PropTypes.object,
     bankroll: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
