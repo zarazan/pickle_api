@@ -3,21 +3,24 @@ import PropTypes from 'prop-types';
 import pickleApi from '../../services/pickle_api';
 import BetCard from './BetCard';
 import EnterWager from './EnterWager';
-import MOCK_FIXTURES from '../../constants/mockFixtures';
 
 const GameOdds = ({ poolId, fixtures }) => {
     const [betSlip, setBetSlip] = useState([]);
     // const [multibet, setMultibet] = useState(false);
+    const [currentFixture, setCurrentFixture] = useState(null);
     const [currentBet, setCurrentBet] = useState(null);
     const [toggleBetSlip, setToggleBetSlip] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const gameName = `${fixtures.awayTeamName} @ ${fixtures.homeTeamName}`;
 
     return (
         <section>
             {toggleBetSlip 
                 ? (
                     <EnterWager
-                        currentBet={currentBet}
+                        currentBetId={currentBet}
+                        gameName={gameName}
+                        betOdd={fixtures.filter(f => f.odd_id === currentBet)}
                         placeBet={enterBet}
                         closeBetSlip={closeBetSlip}
                         errors={errorMessage}
@@ -45,10 +48,12 @@ const GameOdds = ({ poolId, fixtures }) => {
 
     function closeBetSlip() {
         setToggleBetSlip(!toggleBetSlip);
+        setCurrentFixture(null);
         setCurrentBet(null);
     }
 
-    function selectBet(betId) {
+    function selectBet(fixtureId, betId) {
+        setCurrentFixture(fixtureId);
         setCurrentBet(betId);
         setToggleBetSlip(!toggleBetSlip)
     }

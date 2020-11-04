@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const EnterWager = ({ currentBet, placeBet, closeBetSlip, betCount, odds, errors }) => { 
+const EnterWager = ({ currentBetId, gameName, placeBet, closeBetSlip, betCount, odds, errors }) => { 
     const [wager, setWager] = useState(0);
     const [payout, setPayout] = useState(0);
 
@@ -31,7 +31,7 @@ const EnterWager = ({ currentBet, placeBet, closeBetSlip, betCount, odds, errors
                 <div className='enter-wager__bet-summary summary-item'>
                     <div className=''>ATL Falcons +{odds}</div>
                     <div className=''>POINT SPREAD</div>
-                    <div className=''>Atlanta Falcons @ Carolina Panthers</div>
+                    <div className=''>{gameName}</div>
                 </div>    
                 <div className='enter-wager__bet-total summary-item'>
                     <div className=''>-115</div>
@@ -73,7 +73,7 @@ const EnterWager = ({ currentBet, placeBet, closeBetSlip, betCount, odds, errors
                 <CalculatorButton
                     className='btn complete-cancel__button'
                     disabled={wager && wager !== 0 ? false : true}
-                    onClick={() => placeBet(currentBet, wager)}
+                    onClick={() => placeBet(currentBetId, wager)}
                 >
                     Enter Wager Amount
                 </CalculatorButton>
