@@ -4,9 +4,9 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 
-const RowResult = ({ key, rank, avatar, name, bankroll }) => {
+const RowResult = ({ rank, avatar, name, bankroll }) => {
     return (
-        <RowWrapper key={key} className='leaderboard-row'>
+        <RowWrapper className='leaderboard-row'>
             <div className='leaderboard-row__telemetry row-item'>{rank + 1}</div>
             <div className='leaderboard-row__avatar row-item'><FontAwesomeIcon icon={!avatar ? faUserCircle : avatar} size='2x'/></div>
             <div className='leaderboard-row__name row-item'>{name}</div>

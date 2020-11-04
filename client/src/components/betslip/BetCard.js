@@ -1,34 +1,43 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import BetButton from '../../stories/BetButton'
+import BetButton from '../../stories/BetButton';
+import decToAmerican from '../../utilities/helpers';
 
-const BetCard = ({ toggleBetCart, id, home, away, odds, gameDate, toggleSelectedBet }) => {
-    console.log(typeof(gameDate));
+const BetCard = ({ selectBet, homeTeamName, homeTeamId, awayTeamName, awayTeamId, odds, gameDate }) => {
     return (
         <BetCardWrapper className='bet-card'>
             <div className='card-row bet-card__headers'>
                 <div className='header date-time'>{gameDate}</div>
             </div>
             <div className='card-row bet-card__home'>
-                <Team className='team-home'>{home}</Team>
+                <Team className='team-home'>{homeTeamName}</Team>
                     <OddsContainer className='odds-container'>
-                        {odds.map((odd, index) => (
-                            <BetButton
-                                key={index}
-                                className='odd money-line'
-                                value={odd.ratio}
-                                callback={toggleBetCart}
-                            />
+                        {odds
+                            .filter(odd => odd.teamId === homeTeamId)
+                            .map((odd, index) => (
+                                <BetButton
+                                    key={index}
+                                    className='odd money-line'
+                                    value={decToAmerican(odd.ratio)}
+                                    callback={() => selectBet(odd.id)}
+                                />
                             ))}
                     </OddsContainer>
             </div>
             <div className='card-row bet-card__away'>
-                <Team className='team-away'>{away}</Team>
+                <Team className='team-away'>{awayTeamName}</Team>
                 <OddsContainer className='odds-container'>
-                    <Odd className='odd point-spread'>+6</Odd>
-                    <Odd className='odd total-points'>U 54.5</Odd>
-                    <Odd className='odd money-line'>+215</Odd>
+                    {odds
+                        .filter(odd => odd.teamId === awayTeamId)
+                        .map((odd, index) => (
+                            <BetButton
+                                key={index}
+                                className='odd money-line'
+                                value={decToAmerican(odd.ratio)}
+                                callback={() => selectBet(odd.id)}
+                            />
+                        ))}
                 </OddsContainer>
             </div>
         </BetCardWrapper>
@@ -36,7 +45,11 @@ const BetCard = ({ toggleBetCart, id, home, away, odds, gameDate, toggleSelected
 };
 
 BetCard.propTypes = {
-    
+    selectBet: PropTypes.func.isRequired,
+    home: PropTypes.number.isRequired,
+    away: PropTypes.number.isRequired,
+    odds: PropTypes.array.isRequired,
+    gameDate: PropTypes.string,
 };
 
 export default BetCard;

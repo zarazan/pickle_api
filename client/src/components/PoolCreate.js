@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import history from '../history';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight, faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -10,6 +10,7 @@ import VerifyPool from './VerifyPool';
 
 const PoolCreate = props => {
     const [step, setStep] = useState(1); // used for tracking the current step of the create flow
+    let history = useHistory();
     // POOL CONFIGURATION
     const [poolType, setpoolType] = useState(null);
     const [poolName, setPoolName] = useState(null);
@@ -212,7 +213,7 @@ const PoolCreate = props => {
         resp.bet_types = betTypes;
         resp.sports = sports;
 
-        console.log(resp);
+        // console.log(resp);
 
         let api = new PickleApi();
         api.signIn().then(() => {
