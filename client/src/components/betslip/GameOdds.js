@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import pickleApi from '../../services/pickle_api';
 import BetCard from './BetCard';
 import EnterWager from './EnterWager';
 import MOCK_FIXTURES from '../../constants/mockFixtures';
 
-const GameOdds = ({ poolId }) => {
+const GameOdds = ({ poolId, fixtures }) => {
     const [betSlip, setBetSlip] = useState([]);
     // const [multibet, setMultibet] = useState(false);
     const [currentBet, setCurrentBet] = useState(null);
@@ -24,14 +24,16 @@ const GameOdds = ({ poolId }) => {
                     />
                 ) : ( 
                     <>
-                        {MOCK_FIXTURES.map((fixture, index) => (
+                        {(fixtures || []).map((fixture, index) => (
                             <BetCard 
                                 key={index}
                                 id={fixture.id}
-                                home={fixture.home_team_id}
-                                away={fixture.away_team_id}
+                                homeTeamName={fixture.homeTeamName}
+                                homeTeamId={fixture.homeTeamId}
+                                awayTeamName={fixture.awayTeamName}
+                                awayTeamId={fixture.awayTeamId}
                                 odds={fixture.odds}
-                                gameDate={fixture.start_time}
+                                gameDate={fixture.startRime}
                                 selectBet={selectBet}
                             /> 
                         ))}
@@ -74,7 +76,8 @@ const GameOdds = ({ poolId }) => {
 };
 
 GameOdds.propTypes = {
-    
+    poolId: PropTypes.number.isRequired,
+    fixtures: PropTypes.array.isRequired,
 };
 
 export default GameOdds; 
