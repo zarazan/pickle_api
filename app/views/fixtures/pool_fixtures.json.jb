@@ -2,6 +2,7 @@
   fixture.as_json.merge({
     homeTeamName: fixture.home_team.name,
     awayTeamName: fixture.away_team.name,
-    odds: fixture.odds.active
+    odds: fixture.odds.active,
+    locked: fixture.locked?
   })
 end

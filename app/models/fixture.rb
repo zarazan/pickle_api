@@ -59,6 +59,10 @@ class Fixture < ApplicationRecord
     [:home_win, :away_win, :draw].include?(status)
   end
 
+  def locked?
+    start_time < DateTime.current
+  end
+
   def get_team_by_name(team_name)
     [home_team, away_team].find { |team| team.name == team_name }
   end
