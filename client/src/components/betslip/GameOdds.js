@@ -66,17 +66,13 @@ const GameOdds = ({ poolId, fixtures }) => {
 
     /** enterBet: Sends Pickle API request for placing a bet.**/
     function enterBet(betId, betAmount) {
-        // /pools/:id/place_bet data: { odd_id: 1, amount: '50' }
         let resp = {};
         resp.pool_id = poolId;
         resp.odd_id = betId;
         resp.amount = betAmount;
 
-        // console.log(resp);
-
         pickleApi.createBet(resp)
             .then(data => {
-                console.log(data);
                 setBetSlip([...betSlip, data]);
                 setToggleBetSlip(false);
             })

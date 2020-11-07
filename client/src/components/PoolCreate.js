@@ -5,11 +5,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight, faPlus } from '@fortawesome/free-solid-svg-icons';
 import PoolTypeList from './PoolTypeList';
 import PoolOptionList from './PoolOptionList';
-import PickleApi from '../services/pickle_api';
+import pickleApi from '../services/pickle_api';
 import VerifyPool from './VerifyPool';
 
 const PoolCreate = props => {
     const [step, setStep] = useState(1); // used for tracking the current step of the create flow
+    const [errorMessage, setErrorMessage] = useState('');
+
     let history = useHistory();
     // POOL CONFIGURATION
     const [poolType, setpoolType] = useState(null);
@@ -198,14 +200,6 @@ const PoolCreate = props => {
     /** createPool: Sends Pickle API request for fetching pools.**/
     function createPool() {
         let resp = {};
-        /*
-            name: 'Friends & Family Pool',
-            start_date: @start_date,
-            end_date: @end_date,
-            bankroll: 500,
-            bet_types: ['money_line'],
-            sports: ['americanfootball_nfl'],
-        */
         resp.name = poolName;
         resp.start_date = poolStart;
         resp.end_date = poolEnd;
@@ -213,14 +207,13 @@ const PoolCreate = props => {
         resp.bet_types = betTypes;
         resp.sports = sports;
 
-        // console.log(resp);
-
-        let api = new PickleApi();
-        api.signIn().then(() => {
-            api.createPool(resp).then(() => {
-                history.push('/')
-            });
-        });
+        pickleApi.createPool(resp)
+            .then(() => {
+                history.push('/');
+            })
+            .catch(error => {
+                setErrorMessage(error.toString());
+            })
     };
 };
 
