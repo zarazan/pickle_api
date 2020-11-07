@@ -57,6 +57,17 @@ const ViewPool = () => {
                 </div>
             </ViewToggle>
 
+            <UserData className='user-data'>
+                <div className=''>
+                    <h2 className=''>Bankroll</h2>
+                    <span className=''>$500</span>
+                </div>
+                <div className=''>
+                    <h2 className=''>To Win</h2>
+                    <span className=''>$0</span>
+                </div>
+            </UserData>
+
             {display && display === 'leaderboard' 
                 ? <Leaderboard leaderboard={entries}/>
                 : display === 'games'
@@ -128,4 +139,24 @@ const ClickableToggle = styled.button`
     outline: none;
     background-color: #eaf3fd;
     color: #5698d6;
-`;  
+`;
+
+const UserData = styled.section`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    box-sizing: border-box;
+    margin-bottom: 1.5em;
+
+    font-family: 'Poppins', 'Sans Serif';
+
+    & > div {
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+
+        & h2 {
+            margin: 0 0 0.3em 0;
+            font-size: 1.25em;
+        }
+    }
+`;
