@@ -6,36 +6,53 @@ import pickleApi from '../services/pickle_api';
 
 const MyPools = ({ displayPool }) => {
     const [pools, setPools] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(null);
     let history = useHistory();
     
     useEffect(() => {
-        async function fetchData() {
-            const results = await pickleApi.getPools();
-            setPools(results);
-        }
-        fetchData();
+        setIsLoading(true);
+        pickleApi.getPools()
+            .then(data => {
+                setPools(data);
+                setIsLoading(false);
+            })
+            .catch(error => {
+                setErrorMessage(error.toString());
+            })
       }, []);
 
     return (
         <MyPoolsWrapper className='my-pools'>
             <PoolsHeader className='my-pools__header'>My Pools</PoolsHeader>
-            <CreatePoolButton
-                onClick={() => history.push('/create-pool')}>Create Pool</CreatePoolButton>
-            <PoolList className='my-pools__cardlist'>
-                {(pools || []).map((pool) => (
-                    <PoolCard
-                        key={pool.id}
-                        index={pool.id}
-                        name={pool.name}
-                        amount={500}
-                        privacy={pool.private}
-                        startDate={pool.start_date}
-                        sports={pool.sports}
-                        participants={pool.email_invites}
-                        displayPool={displayPool}
-                    />
-                ))}
-            </PoolList>
+            {errorMessage && <div>{errorMessage}</div>}
+
+            {isLoading ? (
+                <div>
+                    Loading My Pools...
+                </div>
+            ) : (
+                <>
+                    <CreatePoolButton
+                        onClick={() => history.push('/create-pool')}>Create Pool</CreatePoolButton>
+                    <PoolList className='my-pools__cardlist'>
+                        {(pools || []).map((pool) => (
+                            <PoolCard
+                                key={pool.id}
+                                index={pool.id}
+                                name={pool.name}
+                                amount={500}
+                                privacy={pool.private}
+                                startDate={pool.start_date}
+                                sports={pool.sports}
+                                participants={pool.email_invites}
+                                displayPool={displayPool}
+                            />
+                        ))}
+                    </PoolList> 
+                </>
+            )
+            }
         </MyPoolsWrapper>
     );
 
