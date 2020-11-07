@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 // import PropTypes from 'prop-types';
 import styled from'styled-components';
-import Leaderboard from './leaderboard/Leaderboard';
-import GameOdds from './betslip/GameOdds';
+import Leaderboard from './Leaderboard';
+import GameOdds from '../betslip/GameOdds';
+import OpenBets from './OpenBets';
 import { useParams } from 'react-router-dom';
-import pickleApi from '../services/pickle_api';
+import pickleApi from '../../services/pickle_api';
 
 const ViewPool = () => {
     let { poolId } = useParams();
@@ -34,29 +35,33 @@ const ViewPool = () => {
                         Leaderboard
                     </ClickableToggle>
                 </div>
+
                 <div className={`toggle-container${display && display === 'games' ? '-selected' : ''}`}>
                 <ClickableToggle className='btn btn-toggle' name='games' onClick={e => toggleDisplay(e.target.name)}>
                     Games
                 </ClickableToggle>
                 </div>
+
+                <div className={`toggle-container${display && display === 'open-bets' ? '-selected' : ''}`}>
+                <ClickableToggle className='btn btn-toggle' name='open-bets' onClick={e => toggleDisplay(e.target.name)}>
+                    Open Bets
+                </ClickableToggle>
+                </div>
             </ViewToggle>
 
-            {display && display === 'leaderboard' ? (
-                <Leaderboard leaderboard={entries}/>
-            ) : (
-                <GameOdds poolId={poolId} fixtures={fixtures}/>
-            )}
+            {display && display === 'leaderboard' 
+                ? <Leaderboard leaderboard={entries}/>
+                : display === 'games'
+                    ? <GameOdds poolId={poolId} fixtures={fixtures}/>
+                    : <OpenBets />
+            }
 
         </ViewPoolWrapper>
     );
 
     /** toggleDisplay: Toggles the view to be displayed. **/
     function toggleDisplay(value) {
-        // get current display
         const currentDisplay = display;
-        // console.log(currentDisplay);
-        // console.log(value);
-        // if display is not the same, then change it
         if (currentDisplay !== value) {
             setDisplay(value);
         }
@@ -79,7 +84,7 @@ const ViewPoolWrapper = styled.div`
 const ViewToggle = styled.section`
     display: grid;
     grid-gap: 0em;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     margin-bottom: 1.5em;
 
     & div[class^='toggle-container'] {
@@ -108,7 +113,7 @@ const ClickableToggle = styled.button`
     width: 100%;
 
     font-family: 'Poppins', 'Sans Serif';
-    font-size: 1em;
+    font-size: 0.8em;
 
     border: none;
     border-radius: 0.5em;

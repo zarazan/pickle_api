@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const EnterWager = ({ currentBetId, gameName, placeBet, closeBetSlip, betCount, odds, errors }) => { 
+const EnterWager = ({ currentBetId, gameName, placeBet, closeBetSlip, betCount, betOdd, errors }) => { 
     const [wager, setWager] = useState(0);
     const [payout, setPayout] = useState(0);
 
@@ -29,7 +29,7 @@ const EnterWager = ({ currentBetId, gameName, placeBet, closeBetSlip, betCount, 
             </CalculatorHeader>            
             <CalculatorSummary className='wager-row summary'>
                 <div className='enter-wager__bet-summary summary-item'>
-                    <div className=''>ATL Falcons +{odds}</div>
+                    <div className=''>ATL Falcons +{betOdd}</div>
                     <div className=''>POINT SPREAD</div>
                     <div className=''>{gameName}</div>
                 </div>    

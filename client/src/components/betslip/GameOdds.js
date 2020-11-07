@@ -11,7 +11,13 @@ const GameOdds = ({ poolId, fixtures }) => {
     const [currentBet, setCurrentBet] = useState(null);
     const [toggleBetSlip, setToggleBetSlip] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
-    const gameName = `${fixtures.awayTeamName} @ ${fixtures.homeTeamName}`;
+    
+    // used for the enter wager display
+    const gameName = currentFixture ? `${fixtures[currentFixture].awayTeamName} @ ${fixtures[currentFixture].homeTeamName}` : '';
+    const betOdds = currentFixture && currentBet ? 'true' : 'false';
+    //fixtures[currentFixture].filter(f => f.odds.id === currentBet)
+    const betType = currentBet ? 'true' : 'false';
+    const selectedTeam = currentBet ? 'true' : 'false';
 
     return (
         <section>
@@ -20,7 +26,7 @@ const GameOdds = ({ poolId, fixtures }) => {
                     <EnterWager
                         currentBetId={currentBet}
                         gameName={gameName}
-                        betOdd={fixtures.filter(f => f.odd_id === currentBet)}
+                        betOdd={betOdds}
                         placeBet={enterBet}
                         closeBetSlip={closeBetSlip}
                         errors={errorMessage}
@@ -81,8 +87,8 @@ const GameOdds = ({ poolId, fixtures }) => {
 };
 
 GameOdds.propTypes = {
-    poolId: PropTypes.number.isRequired,
-    fixtures: PropTypes.array.isRequired,
+    poolId: PropTypes.string,
+    fixtures: PropTypes.array,
 };
 
 export default GameOdds; 

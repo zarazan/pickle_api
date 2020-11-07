@@ -1,11 +1,11 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import GameOdds from '../components/betslip/GameOdds';
+// import GameOdds from '../components/betslip/GameOdds';
 import Dashboard from '../components/Dashboard';
-import Leaderboard from '../components/leaderboard/Leaderboard';
+// import Leaderboard from '../components/view-pool/Leaderboard';
 import PoolCreate from '../components/PoolCreate';
 import SignIn from '../components/SignIn';
-import ViewPool from '../components/ViewPool';
+import ViewPool from '../components/view-pool/index';
 
 const ROUTES = [
     { path: '/', key: 'ROOT', exact: true, component: Dashboard },
