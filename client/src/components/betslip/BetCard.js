@@ -20,7 +20,7 @@ const BetCard = ({ selectBet, homeTeamName, homeTeamId, awayTeamName, awayTeamId
                                     key={index}
                                     className='odd money-line'
                                     value={decToAmerican(odd.ratio)}
-                                    callback={() => selectBet(odd.id)}
+                                    callback={() => selectBet(odd.fixtureId, odd.id)}
                                 />
                             ))}
                     </OddsContainer>
@@ -35,7 +35,7 @@ const BetCard = ({ selectBet, homeTeamName, homeTeamId, awayTeamName, awayTeamId
                                 key={index}
                                 className='odd money-line'
                                 value={decToAmerican(odd.ratio)}
-                                callback={() => selectBet(odd.id)}
+                                callback={() => selectBet(odd.fixtureId, odd.id)}
                             />
                         ))}
                 </OddsContainer>
