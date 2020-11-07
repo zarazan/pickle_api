@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-// import PropTypes from 'prop-types';
 import styled from'styled-components';
 import Leaderboard from './Leaderboard';
 import GameOdds from '../betslip/GameOdds';
@@ -101,10 +100,6 @@ const ViewPool = () => {
             setDisplay(value);
         }
     }
-};
-
-ViewPool.propTypes = {
-    
 };
 
 export default ViewPool;

@@ -51,8 +51,7 @@ const MyPools = ({ displayPool }) => {
                         ))}
                     </PoolList> 
                 </>
-            )
-            }
+            )}
         </MyPoolsWrapper>
     );
 
