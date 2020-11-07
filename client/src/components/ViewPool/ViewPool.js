@@ -9,30 +9,37 @@ import pickleApi from '../../services/pickle_api';
 
 const ViewPool = () => {
     let { poolId } = useParams();
+    const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(null);
     const [display, setDisplay] = useState('leaderboard');
     const [entries, setEntries] = useState(null);
     const [fixtures, setFixtures] = useState(null);
     const [bets, setBets] = useState(null);
 
     useEffect(() => {
-        async function fetchEntries() {
-            const results = await pickleApi.getEntries(poolId);
-            setEntries(results);
-        }
-
-        async function fetchFixtures() {
-            const results = await pickleApi.getFixtures(poolId);
-            setFixtures(results);
-        }
-
-        async function fetchBets() {
-            const results = await pickleApi.getBets(poolId);
-            setBets(results);
-        }
-
-        fetchEntries();
-        fetchFixtures();
-        fetchBets();
+        setIsLoading(true);
+        pickleApi.getEntries(poolId)
+            .then(entries => {
+                setEntries(entries);
+                pickleApi.getFixtures(poolId)
+                .then(fixtures => {
+                    setFixtures(fixtures);
+                    pickleApi.getBets(poolId)
+                        .then(bets => {
+                            setBets(bets);
+                            setIsLoading(false);
+                        })
+                        .catch(error => {
+                            setErrorMessage(error.toString());
+                        })
+                })
+                .catch(error => {
+                    setErrorMessage(error.toString());
+                })
+            })
+            .catch(error => {
+                setErrorMessage(error.toString());
+            })
       }, []);
 
     return (
@@ -57,24 +64,33 @@ const ViewPool = () => {
                 </div>
             </ViewToggle>
 
-            <UserData className='user-data'>
-                <div className=''>
-                    <h2 className=''>Bankroll</h2>
-                    <span className=''>$500</span>
-                </div>
-                <div className=''>
-                    <h2 className=''>To Win</h2>
-                    <span className=''>$0</span>
-                </div>
-            </UserData>
+            {errorMessage && <div>{errorMessage}</div>}
 
-            {display && display === 'leaderboard' 
-                ? <Leaderboard leaderboard={entries}/>
-                : display === 'games'
-                    ? <GameOdds poolId={poolId} fixtures={fixtures}/>
-                    : <OpenBets bets={bets}/>
-            }
+            {isLoading ? (
+                <div>
+                    Loading Pool...
+                </div>
+            ) : (
+                <>
+                    <UserData className='user-data'>
+                        <div className=''>
+                            <h2 className=''>Bankroll</h2>
+                            <span className=''>$500</span>
+                        </div>
+                        <div className=''>
+                            <h2 className=''>To Win</h2>
+                            <span className=''>$0</span>
+                        </div>
+                    </UserData>
 
+                    {display && display === 'leaderboard' 
+                        ? <Leaderboard leaderboard={entries}/>
+                        : display === 'games'
+                            ? <GameOdds poolId={poolId} fixtures={fixtures}/>
+                            : <OpenBets bets={bets}/>
+                    }
+                </>
+            )}
         </ViewPoolWrapper>
     );
 
