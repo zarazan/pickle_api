@@ -12,6 +12,7 @@ const ViewPool = () => {
     const [display, setDisplay] = useState('leaderboard');
     const [entries, setEntries] = useState(null);
     const [fixtures, setFixtures] = useState(null);
+    const [bets, setBets] = useState(null);
 
     useEffect(() => {
         async function fetchEntries() {
@@ -23,8 +24,15 @@ const ViewPool = () => {
             const results = await pickleApi.getFixtures(poolId);
             setFixtures(results);
         }
+
+        async function fetchBets() {
+            const results = await pickleApi.getBets(poolId);
+            setBets(results);
+        }
+
         fetchEntries();
         fetchFixtures();
+        fetchBets();
       }, []);
 
     return (
@@ -53,7 +61,7 @@ const ViewPool = () => {
                 ? <Leaderboard leaderboard={entries}/>
                 : display === 'games'
                     ? <GameOdds poolId={poolId} fixtures={fixtures}/>
-                    : <OpenBets />
+                    : <OpenBets bets={bets}/>
             }
 
         </ViewPoolWrapper>
