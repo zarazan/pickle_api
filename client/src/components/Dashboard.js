@@ -81,9 +81,9 @@ const DashboardWrapper = styled.div`
         'welcome'
         'stats'
         'main';
-    height: 100vh;
     box-sizing: border-box;
-    padding: 1em 1em 0em 1em;
+    height: 100%;
+    overflow: auto;
 `;
 
 const Welcome = styled.section`
