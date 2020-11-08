@@ -5,6 +5,10 @@ import styled from 'styled-components';
 import { UserProvider } from '../contexts/UserContext'
 import { ReactComponent as Logo } from '../icons/pickle.svg';
 import { ReactComponent as Menu } from '../icons/menu.svg';
+import { ReactComponent as Home } from '../icons/beach-hut.svg';
+import { ReactComponent as Pool } from '../icons/pool.svg';
+import { ReactComponent as Lobby } from '../icons/boxing-gloves.svg';
+import { ReactComponent as Stats } from '../icons/analytics.svg';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faChartLine, faTrophy, faHome } from '@fortawesome/free-solid-svg-icons';
@@ -24,27 +28,27 @@ const App = () => {
                 <GlobalNavigation className='global-nav'>
                     <StyledLink>
                         <NavLink to='/' className='home'>
-                        <FontAwesomeIcon icon={faHome} size='lg' />
+                            <HomeIcon />
                         </NavLink>
                         <span>Home</span>
                     </StyledLink>
                     <StyledLink>
                         <NavLink to='/' className='user-pools'>
-                        <FontAwesomeIcon icon={faTrophy} size='lg' />
+                            <PoolIcon />
                         </NavLink>
                         <span>Pools</span>
                     </StyledLink>
                     <StyledLink>
-                        <NavLink to='/' className='user-statistics'>
-                        <FontAwesomeIcon icon={faChartLine} size='lg' />
+                        <NavLink to='/' className='lobby'>
+                            <LobbyIcon />
                         </NavLink>
-                        <span>Stats</span>
+                        <span>Lobby</span>
                     </StyledLink>
                     <StyledLink>
-                        <NavLink to='/' className='user-profile'>
-                        <FontAwesomeIcon icon={faUser} size='lg' />
+                        <NavLink to='/' className='user-statistics'>
+                            <StatsIcon />
                         </NavLink>
-                        <span>Profile</span>
+                        <span>Stats</span>
                     </StyledLink>
                     {/* <button onClick={() => history.push('/sign-in')}>Sign In</button> */}
                 </GlobalNavigation>
@@ -124,6 +128,26 @@ const MenuIcon = styled(Menu)`
     width: 1.5rem;
 `;
 
+const HomeIcon = styled(Home)`
+    height: 1.25rem;
+    width: 1.5rem;
+`;
+
+const PoolIcon = styled(Pool)`
+    height: 1.25rem;
+    width: 1.5rem;
+`;
+
+const StatsIcon = styled(Stats)`
+    height: 1.25rem;
+    width: 1.5rem;
+`;
+
+const LobbyIcon = styled(Lobby)`
+    height: 1.25rem;
+    width: 1.5rem;
+`;
+
 const StyledLink = styled.div`
     display: flex;
     flex-flow: column nowrap;
@@ -131,17 +155,18 @@ const StyledLink = styled.div`
     align-items: center;
 
     & span {
-    margin-top: 0.30em;
-    font-size: 0.75em;
-    color: #a2abb9;
+        margin-top: 0.30em;
+        font-family: 'Inter', 'Sans Serif';
+        font-size: 0.75rem;
+        color: black;
     }
 
     & a {
-    color: #a2abb9;
+        color: #a2abb9;
     }
 
     & a:hover {
-    color: #082344;
+        color: #082344;
     }
 `;
 

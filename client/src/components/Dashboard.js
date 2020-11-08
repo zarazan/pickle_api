@@ -83,6 +83,7 @@ const DashboardWrapper = styled.div`
         'main';
     box-sizing: border-box;
     height: 100%;
+    overflow: auto;
 `;
 
 const Welcome = styled.section`

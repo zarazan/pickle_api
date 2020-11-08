@@ -11,6 +11,7 @@ const ROUTES = [
     { path: '/', key: 'ROOT', exact: true, component: Dashboard },
     { path: '/sign-in', key: 'SIGN_IN', exact: true, component: SignIn },
     { path: '/create-pool', key: 'CREATE_POOL', exact: true, component: PoolCreate },
+    // { path: '/pool', key: 'MY_POOLS', exact: true, component: MyPools },
     { path: '/pools/:poolId', key: 'VIEW_POOL', component: ViewPool },
 ];
 
