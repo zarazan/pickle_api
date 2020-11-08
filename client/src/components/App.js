@@ -78,8 +78,9 @@ const AppWrapper = styled.div`
 
 const AppMain = styled.main`
   grid-area: main;
-  margin-top: 1em;
+  margin: 1em 0 5em 0;
   padding: 0 1em 0 1em;
+  overflow: auto;
 `;
 
 const GlobalNavigation = styled.nav`

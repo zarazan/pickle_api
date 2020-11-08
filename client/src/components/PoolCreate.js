@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -23,6 +23,10 @@ const PoolCreate = props => {
     const [betTypes, setBetTypes] = useState([]);
     const [sports, setSports] = useState([]);
     const [participants, setParticipants] = useState(['troy.c.jennings@gmail.com', 'knowak14@gmail.com', 'Bezektaylor@gmail.com', 'zarazan@gmail.com']);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    });
 
     return (
         <PoolCreateWrapper className='pool-create'>
