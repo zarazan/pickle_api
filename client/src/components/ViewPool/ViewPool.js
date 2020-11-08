@@ -106,9 +106,7 @@ export default ViewPool;
 
 const ViewPoolWrapper = styled.div`
     box-sizing: border-box;
-    padding: 0.5em 0.5em 0em 0.5em;
     height: 100%;
-    overflow: auto;
 `;
 
 const ViewToggle = styled.section`
