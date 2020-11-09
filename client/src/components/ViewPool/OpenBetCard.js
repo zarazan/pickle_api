@@ -93,17 +93,17 @@ const BetSlip = styled.div`
             
             & .sport-banner {
                 align-items: center;
-                background: #8fd6a9;
+                background: #c7ead4;
                 color: #379559;
     
                 & > svg {
-                    margin-right: 0.3rem;
+                    margin-right: 0.5rem;
                     fill: #379559;
                 }
             }
     
             & .sport-league {
-                background: #e6e6e6;
+                background: #f2f2f2;
                 color: #808080;
             }
         }

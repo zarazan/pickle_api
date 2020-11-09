@@ -24,6 +24,10 @@ const ViewPool = () => {
     const [bets, setBets] = useState(null);
     const [myInfo, setMyInfo] = useState({});
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    });
+
     // useEffect(() => {
     //     setIsLoading(true);
     //     pickleApi.getEntries(poolId)
@@ -139,11 +143,11 @@ const ViewPool = () => {
                         <div className='open-bets-header'>
                             <h3>{'OPEN BETS'}</h3>
                         </div>
-                        <div className='betslip-container'>
+                        <BetSlipWrapper className='betslip-container'>
                             {(bets || MOCK_BETS).map((bet, i) => (
                                 <OpenBetCard key={i} gameName={null} bet={bet} />
                             ))}
-                        </div>
+                        </BetSlipWrapper>
                     </div>
                 </PoolContent>
                 // <>
@@ -312,4 +316,9 @@ const PoolContent = styled.section`
             height: auto;
         }
     }
+`;
+
+const BetSlipWrapper = styled.div`
+    box-sizing: border-box;
+    padding-bottom: 1rem;
 `;
