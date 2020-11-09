@@ -59,10 +59,11 @@ const BetCardWrapper = styled.div`
     box-sizing: border-box;
     flex-flow: column nowrap;
     width: 100%;
+    margin-bottom: 0.4rem;
 
     background-color: white;
-    border-radius: 0.5em;
-    border: 1px solid #d7def2;
+    border-radius: 0.2em;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 3px 0px, rgba(60, 64, 67, 0.15) 0px 1px 2px 0px;
 
     font-family: 'Inter', 'Sans Serif';
     font-size: 0.9em;

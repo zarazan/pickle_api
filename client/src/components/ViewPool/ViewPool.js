@@ -28,32 +28,32 @@ const ViewPool = () => {
         window.scrollTo(0, 0);
     });
 
-    // useEffect(() => {
-    //     setIsLoading(true);
-    //     pickleApi.getEntries(poolId)
-    //         .then(entries => {
-    //             setEntries(entries);
-    //             setMyInfo(entries.filter(entry => entry.userName === 'Kyle Zarazan').pop());
-    //             pickleApi.getFixtures(poolId)
-    //             .then(fixtures => {
-    //                 setFixtures(fixtures);
-    //                 pickleApi.getBets(poolId)
-    //                     .then(bets => {
-    //                         setBets(bets);
-    //                         setIsLoading(false);
-    //                     })
-    //                     .catch(error => {
-    //                         setErrorMessage(error.toString());
-    //                     })
-    //             })
-    //             .catch(error => {
-    //                 setErrorMessage(error.toString());
-    //             })
-    //         })
-    //         .catch(error => {
-    //             setErrorMessage(error.toString());
-    //         })
-    //   }, []);
+    useEffect(() => {
+        setIsLoading(true);
+        pickleApi.getEntries(poolId)
+            .then(entries => {
+                setEntries(entries);
+                setMyInfo(entries.filter(entry => entry.userName === 'Kyle Zarazan').pop());
+                pickleApi.getFixtures(poolId)
+                .then(fixtures => {
+                    setFixtures(fixtures);
+                    pickleApi.getBets(poolId)
+                        .then(bets => {
+                            setBets(bets);
+                            setIsLoading(false);
+                        })
+                        .catch(error => {
+                            setErrorMessage(error.toString());
+                        })
+                })
+                .catch(error => {
+                    setErrorMessage(error.toString());
+                })
+            })
+            .catch(error => {
+                setErrorMessage(error.toString());
+            })
+      }, []);
 
     return (
         <ViewPoolWrapper className='pool-view-container'>
@@ -139,7 +139,7 @@ const ViewPool = () => {
                                     <h3>{'SCHEDULE & BETS'}</h3>
                                 </div>
                                 <div className='pool-fixture-schedule'>
-                                    <div className='btn schedule-btn'><button>View Full Schedule</button></div>
+                                    <div className='btn schedule-btn'><button onClick={() => toggleDisplay('games')}>View Full Schedule</button></div>
                                 </div>
                             </div>
                             <div>
@@ -157,7 +157,7 @@ const ViewPool = () => {
                     : display == 'leaderboard'
                         ? <Leaderboard toggleDisplay={toggleDisplay} leaderboard={entries}/>
                         : display === 'games'
-                            ? <GameOdds poolId={poolId} fixtures={fixtures}/>
+                            ? <GameOdds toggleDisplay={toggleDisplay} poolId={poolId} fixtures={fixtures}/>
                             : <OpenBets bets={bets}/>
                     }   
                 </>
@@ -246,6 +246,7 @@ const PoolContent = styled.section`
             border-radius: 0.2rem;
             outline: none;
             font-family: 'Inter', 'Sans Serif';
+            font-size: .8125rem;
             color: #8fd6a9;
         }
     }
