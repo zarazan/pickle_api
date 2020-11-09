@@ -25,7 +25,7 @@ const App = () => {
                     <div><MenuIcon /></div>
                 </div>
 
-                <GlobalNavigation className='global-nav'>
+                {/* <GlobalNavigation className='global-nav'>
                     <StyledLink>
                         <NavLink to='/' className='home'>
                             <HomeIcon />
@@ -50,8 +50,8 @@ const App = () => {
                         </NavLink>
                         <span>Stats</span>
                     </StyledLink>
-                    {/* <button onClick={() => history.push('/sign-in')}>Sign In</button> */}
-                </GlobalNavigation>
+                </GlobalNavigation> */}
+                
             </AppHeader>
             <AppMain className='content-wrapper'>
                 <RenderRoutes routes={ROUTES} />

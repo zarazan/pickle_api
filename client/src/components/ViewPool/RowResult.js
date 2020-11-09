@@ -9,8 +9,8 @@ const RowResult = ({ rank, avatar, name, bankroll }) => {
         <RowWrapper className='leaderboard-row'>
             <div className='leaderboard-row__telemetry row-item'>{rank + 1}</div>
             <div className='leaderboard-row__avatar row-item'><FontAwesomeIcon icon={!avatar ? faUserCircle : avatar} size='2x'/></div>
-            <div className='leaderboard-row__name row-item'>{name}</div>
-            <div className='bankroll row-item'>${bankroll}</div>
+            <div className='leaderboard-row__name row-item'>{name ? name : 'Lorem Ipsum'}</div>
+            <div className='leaderboard-row__bankroll row-item'>${bankroll ? bankroll : '$999'}</div>
         </RowWrapper>
     );
 };
@@ -27,15 +27,16 @@ export default RowResult;
 
 const RowWrapper = styled.div`
     display: grid;
-    grid-template-columns: 2em auto 1fr 30%;
-    font-family: 'Inter', 'Sans Serif';
-    font-size: 1em;
+    grid-template-columns: 3em auto 1fr 25%;
     box-sizing: border-box;
-    padding: 1em;
-    border-radius: 0.4em;
-    background-color: white;
-    border: 1px solid #d7def2;
-    margin-bottom: 0.5em;
+    
+    padding: 0.3rem 0.5rem 0.3rem 0.5rem;
+
+    border-radius: 0.2em;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 3px 0px, rgba(60, 64, 67, 0.15) 0px 1px 2px 0px;
+    font-family: 'Inter', 'Sans Serif';
+    font-size: .85rem;
+    font-weight: 500;
 
     div.row-item {
         display: flex;
@@ -45,6 +46,10 @@ const RowWrapper = styled.div`
 
     div.leaderboard-row__name {
         justify-content: flex-start;
+    }
+
+    div.leaderboard-row__bankroll {
+        font-weight: 300;
     }
 
     div.leaderboard-row__avatar {
