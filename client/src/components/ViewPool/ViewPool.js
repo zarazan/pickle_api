@@ -89,7 +89,7 @@ const ViewPool = () => {
                     </div>
                     <div className='pool-content__leaderboard-container'>
                         <div className='leaderboard-header'>
-                            <h3>LEADERBOARD</h3>
+                            <h3>{'LEADERBOARD'}</h3>
                             <button><FontAwesomeIcon icon={faArrowRight} size='s' /></button>
                         </div>
                         <div className='pool-content__leaderboard-list'>
@@ -129,7 +129,7 @@ const ViewPool = () => {
                     </div>
                     <div>
                         <div className='schedule-header'>
-                            <h3>SCHEDULE</h3>
+                            <h3>{'SCHEDULE & BETS'}</h3>
                         </div>
                         <div className='pool-fixture-schedule'>
                             <div className='btn schedule-btn'><button>View Full Schedule</button></div>
@@ -137,7 +137,7 @@ const ViewPool = () => {
                     </div>
                     <div>
                         <div className='open-bets-header'>
-                            <h3>OPEN BETS</h3>
+                            <h3>{'OPEN BETS'}</h3>
                         </div>
                         <div className='betslip-container'>
                             {(bets || MOCK_BETS).map((bet, i) => (
