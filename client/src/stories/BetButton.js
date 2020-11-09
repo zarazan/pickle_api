@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const BetButton = ({ className, value, callback }) => {
+const BetButton = ({ className, metric, ratio, callback }) => {
     const [selected, setSelected] = useState(false);
 
     return (
@@ -10,7 +10,11 @@ const BetButton = ({ className, value, callback }) => {
             <ToggleButton
                 onClick={toggleSelected}
             >
-                {value}
+                <div>
+                    <span>{metric ? metric : null}</span>
+                    <span>{ratio}</span>
+                </div>
+                
             </ToggleButton>
         </Odd>
     );
@@ -48,11 +52,21 @@ const ToggleButton = styled.button`
     height: 100%;
     width: 100%;
     font-family: 'Poppins', 'Sans Serif';
-    font-size: 1em;
+    font-size: 0.7rem;
 
-    background-color: #eaf3fd;
-    color: #5698d6;
-    border-radius: 0.4em;
+    background-color: #f2f2f2;
+    color: black;
+    border-radius: 0.2em;
     outline: none;
     border: none;
+
+    & > div {
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: center;
+        align-items: center;
+        box-sizing: border-box;
+        height: 100%;
+        width: 100%;
+    }
 `;

@@ -81,7 +81,7 @@ const GameOdds = ({ toggleDisplay, poolId, fixtures, bankroll }) => {
                                     awayTeamName={fixture.awayTeamName}
                                     awayTeamId={fixture.awayTeamId}
                                     odds={fixture.odds}
-                                    gameDate={fixture.startRime}
+                                    gameDate={fixture.startTime}
                                     selectBet={selectBet}
                                 /> 
                             ))}

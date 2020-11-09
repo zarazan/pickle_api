@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import decToAmerican from '../../utilities/helpers';
+import { decToAmerican } from '../../utilities/helpers';
 
 import { ReactComponent as Football } from '../../icons/american-football.svg';
 
