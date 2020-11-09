@@ -30,6 +30,7 @@ const RowWrapper = styled.div`
     grid-template-columns: 3em auto 1fr 25%;
     box-sizing: border-box;
     
+    margin-bottom: 0.2rem;
     padding: 0.3rem 0.5rem 0.3rem 0.5rem;
 
     border-radius: 0.2em;

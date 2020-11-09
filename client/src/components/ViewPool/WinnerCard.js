@@ -14,8 +14,8 @@ const WinnerCard = ({ rank, avatar, name, bankroll }) => {
     return (
         <WinnerCardWrapper className={`winner-card-${rank}`}>
             <div className='winner-card__rank'>{isLeader ? <FontAwesomeIcon icon={faCrown} size='2x' /> : rank}</div>
-            <div className='winner-card__avatar'>{!avatar ? <FontAwesomeIcon icon={faUserCircle} size={isLeader ? '4x' : '2x'} /> : avatar}</div>
-            <h2 className='winner-card__bankroll'>${bankroll}</h2>
+            <div className='winner-card__avatar'>{!avatar ? <FontAwesomeIcon icon={faUserCircle} size={isLeader ? '3x' : '2x'} /> : avatar}</div>
+            <h3 className='winner-card__bankroll'>${bankroll}</h3>
             <h4 className='winner-card__name'>{name}</h4>
         </WinnerCardWrapper>
     );
@@ -43,7 +43,7 @@ const WinnerCardWrapper = styled.div`
     align-items: center;
 
     font-family: 'Inter', 'Sans Serif';
-    font-size: 1em;
+    font-size: 1rem;
 
     & .winner-card__rank {
         & > svg {
@@ -57,15 +57,16 @@ const WinnerCardWrapper = styled.div`
     }
 
     & .winner-card__bankroll {
-        margin: 0.7em 0 0.2em 0;
+        margin: 0.7rem 0 0.2rem 0;
         font-family: 'Poppins', 'Sans Serif';
-        font-size: 1.75em;
+        font-size: 1.25rem;
         color: #202122;
     }
 
-    & winner-card__name {
+    & .winner-card__name {
         font-family: 'Poppins', 'Sans Serif';
-        font-size: 0.7em;
+        font-size: 0.7rem;
         color: #202122;
+        font-weight: 300;
     }
 `;
