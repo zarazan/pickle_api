@@ -11,8 +11,19 @@ const BetButton = ({ className, metric, ratio, callback }) => {
                 onClick={toggleSelected}
             >
                 <div>
-                    <span>{metric ? metric : null}</span>
-                    <span>{ratio}</span>
+                    <span>
+                        {metric 
+                        ? metric > 0
+                            ? `+${metric}`
+                            : metric
+                        : ''}
+                    </span>
+                    <span>
+                        {ratio > 0
+                        ? `+${ratio}`
+                        : ratio
+                        }
+                    </span>
                 </div>
                 
             </ToggleButton>

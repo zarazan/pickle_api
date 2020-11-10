@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { decToAmerican } from '../../utilities/helpers';
@@ -6,11 +6,17 @@ import { decToAmerican } from '../../utilities/helpers';
 import { ReactComponent as Football } from '../../icons/american-football.svg';
 
 const OpenBets = ({ gameName, bet }) => {
+    const [ratio, setRatio] = useState(null);
+
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD',
         minimumFractionDigits: 2
-      })
+      });
+
+      useEffect(() => (
+        setRatio(decToAmerican(bet.odd.ratio))
+    ), []);
 
     return (
         <BetSlip className='betslip'>
@@ -38,7 +44,14 @@ const OpenBets = ({ gameName, bet }) => {
                         <div className='betslip__team-name'>{bet.odd.teamName}</div>
                     </div>
                     <div className='betslip__bet-odds'>
-                        <div className='odds betslip__metric-ratio'>{ bet.odd.metric ? `${bet.odd.metric}` : ''} {`(${decToAmerican(bet.odd.ratio)})`}</div>
+                        <div className='odds betslip__metric-ratio'>
+                            {bet.odd.metric 
+                            ? bet.odd.metric > 0 
+                                ? `+${bet.odd.metric}` 
+                                : bet.odd.metric
+                            : ''}
+                            {`(${ratio})`}
+                        </div>
                     </div>
                 </div>
                 <div className='content__game content-row'>

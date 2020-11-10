@@ -17,11 +17,7 @@ const GameOdds = ({ toggleDisplay, poolId, fixtures, bankroll }) => {
     const [errorMessage, setErrorMessage] = useState('');
     
     // used for the enter wager display
-    const gameName = currentFixture ? `${fixtures[currentFixture].awayTeamName} @ ${fixtures[currentFixture].homeTeamName}` : '';
-    const betOdds = currentFixture && currentBet ? 'true' : 'false';
-    //fixtures[currentFixture].filter(f => f.odds.id === currentBet)
-    const betType = currentBet ? 'true' : 'false';
-    const selectedTeam = currentBet ? 'true' : 'false';
+    const gameName = currentFixture ? `${currentFixture.awayTeamName} vs ${currentFixture.homeTeamName}` : '';
 
     return (
         <GameOddsWrapper className='game-odds-container'>
@@ -29,9 +25,8 @@ const GameOdds = ({ toggleDisplay, poolId, fixtures, bankroll }) => {
                 ? (
                     <EnterWager
                         className='enter-wager-form'
-                        currentBetId={currentBet}
+                        currentBet={currentBet}
                         gameName={gameName}
-                        betOdd={betOdds}
                         placeBet={enterBet}
                         closeBetSlip={closeBetSlip}
                         errors={errorMessage}
@@ -99,8 +94,10 @@ const GameOdds = ({ toggleDisplay, poolId, fixtures, bankroll }) => {
     }
 
     function selectBet(fixtureId, betId) {
-        setCurrentFixture(fixtureId);
-        setCurrentBet(betId);
+        const fixtureObject = fixtures.filter(fixture => fixture.id === fixtureId).pop();
+        setCurrentFixture(fixtureObject);
+        const betObject = fixtureObject.odds.filter(odd => odd.id === betId).pop();
+        setCurrentBet(betObject);
         setToggleBetSlip(!toggleBetSlip)
     }
 
