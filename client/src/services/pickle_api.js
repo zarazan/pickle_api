@@ -7,6 +7,11 @@ class PickleApi {
     this.client = this.axios_client();
   }
 
+  getAdminFixtures(pool_id) {
+    const options = {method: 'get', url: `admin/pools/${pool_id}/fixtures`}
+    return this.sendRequest(options); 
+  }
+
   getBets(pool_id, params) {
     const options = {method: 'get', url: `/pools/${pool_id}/bets`, data: params}
     return this.sendRequest(options);

@@ -21,6 +21,8 @@ Rails.application.routes.draw do
     get '/pools/:id/bets' => 'bets#pool_bets'
 
     get '/teams' => 'teams#index'
+
+    get '/admin/pools/:pool_id/fixtures' => 'admin#fixtures'
   end
 
 end

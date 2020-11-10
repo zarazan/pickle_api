@@ -6,12 +6,14 @@ import Leaderboard from '../components/leaderboard/Leaderboard';
 import PoolCreate from '../components/PoolCreate';
 import SignIn from '../components/SignIn';
 import ViewPool from '../components/ViewPool';
+import EditScores from '../components/admin/EditScores';
 
 const ROUTES = [
     { path: '/', key: 'ROOT', exact: true, component: Dashboard },
     { path: '/sign-in', key: 'SIGN_IN', exact: true, component: SignIn },
     { path: '/create-pool', key: 'CREATE_POOL', exact: true, component: PoolCreate },
-    { path: '/pools/:poolId', key: 'VIEW_POOL', component: ViewPool }
+    { path: '/pools/:poolId', key: 'VIEW_POOL', component: ViewPool },
+    { path: '/admin', key: 'EDIT_SCORES', component: EditScores }
 ];
 
 export default ROUTES;
