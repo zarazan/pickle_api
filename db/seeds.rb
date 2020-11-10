@@ -36,6 +36,16 @@ fixtures_attributes = [
         type: 'MoneyLineOdd',
         ratio: '2.3',
         team_name: 'Denver Broncos'
+      },
+      {
+        type: 'OverOdd',
+        ratio: '1.9',
+        metric: '50.5'
+      },
+      {
+        type: 'UnderOdd',
+        ratio: '1.9',
+        metric: '50.5'
       }
     ]
   },
@@ -56,6 +66,16 @@ fixtures_attributes = [
         metric: '3.5',
         ratio: '1.9',
         team_name: 'Arizona Cardinals'
+      },
+      {
+        type: 'OverOdd',
+        ratio: '1.9',
+        metric: '45'
+      },
+      {
+        type: 'UnderOdd',
+        ratio: '1.9',
+        metric: '45.5'
       }
     ]
   }
