@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import useAuthHandler from '../../hooks/AuthHandler';
+import { UserContext } from '../../contexts/UserContext';
 import styled from'styled-components';
 import Leaderboard from './Leaderboard';
 import GameOdds from '../betslip/GameOdds';
@@ -15,6 +17,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 
 const ViewPool = () => {
+    const [user, setUser] = useContext(UserContext);
+    const isLoadingUser = useAuthHandler(user, setUser);
     let { poolId } = useParams();
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
