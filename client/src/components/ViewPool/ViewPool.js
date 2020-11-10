@@ -59,17 +59,6 @@ const ViewPool = () => {
             })
       }, []);
 
-    //   useEffect(() => {
-    //     pickleApi.getBets(poolId)
-    //     .then(bets => {
-    //         setBets(bets);
-    //         setIsLoading(false);
-    //     })
-    //     .catch(error => {
-    //         setErrorMessage(error.toString());
-    //     })
-    //   }, [bets]);
-
     return (
         <ViewPoolWrapper className='pool-view-container'>
             {/* <ViewToggle className='view-toggle'>
