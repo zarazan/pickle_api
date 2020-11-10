@@ -2,5 +2,6 @@
 
 docker-compose down -v
 docker-compose up -d postgres
+sleep 5
 docker-compose run api rake db:migrate
 docker-compose run api rake db:seed
