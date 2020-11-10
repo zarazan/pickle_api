@@ -1,10 +1,18 @@
-function decToAmerican(value) {
+const decToAmerican = (value) => {
     let odd;
     if (value >= 2.00) {
         return ((value - 1) * 100).toFixed(0);
     } else {
         return ((-100) / (value - 1)).toFixed(0);
     }
-}
+};
 
-export default decToAmerican;
+const zuluToStringFormat = (date) => {
+        let d = new Date(date);
+        return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }).replace(',', '');
+};
+
+export {
+    decToAmerican,
+    zuluToStringFormat
+}

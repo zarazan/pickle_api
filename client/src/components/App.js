@@ -21,11 +21,11 @@ const App = () => {
         <UserProvider>
             <AppHeader className='global-header'>
                 <div className='top-nav'>
-                    <div><LogoIcon /></div>
-                    <div><MenuIcon /></div>
+                    <div><button className='btn btn-home' onClick={() => history.push('/')}><LogoIcon /></button></div>
+                    <div><button className='btn btn-menu' ><MenuIcon /></button></div>
                 </div>
 
-                <GlobalNavigation className='global-nav'>
+                {/* <GlobalNavigation className='global-nav'>
                     <StyledLink>
                         <NavLink to='/' className='home'>
                             <HomeIcon />
@@ -50,8 +50,8 @@ const App = () => {
                         </NavLink>
                         <span>Stats</span>
                     </StyledLink>
-                    {/* <button onClick={() => history.push('/sign-in')}>Sign In</button> */}
-                </GlobalNavigation>
+                </GlobalNavigation> */}
+                
             </AppHeader>
             <AppMain className='content-wrapper'>
                 <RenderRoutes routes={ROUTES} />
@@ -84,15 +84,21 @@ const AppHeader = styled.header`
         align-items: center;
         box-sizing: border-box;
 
-        & div > {
+        & > div {
             display: flex;
             align-items: center;
             height: 100%;
 
             & svg {
-                margin: 1.25em 1em 1.25em 1em;
+                margin: 1em 1em 1em 1em;
             }
         }
+    }
+
+    & button[class~='btn-home'], button[class~='btn-menu'] {
+        background: none;
+        border: none;
+        outline: none;
     }
 `;
 
@@ -119,12 +125,12 @@ const GlobalNavigation = styled.nav`
 `;
 
 const LogoIcon = styled(Logo)`
-    height: 1.75rem;
-    width: 1.75rem;
+    height: 1.5rem;
+    width: 1.5rem;
 `;
 
 const MenuIcon = styled(Menu)`
-    height: 1.25rem;
+    height: 1.5rem;
     width: 1.5rem;
 `;
 
