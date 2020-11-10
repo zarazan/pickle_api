@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import BetButton from '../../stories/BetButton';
-import decToAmerican from '../../utilities/helpers';
+import { decToAmerican, zuluToStringFormat } from '../../utilities/helpers';
 
-const BetCard = ({ selectBet, homeTeamName, homeTeamId, awayTeamName, awayTeamId, odds, gameDate }) => {
+const BetCard = ({ selectBet, homeTeamName, homeTeamId, awayTeamName, awayTeamId, odds, gameDate }) => {    
     return (
         <BetCardWrapper className='bet-card'>
-            <div className='card-row bet-card__headers'>
-                <div className='header date-time'>{gameDate}</div>
+            <div className='bet-card__headers'>
+                <div className='header date-time'><h3>{zuluToStringFormat(gameDate)}</h3></div>
             </div>
             <div className='card-row bet-card__home'>
                 <Team className='team-home'>{homeTeamName}</Team>
@@ -19,7 +19,8 @@ const BetCard = ({ selectBet, homeTeamName, homeTeamId, awayTeamName, awayTeamId
                                 <BetButton
                                     key={index}
                                     className='odd money-line'
-                                    value={decToAmerican(odd.ratio)}
+                                    metric={odd.metric}
+                                    ratio={decToAmerican(odd.ratio)}
                                     callback={() => selectBet(odd.fixtureId, odd.id)}
                                 />
                             ))}
@@ -34,7 +35,8 @@ const BetCard = ({ selectBet, homeTeamName, homeTeamId, awayTeamName, awayTeamId
                             <BetButton
                                 key={index}
                                 className='odd money-line'
-                                value={decToAmerican(odd.ratio)}
+                                metric={odd.metric}
+                                ratio={decToAmerican(odd.ratio)}
                                 callback={() => selectBet(odd.fixtureId, odd.id)}
                             />
                         ))}
@@ -59,13 +61,28 @@ const BetCardWrapper = styled.div`
     box-sizing: border-box;
     flex-flow: column nowrap;
     width: 100%;
+    margin-bottom: 0.4rem;
 
     background-color: white;
-    border-radius: 0.5em;
-    border: 1px solid #d7def2;
+    border-radius: 0.2em;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 3px 0px, rgba(60, 64, 67, 0.15) 0px 1px 2px 0px;
 
     font-family: 'Inter', 'Sans Serif';
-    font-size: 0.9em;
+    font-size: 0.8rem;
+
+    .bet-card__headers {
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+        padding: 0 0 0 1em;
+        font-weight: 700;
+
+        & h3 {
+            font-size: 0.8rem;
+            margin: 1rem 0 0.5rem 0;
+            color: #808080;
+        }
+    }
 
     & .card-row:not(:last-of-type) {
         margin-bottom: 0.2em;
@@ -79,14 +96,6 @@ const BetCardWrapper = styled.div`
         display: grid;
         grid-template-columns: 45% 1fr;
         grid-template-rows: 3em;
-
-        .date-time {
-            display: flex;
-            align-items: center;
-            box-sizing: border-box;
-            padding: 0 0 0 1em;
-            font-weight: 700;
-        }
     }
 `;
 
@@ -104,15 +113,4 @@ const Team = styled.div`
     box-sizing: border-box;
     padding: 0 0 0 1em;
     font-weight: 500;
-`;
-
-const Odd = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-sizing: border-box;
-    background-color: #eaf3fd;
-    color: #5698d6;
-    border-radius: 0.4em;
-    padding: 0;
 `;
