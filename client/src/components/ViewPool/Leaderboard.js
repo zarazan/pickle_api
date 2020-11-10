@@ -3,11 +3,17 @@ import styled from 'styled-components';
 import RowResult from './RowResult';
 import WinnerCard from './WinnerCard';
 import MOCK_ENTRIES from '../../constants/mockEntries';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
-const Leaderboard = props => {
+
+const Leaderboard = ({ toggleDisplay, props }) => {
     return (
         <LeaderboardWrapper className='leaderboard-container'>
-            <Header className='leaderboard__header subsection'>Leaderboard</Header>
+            <Header>
+                <button className='leaderboard__back-nav' onClick={() => toggleDisplay('dashboard')}><FontAwesomeIcon icon={faArrowLeft} size='s' /></button>
+                <Title className='leaderboard__title subsection'>LEADERBOARD</Title>
+            </Header>
             <WinnerCircle className='leaderboard__leader subsection'>
                 {MOCK_ENTRIES.slice(0, 3).map((result, index) => (
                     <WinnerCard 
@@ -19,7 +25,7 @@ const Leaderboard = props => {
                     />
                 ))}
             </WinnerCircle>
-            <div className='leaderboard__places subsection'>
+            <PlacesList className='leaderboard__places subsection'>
                 {MOCK_ENTRIES.map((result, index) => (
                     <RowResult 
                         key={index}
@@ -29,7 +35,7 @@ const Leaderboard = props => {
                         bankroll={result.bankroll}
                     />
                 ))}
-            </div>
+            </PlacesList>
         </LeaderboardWrapper>
     );
 };
@@ -45,19 +51,34 @@ const LeaderboardWrapper = styled.section`
     overflow: auto;
 `;
 
-const Header = styled.h2`
+const Header = styled.header`
+    display: grid;
+    grid-template-columns: 10% 1fr 10%;
+    grid-template-areas:
+        'left title right';
+    height: 1.75rem;
+
+    & button.leaderboard__back-nav {
+        grid-area: left;
+        background: none;
+        border: none;
+        outline: none;
+    }
+`;
+
+const Title = styled.h3`
     grid-area: title;
     display: flex;
     justify-content: center;
     align-content: center;
     align-items: center;
     
-    font-family: 'Poppins', 'Sans Serif';
-    font-size: 1.25em;
-    font-weight: 900;
-    color: #202122;
-
     margin: 0;
+
+    font-family: 'Poppins', 'Sans Serif';
+    font-size: .8125rem;
+    letter-spacing: .0625em;
+    color: #8b8c8f;
 `;
 
 const WinnerCircle = styled.div`
@@ -65,8 +86,8 @@ const WinnerCircle = styled.div`
     grid-template-columns: 30% 1fr 30%;
     grid-template-areas:
         'second first third';
-        box-sizing: border-box;
-    margin: 1.5em 0 3em 0;
+    box-sizing: border-box;
+    margin: 1em 0 1em 0;
 
     .trophy {
         display: flex;
@@ -86,4 +107,11 @@ const WinnerCircle = styled.div`
     .winner-card-3 {
         grid-area: third;
     }
+`;
+
+const PlacesList = styled.div`
+    display: flex;
+    flex-flow: column nowrap;
+    box-sizing: border-box;
+    padding: 0 0.1rem 0.75rem 0.1rem;
 `;

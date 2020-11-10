@@ -1,20 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { decToAmerican } from '../../utilities/helpers';
 
-const EnterWager = ({ currentBet, placeBet, closeBetSlip, betCount, odds, errors }) => { 
+const EnterWager = ({ currentBet, gameName, placeBet, closeBetSlip, betCount, errors }) => { 
     const [wager, setWager] = useState(0);
     const [payout, setPayout] = useState(0);
+    const [ratio, setRatio] = useState(null);
 
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD',
         minimumFractionDigits: 2
-      })
+      });
+
+    const betHash = {
+        'money_line': 'Money Line',
+        'spread': 'Point Spread',
+        'over': 'Over',
+        'under': 'Under',
+    };
 
     useEffect(() => (
         calculatePayout()
     ), [wager]);
+
+    useEffect(() => (
+        setRatio(decToAmerican(currentBet.ratio))
+    ), []);
 
     return (
         <EnterWagerWrapper className='enter-wager-container'>
@@ -29,12 +42,26 @@ const EnterWager = ({ currentBet, placeBet, closeBetSlip, betCount, odds, errors
             </CalculatorHeader>            
             <CalculatorSummary className='wager-row summary'>
                 <div className='enter-wager__bet-summary summary-item'>
-                    <div className=''>ATL Falcons +{odds}</div>
-                    <div className=''>POINT SPREAD</div>
-                    <div className=''>Atlanta Falcons @ Carolina Panthers</div>
+                    <div className=''>
+                        <span>{currentBet.teamName} </span>
+                        <span>
+                            {currentBet.metric 
+                            ? currentBet.metric > 0 
+                                ? `+${currentBet.metric}`
+                                : currentBet.metric
+                            : ''}
+                        </span>
+                    </div>
+                    <div className=''>{betHash[currentBet.type]}</div>
+                    <div className=''>{gameName}</div>
                 </div>    
                 <div className='enter-wager__bet-total summary-item'>
-                    <div className=''>-115</div>
+                    <div className=''>
+                        {ratio > 0
+                            ? `+${ratio}`
+                            : ratio
+                        }
+                    </div>
                     <div className='wager'>
                         <span>$</span>
                         <input disabled type='number' value={`${parseInt(wager, 10).toFixed(2)}`} onChange={() => calculatePayout()}/>
@@ -73,7 +100,7 @@ const EnterWager = ({ currentBet, placeBet, closeBetSlip, betCount, odds, errors
                 <CalculatorButton
                     className='btn complete-cancel__button'
                     disabled={wager && wager !== 0 ? false : true}
-                    onClick={() => placeBet(currentBet, wager)}
+                    onClick={() => placeBet(currentBet.id, wager)}
                 >
                     Enter Wager Amount
                 </CalculatorButton>

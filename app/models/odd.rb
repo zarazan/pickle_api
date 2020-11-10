@@ -9,7 +9,7 @@ class Odd < ApplicationRecord
 
   belongs_to :fixture
   has_many :bets
-  belongs_to :team
+  belongs_to :team, optional: true
 
   validates :ratio, presence: true
 
@@ -40,7 +40,7 @@ class Odd < ApplicationRecord
     transaction do
       active_odds = Odd.where(attributes.slice(:fixture, :type, :ratio, :metric, :team))
       active_odds.update_all(active: false)
-      return Odd.create(attributes)
+      return Odd.create!(attributes)
     end
   end
 
@@ -53,7 +53,7 @@ class Odd < ApplicationRecord
   def as_json(options = {})
     super.merge({
       type: odd_type,
-      teamName: team.name
+      teamName: team&.name
     })
   end
 
