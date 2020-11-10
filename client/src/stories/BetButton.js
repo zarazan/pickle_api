@@ -40,7 +40,9 @@ const BetButton = ({ className, metric, ratio, callback }) => {
 
 BetButton.propTypes = {
     className: PropTypes.string,
-    value: PropTypes.string.isRequired,
+    metric: PropTypes.string,
+    ratio: PropTypes.string.isRequired,
+    callback: PropTypes.func.isRequired,
 };
 
 export default BetButton;

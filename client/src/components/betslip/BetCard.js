@@ -8,6 +8,7 @@ import { decToAmerican, zuluToStringFormat } from '../../utilities/helpers';
 const BetCard = ({ selectBet, homeTeamName, homeTeamId, awayTeamName, awayTeamId, odds, gameDate }) => {
     const [homeOdds, setHomeOdds] = useState({ 'pointSpread': { 'betId': null, 'metric': null, 'ratio': null }, 'moneyLine': { 'betId': null, 'metric': null, 'ratio': null }, 'totalPoints': { 'betId': null, 'metric': null, 'ratio': null } });
     const [awayOdds, setAwayOdds] = useState({ 'pointSpread': { 'betId': null, 'metric': null, 'ratio': null }, 'moneyLine': { 'betId': null, 'metric': null, 'ratio': null }, 'totalPoints': { 'betId': null, 'metric': null, 'ratio': null } });
+    const [fixture, setFixture] = useState(null);
     
     useEffect(() => {
         // seed state
@@ -15,6 +16,7 @@ const BetCard = ({ selectBet, homeTeamName, homeTeamId, awayTeamName, awayTeamId
         let away = createSeedData(odds, 'away', awayTeamId);
         setHomeOdds(home);
         setAwayOdds(away);
+        setFixture(odds[0].fixtureId);
     }, []);
 
     return (
@@ -31,7 +33,7 @@ const BetCard = ({ selectBet, homeTeamName, homeTeamId, awayTeamName, awayTeamId
                             className='odd spread'
                             metric={homeOdds.pointSpread.metric}
                             ratio={decToAmerican(homeOdds.pointSpread.ratio)}
-                            callback={() => selectBet(odds.fixtureId, homeOdds.pointSpread.betId)}
+                            callback={() => selectBet(fixture, homeOdds.pointSpread.betId)}
                         />
                         <BetButtonOverUnder 
                             key={'homeTotal'}
@@ -39,14 +41,14 @@ const BetCard = ({ selectBet, homeTeamName, homeTeamId, awayTeamName, awayTeamId
                             which={'over'}
                             metric={homeOdds.totalPoints.metric}
                             ratio={decToAmerican(homeOdds.totalPoints.ratio)}
-                            callback={() => selectBet(odds.fixtureId, homeOdds.totalPoints.betId)}
+                            callback={() => selectBet(fixture, homeOdds.totalPoints.betId)}
                         />
                         <BetButton 
                             key={'homeMoney'}
                             className='odd money'
                             metric={homeOdds.moneyLine.metric}
                             ratio={decToAmerican(homeOdds.moneyLine.ratio)}
-                            callback={() => selectBet(odds.fixtureId, homeOdds.moneyLine.betId)}
+                            callback={() => selectBet(fixture, homeOdds.moneyLine.betId)}
                         />
 
                     </OddsContainer>
@@ -60,7 +62,7 @@ const BetCard = ({ selectBet, homeTeamName, homeTeamId, awayTeamName, awayTeamId
                         className='odd spread'
                         metric={awayOdds.pointSpread.metric}
                         ratio={decToAmerican(awayOdds.pointSpread.ratio)}
-                        callback={() => selectBet(odds.fixtureId, awayOdds.pointSpread.betId)}
+                        callback={() => selectBet(fixture, awayOdds.pointSpread.betId)}
                     />
                     <BetButtonOverUnder 
                         key={'awayTotal'}
@@ -68,14 +70,14 @@ const BetCard = ({ selectBet, homeTeamName, homeTeamId, awayTeamName, awayTeamId
                         which={'under'}
                         metric={awayOdds.totalPoints.metric}
                         ratio={decToAmerican(awayOdds.totalPoints.ratio)}
-                        callback={() => selectBet(odds.fixtureId, awayOdds.totalPoints.betId)}
+                        callback={() => selectBet(fixture, awayOdds.totalPoints.betId)}
                     />
                     <BetButton 
                         key={'awayMoney'}
                         className='odd money'
                         metric={awayOdds.moneyLine.metric}
                         ratio={decToAmerican(awayOdds.moneyLine.ratio)}
-                        callback={() => selectBet(odds.fixtureId, awayOdds.moneyLine.betId)}
+                        callback={() => selectBet(fixture, awayOdds.moneyLine.betId)}
                     />
 
                 </OddsContainer>
@@ -119,8 +121,10 @@ const BetCard = ({ selectBet, homeTeamName, homeTeamId, awayTeamName, awayTeamId
 
 BetCard.propTypes = {
     selectBet: PropTypes.func.isRequired,
-    home: PropTypes.number.isRequired,
-    away: PropTypes.number.isRequired,
+    homeTeamName: PropTypes.string.isRequired,
+    homeTeamId: PropTypes.number.isRequired,
+    awayTeamName: PropTypes.string.isRequired,
+    awayTeamId: PropTypes.number.isRequired,
     odds: PropTypes.array.isRequired,
     gameDate: PropTypes.string,
 };
