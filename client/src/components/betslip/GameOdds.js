@@ -110,6 +110,7 @@ const GameOdds = ({ toggleDisplay, poolId, fixtures, bankroll }) => {
 
         pickleApi.createBet(resp)
             .then(data => {
+                console.log(data);
                 setBetSlip([...betSlip, data]);
                 setToggleBetSlip(false);
             })
