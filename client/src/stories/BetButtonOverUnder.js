@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const BetButton = ({ className, metric, ratio, callback }) => {
+const BetButtonOverUnder = ({ className, which, metric, ratio, callback }) => {
     const [selected, setSelected] = useState(false);
 
     return (
@@ -13,9 +13,9 @@ const BetButton = ({ className, metric, ratio, callback }) => {
                 <div>
                     <span>
                         {metric 
-                        ? metric > 0
-                            ? `+${metric}`
-                            : metric
+                        ? which === 'over'
+                            ? `O ${metric}`
+                            : `U ${metric}`
                         : ''}
                     </span>
                     <span>
@@ -38,14 +38,14 @@ const BetButton = ({ className, metric, ratio, callback }) => {
     }
 };
 
-BetButton.propTypes = {
+BetButtonOverUnder.propTypes = {
     className: PropTypes.string,
     metric: PropTypes.string,
     ratio: PropTypes.string.isRequired,
     callback: PropTypes.func.isRequired,
 };
 
-export default BetButton;
+export default BetButtonOverUnder;
 
 const Odd = styled.div`
     display: flex;

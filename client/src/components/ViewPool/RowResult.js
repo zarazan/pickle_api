@@ -19,7 +19,7 @@ RowResult.propTypes = {
     rank: PropTypes.number.isRequired,
     avatar: PropTypes.object,
     name: PropTypes.string.isRequired,
-    bankroll: PropTypes.number.isRequired,
+    bankroll: PropTypes.string.isRequired,
 };
 
 export default RowResult;

@@ -11,7 +11,7 @@ const Leaderboard = ({ toggleDisplay, props }) => {
     return (
         <LeaderboardWrapper className='leaderboard-container'>
             <Header>
-                <button className='leaderboard__back-nav' onClick={() => toggleDisplay('dashboard')}><FontAwesomeIcon icon={faArrowLeft} size='s' /></button>
+                <button className='leaderboard__back-nav' onClick={() => toggleDisplay('dashboard')}><FontAwesomeIcon icon={faArrowLeft} size='1x' /></button>
                 <Title className='leaderboard__title subsection'>LEADERBOARD</Title>
             </Header>
             <WinnerCircle className='leaderboard__leader subsection'>

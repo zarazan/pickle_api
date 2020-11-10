@@ -97,7 +97,7 @@ const ViewPool = () => {
                             <div className='pool-content__leaderboard-container'>
                                 <div className='leaderboard-header'>
                                     <h3>{'LEADERBOARD'}</h3>
-                                    <button onClick={() => toggleDisplay('leaderboard')}><FontAwesomeIcon icon={faArrowRight} size='s' /></button>
+                                    <button onClick={() => toggleDisplay('leaderboard')}><FontAwesomeIcon icon={faArrowRight} size='sm' /></button>
                                 </div>
                                 <div className='pool-content__leaderboard-list'>
                                     <RowResult 

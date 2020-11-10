@@ -17,8 +17,8 @@ const EnterWager = ({ currentBet, gameName, placeBet, closeBetSlip, betCount, er
     const betHash = {
         'money_line': 'Money Line',
         'spread': 'Point Spread',
-        'over': 'Over',
-        'under': 'Under',
+        'over': 'Total Points',
+        'under': 'Total Points',
     };
 
     useEffect(() => (
@@ -45,10 +45,14 @@ const EnterWager = ({ currentBet, gameName, placeBet, closeBetSlip, betCount, er
                     <div className=''>
                         <span>{currentBet.teamName} </span>
                         <span>
-                            {currentBet.metric 
-                            ? currentBet.metric > 0 
-                                ? `+${currentBet.metric}`
-                                : currentBet.metric
+                            {currentBet.metric
+                                ? currentBet.type === 'over' || currentBet.type === 'under'
+                                    ? currentBet.type === 'over'
+                                        ? `Over ${currentBet.metric}`
+                                        : `Under ${currentBet.metric}`
+                                : currentBet.metric > 0 
+                                    ? `+${currentBet.metric}`
+                                    : currentBet.metric
                             : ''}
                         </span>
                     </div>
