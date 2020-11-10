@@ -11,6 +11,12 @@ const EditScores = props => {
             .catch((error) => console.log(error))
     }, []);
 
+    function fixturesReducer(prevState, {value, key}) {
+        const updatedElement = {...prevState[key]};
+        updatedElement.value = value;
+        return {...prevState, [key]: updatedElement};
+    };
+
     return (
         <table>
             {renderTableHeader()}
@@ -41,7 +47,7 @@ const EditScores = props => {
                 <td>{fixture.startTime}</td>
                 <td>{fixture.sport}</td>
                 <td>{fixture.homeTeamName}</td>
-                <td>{fixture.homeScore}</td>
+                <td><input type='text' value={fixture.homeScore} /></td>
                 <td>{fixture.awayTeamName}</td>
                 <td>{fixture.awayScore}</td>
             </tr>
