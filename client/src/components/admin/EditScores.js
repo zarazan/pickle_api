@@ -1,12 +1,14 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import pickleApi from '../../services/pickle_api';
 
 const EditScores = props => {
 
+    const [buttonText, setButtonText] = useState('Loading...');
+
     const [fixtures, dispatch] = useReducer((fixtures, action) => {
         switch(action.type) {
             case 'update':
-                return fixtures.map((fixture) => {
+                return fixtures.map(fixture => {
                     if(fixture.id === action.id) {
                         return { ...fixture, [action.attribute]: action.value };
                     } else {
@@ -14,7 +16,7 @@ const EditScores = props => {
                     }
                 });
             case 'load':
-                return action.fixtures
+                return action.fixtures;
             default:
                 throw new Error();
         }
@@ -22,15 +24,21 @@ const EditScores = props => {
 
     useEffect(() => {
         pickleApi.getAdminFixtures(1)
-            .then(fixtures => dispatch({type: 'load', fixtures: fixtures}))
-            .catch(error => console.log(error))
+            .then(handleResponse)
+            .catch(console.log)
     }, []);
+
+    function handleResponse(fixtures) {
+        dispatch({type: 'load', fixtures: fixtures});
+        setButtonText('Submit');
+    }
 
     function handleSubmit(event) {
         event.preventDefault();
+        setButtonText('Saving...');
         pickleApi.saveAdminFixtures(fixtures)
-            .then(fixtures => dispatch({type: 'load', fixtures: fixtures}))
-            .catch(error => console.log(error))
+            .then(handleResponse)
+            .catch(console.log)
     }
 
     return (
@@ -43,7 +51,7 @@ const EditScores = props => {
                     {renderFixtures()}
                 </tbody>
             </table>
-            <input type="submit" value="Submit"/>
+            <input type="submit" value={buttonText} disabled={buttonText !== 'Submit'}/>
         </form>
     )
 
@@ -61,7 +69,7 @@ const EditScores = props => {
     }
 
     function renderFixtures() {
-        return fixtures.map((fixture) => renderFixture(fixture));
+        return fixtures.map(fixture => renderFixture(fixture));
     }
 
     function renderFixtureInput(fixture, attribute) {
