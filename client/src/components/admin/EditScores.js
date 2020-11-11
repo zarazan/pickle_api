@@ -1,27 +1,50 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import pickleApi from '../../services/pickle_api';
 
 const EditScores = props => {
 
-    const [fixtures, setFixtures] = useState([])
+    function fixturesReducer(fixtures, action) {
+        switch(action.type) {
+            case 'update':
+                return fixtures.map((fixture) => {
+                    if(fixture.id === action.id) {
+                        return { ...fixture, [action.attribute]: action.value };
+                    } else {
+                        return fixture;
+                    }
+                });
+            case 'load':
+                return action.fixtures
+            default:
+                throw new Error();
+        }
+    };
+
+    const [fixtures, dispatch] = useReducer(fixturesReducer, []);
 
     useEffect(() => {
         pickleApi.getAdminFixtures(1)
-            .then((fixtures) => setFixtures(fixtures))
-            .catch((error) => console.log(error))
+            .then(fixtures => dispatch({type: 'load', fixtures: fixtures}))
+            .catch(error => console.log(error))
     }, []);
 
-    function fixturesReducer(prevState, {value, key}) {
-        const updatedElement = {...prevState[key]};
-        updatedElement.value = value;
-        return {...prevState, [key]: updatedElement};
-    };
+    function handleSubmit(event) {
+        event.preventDefault();
+        console.log(fixtures);
+    }
 
     return (
-        <table>
-            {renderTableHeader()}
-            {renderFixtures()}
-        </table>
+        <form onSubmit={handleSubmit}>
+            <table>
+                <thead>
+                    {renderTableHeader()}
+                </thead>
+                <tbody>
+                    {renderFixtures()}
+                </tbody>
+            </table>
+            <input type="submit" value="Submit"/>
+        </form>
     )
 
     function renderTableHeader() {
@@ -43,11 +66,20 @@ const EditScores = props => {
 
     function renderFixture(fixture) {
         return (
-            <tr>
+            <tr key={fixture.id}>
                 <td>{fixture.startTime}</td>
                 <td>{fixture.sport}</td>
                 <td>{fixture.homeTeamName}</td>
-                <td><input type='text' value={fixture.homeScore} /></td>
+                <td><input 
+                        type='text'
+                        value={fixture.homeScore || ''}
+                        onChange={event => dispatch({
+                            type: 'update',
+                            id: fixture.id,
+                            attribute: 'homeScore',
+                            value: event.target.value
+                        })}
+                /></td>
                 <td>{fixture.awayTeamName}</td>
                 <td>{fixture.awayScore}</td>
             </tr>
