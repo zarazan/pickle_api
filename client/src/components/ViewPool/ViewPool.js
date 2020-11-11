@@ -134,7 +134,7 @@ const ViewPool = () => {
                         </PoolContent>
 
                     : display == 'leaderboard'
-                        ? <Leaderboard toggleDisplay={toggleDisplay} leaderboard={entries}/>
+                        ? <Leaderboard toggleDisplay={toggleDisplay} winnersCircle={winnersCircle} entries={entries}/>
                         : display === 'games'
                             ? <GameOdds toggleDisplay={toggleDisplay} poolId={poolId} fixtures={fixtures}/>
                             : <OpenBets bets={bets}/>
