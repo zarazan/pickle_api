@@ -23,6 +23,7 @@ Rails.application.routes.draw do
     get '/teams' => 'teams#index'
 
     get '/admin/pools/:pool_id/fixtures' => 'admin#fixtures'
+    patch '/admin/fixtures' => 'admin#update_fixtures'
   end
 
 end

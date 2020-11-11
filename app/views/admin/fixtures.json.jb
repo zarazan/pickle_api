@@ -1,4 +1,4 @@
-@pool.fixtures.map do |fixture|
+@fixtures.map do |fixture|
   fixture.as_json.merge({
     homeTeamName: fixture.home_team.name,
     awayTeamName: fixture.away_team.name

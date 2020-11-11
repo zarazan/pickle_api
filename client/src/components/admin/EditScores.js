@@ -3,7 +3,7 @@ import pickleApi from '../../services/pickle_api';
 
 const EditScores = props => {
 
-    function fixturesReducer(fixtures, action) {
+    const [fixtures, dispatch] = useReducer((fixtures, action) => {
         switch(action.type) {
             case 'update':
                 return fixtures.map((fixture) => {
@@ -18,9 +18,7 @@ const EditScores = props => {
             default:
                 throw new Error();
         }
-    };
-
-    const [fixtures, dispatch] = useReducer(fixturesReducer, []);
+    }, []);
 
     useEffect(() => {
         pickleApi.getAdminFixtures(1)
@@ -30,7 +28,9 @@ const EditScores = props => {
 
     function handleSubmit(event) {
         event.preventDefault();
-        console.log(fixtures);
+        pickleApi.saveAdminFixtures(fixtures)
+            .then(fixtures => dispatch({type: 'load', fixtures: fixtures}))
+            .catch(error => console.log(error))
     }
 
     return (
@@ -64,24 +64,30 @@ const EditScores = props => {
         return fixtures.map((fixture) => renderFixture(fixture));
     }
 
+    function renderFixtureInput(fixture, attribute) {
+        return (
+            <input 
+                type='text'
+                value={fixture[attribute] || ''}
+                onChange={event => dispatch({
+                    type: 'update',
+                    id: fixture.id,
+                    attribute: attribute,
+                    value: event.target.value
+                })}
+            />
+        )
+    }
+
     function renderFixture(fixture) {
         return (
             <tr key={fixture.id}>
                 <td>{fixture.startTime}</td>
                 <td>{fixture.sport}</td>
                 <td>{fixture.homeTeamName}</td>
-                <td><input 
-                        type='text'
-                        value={fixture.homeScore || ''}
-                        onChange={event => dispatch({
-                            type: 'update',
-                            id: fixture.id,
-                            attribute: 'homeScore',
-                            value: event.target.value
-                        })}
-                /></td>
+                <td>{renderFixtureInput(fixture, 'homeScore')}</td>
                 <td>{fixture.awayTeamName}</td>
-                <td>{fixture.awayScore}</td>
+                <td>{renderFixtureInput(fixture, 'awayScore')}</td>
             </tr>
         )
     }

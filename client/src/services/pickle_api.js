@@ -12,6 +12,11 @@ class PickleApi {
     return this.sendRequest(options); 
   }
 
+  saveAdminFixtures(fixtures) {
+    const options = {method: 'patch', url: 'admin/fixtures', data: {fixtures: fixtures}}
+    return this.sendRequest(options);
+  }
+
   getBets(pool_id, params) {
     const options = {method: 'get', url: `/pools/${pool_id}/bets`, data: params}
     return this.sendRequest(options);
