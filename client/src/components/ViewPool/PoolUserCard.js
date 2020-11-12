@@ -15,9 +15,9 @@ const PoolUserCard = ({ name, avatar, bankroll }) => {
 };
 
 PoolUserCard.propTypes = {
-    name: PropTypes.string.isRequired,
+    name: PropTypes.string,
     avatar: PropTypes.object,
-    bankroll: PropTypes.number.isRequired,
+    bankroll: PropTypes.string,
 };
 
 export default PoolUserCard;

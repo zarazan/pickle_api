@@ -8,7 +8,7 @@ class BetsController < ApplicationController
   end
 
   def pool_bets
-    @bets = current_user.bets.where(pool_id: params[:pool_id])
+    @bets = current_user.bets.where(pool_id: params[:id])
   end
 
   private

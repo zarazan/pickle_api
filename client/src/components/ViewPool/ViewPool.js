@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext, useReducer } from 'react';
+import useAuthHandler from '../../hooks/AuthHandler';
+import { UserContext } from '../../contexts/UserContext';
 import styled from'styled-components';
 import Leaderboard from './Leaderboard';
 import GameOdds from '../betslip/GameOdds';
@@ -8,6 +10,7 @@ import pickleApi from '../../services/pickle_api';
 import PoolUserCard from './PoolUserCard';
 import RowResult from './RowResult';
 import OpenBetCard from './OpenBetCard';
+import { currencyFormatter } from '../../utilities/helpers';
 
 import MOCK_BETS from '../../constants/mockBets';
 
@@ -15,10 +18,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 
 const ViewPool = () => {
+    const [user, setUser] = useContext(UserContext);
+    const isLoadingUser = useAuthHandler(user, setUser);
     let { poolId } = useParams();
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
     const [display, setDisplay] = useState('dashboard');
+    const [winnersCircle, setWinnersCircle] = useState([]);
     const [entries, setEntries] = useState([]);
     const [fixtures, setFixtures] = useState([]);
     const [bets, setBets] = useState(null);
@@ -30,58 +36,41 @@ const ViewPool = () => {
 
     useEffect(() => {
         setIsLoading(true);
-        pickleApi.getEntries(poolId)
-            .then(entries => {
-                setEntries(entries);
-                setMyInfo(entries.filter(entry => entry.userName === 'Kyle Zarazan').pop());
-                pickleApi.getFixtures(poolId)
-                .then(fixtures => {
-                    setFixtures(fixtures);
-                    pickleApi.getBets(poolId)
-                        .then(bets => {
-                            setBets(bets);
-                            setIsLoading(false);
-                        })
-                        .catch(error => {
-                            setErrorMessage(error.toString());
-                        })
-                })
-                .catch(error => {
-                    setErrorMessage(error.toString());
-                })
-            })
-            .catch(error => {
-                setErrorMessage(error.toString());
-            })
+        fetchAndSetEntries(poolId);
+        // fetchInfo
+        // fetchFixtures
+        // fetchBets
+        // pickleApi.getEntries(poolId)
+        //     .then(entries => {
+        //         setEntries(entries);
+        //         setMyInfo(entries.filter(entry => entry.userName === 'Kyle Zarazan').pop());
+        //         pickleApi.getFixtures(poolId)
+        //         .then(fixtures => {
+        //             setFixtures(fixtures);
+        //             pickleApi.getBets(poolId)
+        //                 .then(bets => {
+        //                     setBets(bets);
+        //                     setIsLoading(false);
+        //                 })
+        //                 .catch(error => {
+        //                     setErrorMessage(error.toString());
+        //                 })
+        //         })
+        //         .catch(error => {
+        //             setErrorMessage(error.toString());
+        //         })
+        //     })
+        //     .catch(error => {
+        //         setErrorMessage(error.toString());
+        //     })
       }, []);
 
-    return (
+    return (        
         <ViewPoolWrapper className='pool-view-container'>
-            {/* <ViewToggle className='view-toggle'>
-                <div className={`toggle-container${display && display === 'leaderboard' ? '-selected' : ''}`}>
-                    <ClickableToggle className='btn btn-toggle' name='leaderboard' onClick={e => toggleDisplay(e.target.name)}>
-                        Leaderboard
-                    </ClickableToggle>
-                </div>
-
-                <div className={`toggle-container${display && display === 'games' ? '-selected' : ''}`}>
-                <ClickableToggle className='btn btn-toggle' name='games' onClick={e => toggleDisplay(e.target.name)}>
-                    Games
-                </ClickableToggle>
-                </div>
-
-                <div className={`toggle-container${display && display === 'open-bets' ? '-selected' : ''}`}>
-                <ClickableToggle className='btn btn-toggle' name='open-bets' onClick={e => toggleDisplay(e.target.name)}>
-                    Open Bets
-                </ClickableToggle>
-                </div>
-            </ViewToggle> */}
-
             {errorMessage && <div>{errorMessage}</div>}
-
-            {isLoading ? (
+            {!errorMessage && isLoadingUser ? (
                 <div>
-                    Loading Pool...
+                    Loading User...
                 </div>
             ) : (
                 <>
@@ -92,32 +81,23 @@ const ViewPool = () => {
                                 <h2>{'Pool Name'}</h2>
                             </div>
                             <div className='pool-content__user-stats'>
-                                <PoolUserCard name={myInfo.userName} avatar={null} bankroll={myInfo.bankrollPlusActiveBets}/>
+                                <PoolUserCard name={myInfo.userName} avatar={null} bankroll={currencyFormatter.format(myInfo.bankrollPlusActiveBets)}/>
                             </div>
                             <div className='pool-content__leaderboard-container'>
                                 <div className='leaderboard-header'>
                                     <h3>{'LEADERBOARD'}</h3>
-                                    <button onClick={() => toggleDisplay('leaderboard')}><FontAwesomeIcon icon={faArrowRight} size='s' /></button>
+                                    <button onClick={() => toggleDisplay('leaderboard')}><FontAwesomeIcon icon={faArrowRight} size='sm' /></button>
                                 </div>
                                 <div className='pool-content__leaderboard-list'>
-                                    <RowResult 
-                                        rank={0}
-                                        avatar={null}
-                                        name={'Troy Jennings'}
-                                        bankroll={'500'}
-                                    />
-                                    <RowResult 
-                                        rank={1}
-                                        avatar={null}
-                                        name={'Taylor Bezek'}
-                                        bankroll={'500'}
-                                    />
-                                    <RowResult 
-                                        rank={2}
-                                        avatar={null}
-                                        name={'Kyle Nowak'}
-                                        bankroll={'500'}
-                                    />
+                                    {winnersCircle.map((winner, i) => (
+                                        <RowResult 
+                                            key={i}
+                                            rank={winner.position}
+                                            avatar={null}
+                                            name={winner.userName}
+                                            bankroll={winner.bankrollPlusActiveBets}
+                                        />
+                                    ))}
                                 </div>
                             </div>
                             <div className='pool-content__separator'>
@@ -126,11 +106,10 @@ const ViewPool = () => {
                             <div>
                                 <div className='pool-user-placement'>
                                     <RowResult 
-                                        rank={3}
+                                        rank={myInfo.position}
                                         avatar={null}
-                                        name={'Kyle Zarazan'}
-                                        bankroll={'500'}
-                                        style={{ backgroundColor: 'blue' }}
+                                        name={myInfo.userName}
+                                        bankroll={myInfo.bankrollPlusActiveBets}
                                     />
                                 </div>
                             </div>
@@ -155,27 +134,31 @@ const ViewPool = () => {
                         </PoolContent>
 
                     : display == 'leaderboard'
-                        ? <Leaderboard toggleDisplay={toggleDisplay} leaderboard={entries}/>
+                        ? <Leaderboard toggleDisplay={toggleDisplay} winnersCircle={winnersCircle} entries={entries}/>
                         : display === 'games'
                             ? <GameOdds toggleDisplay={toggleDisplay} poolId={poolId} fixtures={fixtures}/>
                             : <OpenBets bets={bets}/>
                     }   
                 </>
-                // <>
-                //     <UserData className='user-data'>
-                //         <div className=''>
-                //             <h2 className=''>Bankroll</h2>
-                //             <span className=''>$500</span>
-                //         </div>
-                //         <div className=''>
-                //             <h2 className=''>To Win</h2>
-                //             <span className=''>$0</span>
-                //         </div>
-                //     </UserData>
-                // </>
             )}
         </ViewPoolWrapper>
     );
+
+    /** fetchAndSetEntries: Fetches the pool entries to display leaderboard results. */
+    function fetchAndSetEntries(id) {
+        pickleApi.getEntries(id).then(entries => {
+            // add entries to state
+            setEntries(entries);
+            // get the entry for the current user
+            // TODO: change this to an ID in the future
+            const [ info ] = entries.filter(entry => entry.userName === user.name);
+            const topEntries = entries.filter(entry => entry.position < 3);
+            // add info to state
+            setMyInfo(info);
+            setWinnersCircle(topEntries);
+        })
+        .catch(error => setErrorMessage(error.toString()));
+    }
 
     /** toggleDisplay: Toggles the view to be displayed. **/
     function toggleDisplay(value) {

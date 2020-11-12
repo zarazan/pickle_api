@@ -7,32 +7,32 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 
-const Leaderboard = ({ toggleDisplay, props }) => {
+const Leaderboard = ({ toggleDisplay, winnersCircle, entries }) => {
     return (
         <LeaderboardWrapper className='leaderboard-container'>
             <Header>
-                <button className='leaderboard__back-nav' onClick={() => toggleDisplay('dashboard')}><FontAwesomeIcon icon={faArrowLeft} size='s' /></button>
+                <button className='leaderboard__back-nav' onClick={() => toggleDisplay('dashboard')}><FontAwesomeIcon icon={faArrowLeft} size='1x' /></button>
                 <Title className='leaderboard__title subsection'>LEADERBOARD</Title>
             </Header>
             <WinnerCircle className='leaderboard__leader subsection'>
-                {MOCK_ENTRIES.slice(0, 3).map((result, index) => (
+                {(winnersCircle || MOCK_ENTRIES).map((result, index) => (
                     <WinnerCard 
                         key={index}
                         rank={index + 1}
                         avatar={result.image}
-                        name={result.name}
-                        bankroll={result.bankroll}
+                        name={result.userName}
+                        bankroll={result.bankrollPlusActiveBets}
                     />
                 ))}
             </WinnerCircle>
             <PlacesList className='leaderboard__places subsection'>
-                {MOCK_ENTRIES.map((result, index) => (
+                {(entries || MOCK_ENTRIES).map((result, index) => (
                     <RowResult 
                         key={index}
                         rank={index}
                         avatar={result.image}
-                        name={result.name}
-                        bankroll={result.bankroll}
+                        name={result.userName}
+                        bankroll={result.bankrollPlusActiveBets}
                     />
                 ))}
             </PlacesList>

@@ -12,7 +12,14 @@ const zuluToStringFormat = (date) => {
         return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }).replace(',', '');
 };
 
+const currencyFormatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2
+  });
+
 export {
     decToAmerican,
-    zuluToStringFormat
-}
+    zuluToStringFormat,
+    currencyFormatter,
+};

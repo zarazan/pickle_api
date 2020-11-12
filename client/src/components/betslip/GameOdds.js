@@ -34,7 +34,7 @@ const GameOdds = ({ toggleDisplay, poolId, fixtures, bankroll }) => {
                 ) : ( 
                     <>
                         <Header className='game-odds-header'>
-                            <button className='game-odds__back-nav' onClick={() => toggleDisplay('dashboard')}><FontAwesomeIcon icon={faArrowLeft} size='s' /></button>
+                            <button className='game-odds__back-nav' onClick={() => toggleDisplay('dashboard')}><FontAwesomeIcon icon={faArrowLeft} size='1x' /></button>
                             <Title className='game-odds__title'>{'SCHEDULE & ODDS'}</Title>
                         </Header>
                         <Bankroll>
@@ -110,6 +110,7 @@ const GameOdds = ({ toggleDisplay, poolId, fixtures, bankroll }) => {
 
         pickleApi.createBet(resp)
             .then(data => {
+                console.log(data);
                 setBetSlip([...betSlip, data]);
                 setToggleBetSlip(false);
             })

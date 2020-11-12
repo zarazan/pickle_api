@@ -18,6 +18,7 @@ function useAuthHandler(user, setUser) {
   }
 
   function loadUserOrRedirect() {
+    console.log('loading or redirecting user');
     if(Object.keys(user).length !== 0) {
       setIsLoading(false);
       return;
