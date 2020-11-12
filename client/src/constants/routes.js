@@ -14,7 +14,7 @@ const ROUTES = [
     { path: '/create-pool', key: 'CREATE_POOL', exact: true, component: PoolCreate },
     // { path: '/pool', key: 'MY_POOLS', exact: true, component: MyPools },
     { path: '/pools/:poolId', key: 'VIEW_POOL', component: ViewPool },
-    { path: '/admin', key: 'EDIT_SCORES', component: EditScores },
+    { path: '/admin/scores/:poolId', key: 'EDIT_SCORES', component: EditScores },
 ];
 
 export default ROUTES;

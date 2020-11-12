@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import pickleApi from '../services/pickle_api';
-import history from '../history';
+import { NavLink, useHistory } from 'react-router-dom';
 
 function useAuthHandler(user, setUser) {
 
   const [isLoading, setIsLoading] = useState(true);
+  const history = useHistory();
 
   function loadUser() {
     pickleApi.getAuth()
@@ -24,6 +25,7 @@ function useAuthHandler(user, setUser) {
     if(pickleApi.hasSessionInfo()) {
       loadUser();
     } else {
+      console.log('pushing sign-in');
       history.push('/sign-in');
     }
   }

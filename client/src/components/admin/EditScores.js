@@ -1,8 +1,14 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer, useContext } from 'react';
+import { useParams } from 'react-router-dom';
 import pickleApi from '../../services/pickle_api';
+import { UserContext } from '../../contexts/UserContext';
+import useAuthHandler from '../../hooks/AuthHandler';
 
 const EditScores = props => {
 
+    let { poolId } = useParams();
+    const [user, setUser] = useContext(UserContext);
+    const isLoadingUser = useAuthHandler(user, setUser);
     const [buttonText, setButtonText] = useState('Loading...');
 
     const [fixtures, dispatch] = useReducer((fixtures, action) => {
@@ -23,10 +29,11 @@ const EditScores = props => {
     }, []);
 
     useEffect(() => {
-        pickleApi.getAdminFixtures(1)
+        if(isLoadingUser) { return; }
+        pickleApi.getAdminFixtures(poolId)
             .then(handleResponse)
             .catch(console.log)
-    }, []);
+    }, [isLoadingUser]);
 
     function handleResponse(fixtures) {
         dispatch({type: 'load', fixtures: fixtures});
@@ -36,6 +43,7 @@ const EditScores = props => {
     function handleSubmit(event) {
         event.preventDefault();
         setButtonText('Saving...');
+        dispatch({type: 'load', fixtures: []});
         pickleApi.saveAdminFixtures(fixtures)
             .then(handleResponse)
             .catch(console.log)
