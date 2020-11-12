@@ -25,7 +25,6 @@ function useAuthHandler(user, setUser) {
     if(pickleApi.hasSessionInfo()) {
       loadUser();
     } else {
-      console.log('pushing sign-in');
       history.push('/sign-in');
     }
   }
