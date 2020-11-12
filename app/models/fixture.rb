@@ -67,4 +67,10 @@ class Fixture < ApplicationRecord
     [home_team, away_team].find { |team| team.name == team_name }
   end
 
+  def as_json(options = {})
+    super.merge({
+      locked: locked?
+    })
+  end
+
 end
