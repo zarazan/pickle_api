@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { RotateSpinner } from 'react-spinners-kit';
 
-const FullPageSpinner = ({ loading, optionalMessage }) => {
+const FullPageSpinner = ({ size, loading, optionalMessage }) => {
   return (
     <div
       className='page-spinner'
@@ -16,7 +16,7 @@ const FullPageSpinner = ({ loading, optionalMessage }) => {
     >
       <RotateSpinner
         className='page-spinner__spinner'
-        size={40}
+        size={size}
         loading={loading}
         color={'#5dc382'}
       />
@@ -52,6 +52,7 @@ FullPageSpinner.propTypes = {
 FullPageSpinner.defaultProps = {
   loading: true,
   optionalMessage: '',
+  size: 30,
 };
 
 export default FullPageSpinner;

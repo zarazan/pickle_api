@@ -47,7 +47,8 @@ const CardWrapper = styled.div`
     margin-top: 0.75em;
     box-sizing: border-box;
     border: 1px solid lightgrey;
-    border-radius: 0.5em;
+    border-radius: 0.2rem;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 3px 0px, rgba(60, 64, 67, 0.15) 0px 1px 2px 0px;
 
     font-family: 'Inter', 'Sans Serif';
     
@@ -57,10 +58,6 @@ const CardWrapper = styled.div`
         background: none;
         outline: none;
         border: none;
-    }
-
-    &:hover {
-        box-shadow: 0px 0px 7px 4px rgba(0,0,0,0.14);
     }
 `;
 

@@ -1,46 +1,16 @@
 import React, { useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
+
+import { UserContext } from '../../contexts/UserContext';
+import { SAMPLE_STATS } from '../../constants/mockStats';
+
 import MyPools from './MyPools';
 import StatCardLite from './StatCardLite';
-import { UserContext } from '../contexts/UserContext';
-import useAuthHandler from '../hooks/AuthHandler';
-
-import { faArrowCircleUp, faArrowCircleDown } from '@fortawesome/free-solid-svg-icons';
-
-const SAMPLE_STATS = [
-    {
-        index: 1,
-        title: 'Bet Win %',
-        value: '48%',
-        icon: faArrowCircleUp,
-        telemetry: '+2%',
-        timespan: 'vs last week',
-        color: '#43aa8b',
-    },
-    {
-        index: 2,
-        title: 'Pool Win %',
-        value: '62%',
-        icon: faArrowCircleUp,
-        telemetry: '+10%',
-        timespan: 'vs last week',
-        color: '#43aa8b',
-    },
-    {
-        index: 3,
-        title: 'Rank',
-        value: '13th',
-        icon: faArrowCircleDown,
-        telemetry: '-2',
-        timespan: 'vs last week',
-        color: '#f94144',
-    },
-];
 
 const Dashboard = () => {
-
-    const [user, setUser] = useContext(UserContext);
-    const isLoadingUser = useAuthHandler(user, setUser);
+    const [ user ] = useContext(UserContext);
+    const history = useHistory();
 
     return (
         <DashboardWrapper className='dashboard'>
@@ -49,7 +19,7 @@ const Dashboard = () => {
                 <span className='welcome__name'>{user.name}</span>
             </Welcome>
             <StatsWrapper className='stats'>
-                <StatsHeader className='stats__header'>My Stats</StatsHeader>
+                <StatsHeader className='stats__header'>MY STATS</StatsHeader>
                 <div className='stats__cardlist'>
                     {SAMPLE_STATS.map((s) => (
                         <StatCardLite 
@@ -65,6 +35,11 @@ const Dashboard = () => {
                 </div>
             </StatsWrapper>
             <MainWrapper>
+                <PoolsHeader className='my-pools__header'>MY POOLS</PoolsHeader>
+                <CreatePoolButton
+                    onClick={() => history.push('/create-pool')}>Create Pool
+                </CreatePoolButton>
+
                 <MyPools />
             </MainWrapper>
         </DashboardWrapper>
@@ -105,7 +80,6 @@ const StatsWrapper = styled.section`
     grid-area: stats;
     display: flex;
     flex-flow: column nowrap;
-    margin-bottom: 2em;
     
     & .stats__cardlist {
         border: 2px solid #ebeff4;
@@ -113,14 +87,35 @@ const StatsWrapper = styled.section`
     }
 `;
 
-const StatsHeader = styled.h2`
+const StatsHeader = styled.h3`
     font-family: 'Poppins', 'Sans Serif';
-    font-size: 1em;
-    color: #121621;
-
-    margin-bottom: 1em;
+    font-size: .8125rem;
+    letter-spacing: .0625em;
+    color: #8b8c8f;
 `;
 
 const MainWrapper = styled.section`
     grid-area: main;
+`;
+
+const PoolsHeader = styled.h3`
+    font-family: 'Poppins', 'Sans Serif';
+    font-size: .8125rem;
+    letter-spacing: .0625em;
+    color: #8b8c8f;
+
+    margin: 1.25rem 0 1.25rem 0;
+`;
+
+const CreatePoolButton = styled.button`
+    box-sizing: border-box;
+    padding: 1rem 0 1rem;
+    width: 100%;
+    background: none;
+    border: 1px solid #8b8c8f;
+    border-radius: 0.2rem;
+    outline: none;
+    font-family: 'Inter', 'Sans Serif';
+    font-size: .8125rem;
+    color: #8fd6a9;
 `;
