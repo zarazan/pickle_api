@@ -48,7 +48,7 @@ const GameOdds = ({ bankroll }) => {
                                         <EnterWager
                                             className='enter-wager-form'
                                             currentBet={currentBet}
-                                            gameName={currentFixture}
+                                            currentFixture={currentFixture}
                                             placeBet={placeBet}
                                             closeBetSlip={closeBetSlip}
                                             errors={errorMessage}
