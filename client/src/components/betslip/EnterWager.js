@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { decToAmerican } from '../../utilities/helpers';
 
-const EnterWager = ({ currentBet, gameName, placeBet, closeBetSlip, betCount, errors }) => { 
+const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, betCount, errors }) => { 
     const [wager, setWager] = useState(0);
     const [payout, setPayout] = useState(0);
     const [ratio, setRatio] = useState(null);
+    const [game, setGame] = useState('');
 
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -27,6 +28,10 @@ const EnterWager = ({ currentBet, gameName, placeBet, closeBetSlip, betCount, er
 
     useEffect(() => (
         setRatio(decToAmerican(currentBet.ratio))
+    ), []);
+
+    useEffect(() => (
+        setGameName()
     ), []);
 
     return (
@@ -57,7 +62,7 @@ const EnterWager = ({ currentBet, gameName, placeBet, closeBetSlip, betCount, er
                         </span>
                     </div>
                     <div className=''>{betHash[currentBet.type]}</div>
-                    <div className=''>{gameName}</div>
+                    <div className=''>{game}</div>
                 </div>    
                 <div className='enter-wager__bet-total summary-item'>
                     <div className=''>
@@ -118,6 +123,12 @@ const EnterWager = ({ currentBet, gameName, placeBet, closeBetSlip, betCount, er
         </EnterWagerWrapper>
     );
 
+    /** setGameName: Sets the name of the game for display. */
+    function setGameName() {
+        setGame(`${currentFixture.awayTeamName} vs. ${currentFixture.homeTeamName}`);
+    }
+
+    /** appendNumber: Appends a number on the wager entry. */
     function appendNumber(amount) {
         let currentWager = wager;
         // console.log(`appendNumber: initial wager: ${currentWager}`);
@@ -130,6 +141,7 @@ const EnterWager = ({ currentBet, gameName, placeBet, closeBetSlip, betCount, er
         setWager(parseInt(currentWager, 10));
     }
 
+    /** addNumber: Adds a number to the wager entry. */
     function addNumber(amount) {
         let currentWager = wager;
         // console.log(`addNumber: initial wager: ${currentWager}`);
@@ -138,6 +150,7 @@ const EnterWager = ({ currentBet, gameName, placeBet, closeBetSlip, betCount, er
         setWager(parseInt(currentWager, 10));
     }
 
+    /** calculatePayout: Calculate payout based on the odds and entered wager. */
     function calculatePayout(){
         const currentWager = wager;
         let currentOdds = -150;
@@ -146,6 +159,7 @@ const EnterWager = ({ currentBet, gameName, placeBet, closeBetSlip, betCount, er
         setPayout(parseInt(currentWager + profit, 10));
     }
 
+    /** clearWager: Resets the wager entry and payout state. */
     function clearWager() {
         setWager(0);
         setPayout(0);
@@ -153,7 +167,7 @@ const EnterWager = ({ currentBet, gameName, placeBet, closeBetSlip, betCount, er
 };
 
 EnterWager.propTypes = {
-    toggleBetCart: PropTypes.func.isRequired,
+
 };
 
 export default EnterWager;
