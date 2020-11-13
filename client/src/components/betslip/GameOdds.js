@@ -1,104 +1,114 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams, useRouteMatch } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+
 import pickleApi from '../../services/pickle_api';
+
 import BetCard from './BetCard';
 import EnterWager from './EnterWager';
-import { UserContext } from '../../contexts/UserContext';
-import useAuthHandler from '../../hooks/AuthHandler';
+import FullPageSpinner from '../FullPageSpinner';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faDollarSign } from '@fortawesome/free-solid-svg-icons';
 
 const GameOdds = ({ bankroll }) => {
     const { poolId } = useParams(); // pool id from url
-    const [user, setUser] = useContext(UserContext);
-    console.log(user);
-    const isLoadingUser = useAuthHandler(user, setUser);
+    const history = useHistory();
+
+    const [state, setState] = useState('idle'); // used for component state tracking
+    const [errorMessage, setErrorMessage] = useState(''); // used for displaying errors
 
     const [betCount, setBetCount] = useState(0); // counter for bets made
+    const [currentBet, setCurrentBet] = useState(null); // holds the current bet for sending bet info to enter wager
     const [fixtures, setFixtures] = useState([]); // array of pool fixtures
-    const [isLoading, setIsLoading] = useState(false); // tracks loading during data fetching
-
-    const [currentFixture, setCurrentFixture] = useState(null);
-    const [currentBet, setCurrentBet] = useState(null);
-    const [toggleBetSlip, setToggleBetSlip] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
+    const [currentFixture, setCurrentFixture] = useState(null); // holds the current fixture for sending game info to enter wager
+    const [toggleBetSlip, setToggleBetSlip] = useState(false); // used for toggling the bet slip entry form
 
     useEffect(() => {
-        if(isLoadingUser) { console.log(user); }
+        window.scrollTo(0, 0);
+    });
 
-        setIsLoading(true);
+    useEffect(() => {
+        setState('loading');
         fetchFixtures(poolId);
-    }, [isLoadingUser, betCount]);
+    }, []);
 
     return (
-        <GameOddsWrapper className='game-odds-container'>
-            {toggleBetSlip 
-                ? (
-                    <EnterWager
-                        className='enter-wager-form'
-                        currentBet={currentBet}
-                        gameName={currentFixture}
-                        placeBet={enterBet}
-                        closeBetSlip={closeBetSlip}
-                        errors={errorMessage}
-                    />
-                ) : ( 
-                    <>
-                        <Header className='game-odds-header'>
-                            <button className='game-odds__back-nav' onClick={() => {}}><FontAwesomeIcon icon={faArrowLeft} size='1x' /></button>
-                            <Title className='game-odds__title'>{'SCHEDULE & ODDS'}</Title>
-                        </Header>
-                        <Bankroll>
-                            <h3>{'Bankroll:'}</h3>
-                            <FontAwesomeIcon icon={faDollarSign} size='2x' color='#8fd6a9' />
-                            <h3 className='user-bankroll'>{bankroll ? bankroll : '0.00'}</h3>
-                            {/* <div>
-                            </div> */}
-                        </Bankroll>
-                        <BetSlipTotals className='game-odds-totals'>
-                            <div className='totals__bankroll'></div>
-                            <div className='totals__headers'>
-                                <div className='headers__game header-label'>
-                                    <h4>{'GAME'}</h4>
-                                </div>
-                                <div className='headers__odd-labels'>
-                                    <div className='headers__spread header-label'>
-                                        <h4>{'POINT'}</h4>
-                                        <h4>{'SPREAD'}</h4>
-                                    </div>
-                                    <div className='headers__points header-label'>
-                                        <h4>{'TOTAL'}</h4>
-                                        <h4>{'POINTS'}</h4>
-                                    </div>
-                                    <div className='headers__moneyline header-label'>
-                                        <h4>{'MONEY'}</h4>
-                                        <h4>{'LINE'}</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </BetSlipTotals>
-                        <BetCardList className='game-odds-cardlist'>
-                            {(fixtures || []).map((fixture, index) => (
-                                <BetCard 
-                                    key={index}
-                                    id={fixture.id}
-                                    homeTeamName={fixture.homeTeamName}
-                                    homeTeamId={fixture.homeTeamId}
-                                    awayTeamName={fixture.awayTeamName}
-                                    awayTeamId={fixture.awayTeamId}
-                                    odds={fixture.odds}
-                                    gameDate={fixture.startTime}
-                                    selectBet={selectBet}
-                                /> 
-                            ))}
-                        </BetCardList>
-                    </>
-                )
+        <>
+            {state === 'error' 
+                ? <div>{errorMessage}</div>
+                : state === 'loading'
+                    ? <FullPageSpinner loading={true} optionalMessage={'Loading Odds'}/>
+                    : state === 'finished' &&
+                        <>
+                            <GameOddsWrapper className='game-odds-container'>
+                                {toggleBetSlip 
+                                    ?
+                                        <EnterWager
+                                            className='enter-wager-form'
+                                            currentBet={currentBet}
+                                            gameName={currentFixture}
+                                            placeBet={placeBet}
+                                            closeBetSlip={closeBetSlip}
+                                            errors={errorMessage}
+                                        />
+                                    :
+                                        <>
+                                            <Header className='game-odds-header'>
+                                                <button 
+                                                    className='game-odds__back-nav' 
+                                                    onClick={() => {}}
+                                                >
+                                                    <FontAwesomeIcon icon={faArrowLeft} size='1x' />
+                                                </button>
+                                                <Title className='game-odds__title'>{'SCHEDULE & ODDS'}</Title>
+                                            </Header>
+                                            <Bankroll>
+                                                <h3>{'Bankroll:'}</h3>
+                                                <FontAwesomeIcon icon={faDollarSign} size='2x' color='#8fd6a9' />
+                                                <h3 className='user-bankroll'>{bankroll ? bankroll : '0.00'}</h3>
+                                            </Bankroll>
+                                            <BetSlipTotals className='game-odds-totals'>
+                                                <div className='totals__bankroll'></div>
+                                                <div className='totals__headers'>
+                                                    <div className='headers__game header-label'>
+                                                        <h4>{'GAME'}</h4>
+                                                    </div>
+                                                    <div className='headers__odd-labels'>
+                                                        <div className='headers__spread header-label'>
+                                                            <h4>{'POINT'}</h4><h4>{'SPREAD'}</h4>
+                                                        </div>
+                                                        <div className='headers__points header-label'>
+                                                            <h4>{'TOTAL'}</h4><h4>{'POINTS'}</h4>
+                                                        </div>
+                                                        <div className='headers__moneyline header-label'>
+                                                            <h4>{'MONEY'}</h4><h4>{'LINE'}</h4>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </BetSlipTotals>
+                                            <BetCardList className='game-odds-cardlist'>
+                                                {(fixtures || []).map((fixture, index) => (
+                                                    <BetCard 
+                                                        key={index}
+                                                        id={fixture.id}
+                                                        homeTeamName={fixture.homeTeamName}
+                                                        homeTeamId={fixture.homeTeamId}
+                                                        awayTeamName={fixture.awayTeamName}
+                                                        awayTeamId={fixture.awayTeamId}
+                                                        odds={fixture.odds}
+                                                        gameDate={fixture.startTime}
+                                                        selectBet={selectBet}
+                                                    /> 
+                                                ))}
+                                            </BetCardList>
+                                        </>
+                                }
+                            </GameOddsWrapper>
+                        </>
             }
-        </GameOddsWrapper>
+        </>
     );
 
     function closeBetSlip() {
@@ -115,20 +125,23 @@ const GameOdds = ({ bankroll }) => {
         setToggleBetSlip(!toggleBetSlip);
     }
 
-    /** fetchFixtures: Gets the fixtures for the pool. */
+    /** fetchFixtures: Fetches the fixtures for the pool and add them to state. */
     function fetchFixtures(id) {
-        // send request
         pickleApi.getFixtures(id)
             .then(data => {
-                // console.log(data);
                 setFixtures(data);
-                setIsLoading(false);
+                setState('finished');
             })
-            .catch(error => setErrorMessage(error.toString()))
+            .catch(error => {
+                history.push('/sign-in');
+                setErrorMessage(error.toString());
+                setState('error');
+            });
     }
 
-    /** enterBet: Sends Pickle API request for placing a bet.**/
-    function enterBet(betId, betAmount) {
+    /** placeBet: Sends Pickle API request for placing a bet.**/
+    function placeBet(betId, betAmount) {
+        // create response body
         let resp = {};
         resp.pool_id = poolId;
         resp.odd_id = betId;
@@ -136,13 +149,15 @@ const GameOdds = ({ bankroll }) => {
 
         pickleApi.createBet(resp)
             .then(data => {
-                console.log(data);
                 setBetCount(betCount + 1);
                 setToggleBetSlip(false);
+                setState('finished');
             })
             .catch(error => {
+                history.push('/sign-in');
                 setErrorMessage(error.toString());
-            })
+                setState('error');
+            });
     }
 };
 
@@ -158,6 +173,7 @@ const GameOddsWrapper = styled.section`
     flex-flow: column nowrap;
 
     box-sizing: border-box;
+    margin: 1em 1em 0 1em;
     height: auto;
     overflow: auto;
 `;
