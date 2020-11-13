@@ -4,8 +4,7 @@ import { UserContext } from '../../contexts/UserContext';
 import styled from'styled-components';
 import Leaderboard from './Leaderboard';
 import GameOdds from '../betslip/GameOdds';
-import OpenBets from './OpenBets';
-import { useParams } from 'react-router-dom';
+import { Route, Switch, useHistory, useParams, useRouteMatch } from 'react-router-dom';
 import pickleApi from '../../services/pickle_api';
 import PoolUserCard from './PoolUserCard';
 import RowResult from './RowResult';
@@ -16,10 +15,14 @@ import MOCK_BETS from '../../constants/mockBets';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import FullPageSpinner from '../FullPageSpinner';
 
 const ViewPool = () => {
     const [user, setUser] = useContext(UserContext);
     const isLoadingUser = useAuthHandler(user, setUser);
+    const { path, url } = useRouteMatch();
+    const history = useHistory();
+
     let { poolId } = useParams();
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
@@ -35,113 +38,129 @@ const ViewPool = () => {
     });
 
     useEffect(() => {
+        if(isLoadingUser) { return; }
+
         setIsLoading(true);
         fetchAndSetEntries(poolId);
-        // fetchInfo
-        // fetchFixtures
-        // fetchBets
-        // pickleApi.getEntries(poolId)
-        //     .then(entries => {
-        //         setEntries(entries);
-        //         setMyInfo(entries.filter(entry => entry.userName === 'Kyle Zarazan').pop());
-        //         pickleApi.getFixtures(poolId)
-        //         .then(fixtures => {
-        //             setFixtures(fixtures);
-        //             pickleApi.getBets(poolId)
-        //                 .then(bets => {
-        //                     setBets(bets);
-        //                     setIsLoading(false);
-        //                 })
-        //                 .catch(error => {
-        //                     setErrorMessage(error.toString());
-        //                 })
-        //         })
-        //         .catch(error => {
-        //             setErrorMessage(error.toString());
-        //         })
-        //     })
-        //     .catch(error => {
-        //         setErrorMessage(error.toString());
-        //     })
-      }, []);
+    }, [isLoadingUser]);
 
-    return (        
-        <ViewPoolWrapper className='pool-view-container'>
-            {errorMessage && <div>{errorMessage}</div>}
-            {!errorMessage && isLoadingUser ? (
-                <div>
-                    Loading User...
-                </div>
-            ) : (
-                <>
-                    {display && display === 'dashboard'
-                    ?
-                        <PoolContent className='pool-content'>
-                            <div className='pool-content__title'>
-                                <h2>{'Pool Name'}</h2>
-                            </div>
-                            <div className='pool-content__user-stats'>
-                                <PoolUserCard name={myInfo.userName} avatar={null} bankroll={currencyFormatter.format(myInfo.bankrollPlusActiveBets)}/>
-                            </div>
-                            <div className='pool-content__leaderboard-container'>
-                                <div className='leaderboard-header'>
-                                    <h3>{'LEADERBOARD'}</h3>
-                                    <button onClick={() => toggleDisplay('leaderboard')}><FontAwesomeIcon icon={faArrowRight} size='sm' /></button>
-                                </div>
-                                <div className='pool-content__leaderboard-list'>
-                                    {winnersCircle.map((winner, i) => (
-                                        <RowResult 
-                                            key={i}
-                                            rank={winner.position}
-                                            avatar={null}
-                                            name={winner.userName}
-                                            bankroll={winner.bankrollPlusActiveBets}
-                                        />
-                                    ))}
-                                </div>
-                            </div>
-                            <div className='pool-content__separator'>
-                                <span><FontAwesomeIcon icon={faEllipsisH} size='1x' color={'#e5e5e6'}/></span>
-                            </div>
-                            <div>
-                                <div className='pool-user-placement'>
-                                    <RowResult 
-                                        rank={myInfo.position}
-                                        avatar={null}
-                                        name={myInfo.userName}
-                                        bankroll={myInfo.bankrollPlusActiveBets}
-                                    />
-                                </div>
-                            </div>
-                            <div>
-                                <div className='schedule-header'>
-                                    <h3>{'SCHEDULE & BETS'}</h3>
-                                </div>
-                                <div className='pool-fixture-schedule'>
-                                    <div className='btn schedule-btn'><button onClick={() => toggleDisplay('games')}>View Full Schedule</button></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div className='open-bets-header'>
-                                    <h3>{'OPEN BETS'}</h3>
-                                </div>
-                                <BetSlipWrapper className='betslip-container'>
-                                    {(bets || MOCK_BETS).map((bet, i) => (
-                                        <OpenBetCard key={i} gameName={null} bet={bet} />
-                                    ))}
-                                </BetSlipWrapper>
-                            </div>
-                        </PoolContent>
 
-                    : display == 'leaderboard'
-                        ? <Leaderboard toggleDisplay={toggleDisplay} winnersCircle={winnersCircle} entries={entries}/>
-                        : display === 'games'
-                            ? <GameOdds toggleDisplay={toggleDisplay} poolId={poolId} fixtures={fixtures}/>
-                            : <OpenBets bets={bets}/>
-                    }   
-                </>
-            )}
-        </ViewPoolWrapper>
+    // useEffect(() => {
+        
+        
+    //     // fetchInfo
+    //     // fetchFixtures
+    //     // fetchBets
+    //     // pickleApi.getEntries(poolId)
+    //     //     .then(entries => {
+    //     //         setEntries(entries);
+    //     //         setMyInfo(entries.filter(entry => entry.userName === 'Kyle Zarazan').pop());
+    //     //         pickleApi.getFixtures(poolId)
+    //     //         .then(fixtures => {
+    //     //             setFixtures(fixtures);
+    //     //             pickleApi.getBets(poolId)
+    //     //                 .then(bets => {
+    //     //                     setBets(bets);
+    //     //                     setIsLoading(false);
+    //     //                 })
+    //     //                 .catch(error => {
+    //     //                     setErrorMessage(error.toString());
+    //     //                 })
+    //     //         })
+    //     //         .catch(error => {
+    //     //             setErrorMessage(error.toString());
+    //     //         })
+    //     //     })
+    //     //     .catch(error => {
+    //     //         setErrorMessage(error.toString());
+    //     //     })
+    //   }, []);
+
+    return (
+        <Switch>
+            <Route exact path={`${path}`}>
+                <ViewPoolWrapper className='pool-view-container'>
+                    {errorMessage && <div>{errorMessage}</div>}
+                    {isLoading ? (
+                        <div>
+                            <FullPageSpinner loading={isLoading} />
+                        </div>
+                    ) : (
+                        <>
+                            {display && display === 'dashboard'
+                            ?
+                                <PoolContent className='pool-content'>
+                                    <div className='pool-content__title'>
+                                        <h2>{'Pool Name'}</h2>
+                                    </div>
+                                    <div className='pool-content__user-stats'>
+                                        <PoolUserCard name={myInfo.userName} avatar={null} bankroll={currencyFormatter.format(myInfo.bankrollPlusActiveBets)}/>
+                                    </div>
+                                    <div className='pool-content__leaderboard-container'>
+                                        <div className='leaderboard-header'>
+                                            <h3>{'LEADERBOARD'}</h3>
+                                            <button onClick={() => toggleDisplay('leaderboard')}><FontAwesomeIcon icon={faArrowRight} size='sm' /></button>
+                                        </div>
+                                        <div className='pool-content__leaderboard-list'>
+                                            {winnersCircle.map((winner, i) => (
+                                                <RowResult 
+                                                    key={i}
+                                                    rank={winner.position}
+                                                    avatar={null}
+                                                    name={winner.userName}
+                                                    bankroll={winner.bankrollPlusActiveBets}
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className='pool-content__separator'>
+                                        <span><FontAwesomeIcon icon={faEllipsisH} size='1x' color={'#e5e5e6'}/></span>
+                                    </div>
+                                    <div>
+                                        <div className='pool-user-placement'>
+                                            <RowResult 
+                                                rank={myInfo.position}
+                                                avatar={null}
+                                                name={myInfo.userName}
+                                                bankroll={myInfo.bankrollPlusActiveBets}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div className='schedule-header'>
+                                            <h3>{'SCHEDULE & BETS'}</h3>
+                                        </div>
+                                        <div className='pool-fixture-schedule'>
+                                            <div className='btn schedule-btn'><button onClick={() => history.push(`${url}/schedule`)}>View Full Schedule</button></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div className='open-bets-header'>
+                                            <h3>{'OPEN BETS'}</h3>
+                                        </div>
+                                        <BetSlipWrapper className='betslip-container'>
+                                            {(bets || MOCK_BETS).map((bet, i) => (
+                                                <OpenBetCard key={i} gameName={null} bet={bet} />
+                                            ))}
+                                        </BetSlipWrapper>
+                                    </div>
+                                </PoolContent>
+                            : null
+                            // : display == 'leaderboard'
+                            //     ? <Leaderboard toggleDisplay={toggleDisplay} winnersCircle={winnersCircle} entries={entries}/>
+                            //     : display === 'games'
+                            //         ? <GameOdds toggleDisplay={toggleDisplay} poolId={poolId} fixtures={fixtures}/>
+                            //         : <OpenBets bets={bets}/>
+                            }   
+                        </>
+                    )}
+                </ViewPoolWrapper>
+            </Route>
+            <Route path={`${path}/schedule`} >
+                <GameOdds />
+            </Route>
+        </Switch>     
+        
     );
 
     /** fetchAndSetEntries: Fetches the pool entries to display leaderboard results. */

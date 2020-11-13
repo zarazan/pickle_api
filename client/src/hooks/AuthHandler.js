@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 import pickleApi from '../services/pickle_api';
-import { NavLink, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 function useAuthHandler(user, setUser) {
-
-  const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
+  const [isLoading, setIsLoading] = useState(true);
 
   function loadUser() {
     pickleApi.getAuth()

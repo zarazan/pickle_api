@@ -1,23 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { useParams, useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import pickleApi from '../../services/pickle_api';
 import BetCard from './BetCard';
 import EnterWager from './EnterWager';
+import { UserContext } from '../../contexts/UserContext';
+import useAuthHandler from '../../hooks/AuthHandler';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faDollarSign } from '@fortawesome/free-solid-svg-icons';
 
-const GameOdds = ({ toggleDisplay, poolId, fixtures, bankroll }) => {
-    const [betSlip, setBetSlip] = useState([]);
-    // const [multibet, setMultibet] = useState(false);
+const GameOdds = ({ bankroll }) => {
+    const { poolId } = useParams(); // pool id from url
+    const [user, setUser] = useContext(UserContext);
+    console.log(user);
+    const isLoadingUser = useAuthHandler(user, setUser);
+
+    const [betCount, setBetCount] = useState(0); // counter for bets made
+    const [fixtures, setFixtures] = useState([]); // array of pool fixtures
+    const [isLoading, setIsLoading] = useState(false); // tracks loading during data fetching
+
     const [currentFixture, setCurrentFixture] = useState(null);
     const [currentBet, setCurrentBet] = useState(null);
     const [toggleBetSlip, setToggleBetSlip] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
-    
-    // used for the enter wager display
-    const gameName = currentFixture ? `${currentFixture.awayTeamName} vs ${currentFixture.homeTeamName}` : '';
+
+    useEffect(() => {
+        if(isLoadingUser) { console.log(user); }
+
+        setIsLoading(true);
+        fetchFixtures(poolId);
+    }, [isLoadingUser, betCount]);
 
     return (
         <GameOddsWrapper className='game-odds-container'>
@@ -26,7 +40,7 @@ const GameOdds = ({ toggleDisplay, poolId, fixtures, bankroll }) => {
                     <EnterWager
                         className='enter-wager-form'
                         currentBet={currentBet}
-                        gameName={gameName}
+                        gameName={currentFixture}
                         placeBet={enterBet}
                         closeBetSlip={closeBetSlip}
                         errors={errorMessage}
@@ -34,7 +48,7 @@ const GameOdds = ({ toggleDisplay, poolId, fixtures, bankroll }) => {
                 ) : ( 
                     <>
                         <Header className='game-odds-header'>
-                            <button className='game-odds__back-nav' onClick={() => toggleDisplay('dashboard')}><FontAwesomeIcon icon={faArrowLeft} size='1x' /></button>
+                            <button className='game-odds__back-nav' onClick={() => {}}><FontAwesomeIcon icon={faArrowLeft} size='1x' /></button>
                             <Title className='game-odds__title'>{'SCHEDULE & ODDS'}</Title>
                         </Header>
                         <Bankroll>
@@ -98,7 +112,19 @@ const GameOdds = ({ toggleDisplay, poolId, fixtures, bankroll }) => {
         setCurrentFixture(fixtureObject);
         const betObject = fixtureObject.odds.filter(odd => odd.id === betId).pop();
         setCurrentBet(betObject);
-        setToggleBetSlip(!toggleBetSlip)
+        setToggleBetSlip(!toggleBetSlip);
+    }
+
+    /** fetchFixtures: Gets the fixtures for the pool. */
+    function fetchFixtures(id) {
+        // send request
+        pickleApi.getFixtures(id)
+            .then(data => {
+                // console.log(data);
+                setFixtures(data);
+                setIsLoading(false);
+            })
+            .catch(error => setErrorMessage(error.toString()))
     }
 
     /** enterBet: Sends Pickle API request for placing a bet.**/
@@ -111,7 +137,7 @@ const GameOdds = ({ toggleDisplay, poolId, fixtures, bankroll }) => {
         pickleApi.createBet(resp)
             .then(data => {
                 console.log(data);
-                setBetSlip([...betSlip, data]);
+                setBetCount(betCount + 1);
                 setToggleBetSlip(false);
             })
             .catch(error => {

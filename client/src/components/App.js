@@ -1,67 +1,39 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import ROUTES, { RenderRoutes} from '../constants/routes';
 import styled from 'styled-components';
-import { UserProvider } from '../contexts/UserContext'
+import { UserContext, UserProvider } from '../contexts/UserContext'
+import SignIn from './SignIn';
 import { ReactComponent as Logo } from '../icons/pickle.svg';
 import { ReactComponent as Menu } from '../icons/menu.svg';
 import { ReactComponent as Home } from '../icons/beach-hut.svg';
 import { ReactComponent as Pool } from '../icons/pool.svg';
 import { ReactComponent as Lobby } from '../icons/boxing-gloves.svg';
 import { ReactComponent as Stats } from '../icons/analytics.svg';
+import useAuthHandler from '../hooks/AuthHandler';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faChartLine, faTrophy, faHome } from '@fortawesome/free-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faUser, faChartLine, faTrophy, faHome } from '@fortawesome/free-solid-svg-icons';
 
 const App = () => {
   const history = useHistory();
+  const { user } = useAuthHandler();
 
   return (
-    <AppWrapper className='app-wrapper'>
-        <UserProvider>
-            <AppHeader className='global-header'>
-                <div className='top-nav'>
-                    <div><button className='btn btn-home' onClick={() => history.push('/')}><LogoIcon /></button></div>
-                    <div><button className='btn btn-menu' ><MenuIcon /></button></div>
-                </div>
-
-                {/* <GlobalNavigation className='global-nav'>
-                    <StyledLink>
-                        <NavLink to='/' className='home'>
-                            <HomeIcon />
-                        </NavLink>
-                        <span>Home</span>
-                    </StyledLink>
-                    <StyledLink>
-                        <NavLink to='/' className='user-pools'>
-                            <PoolIcon />
-                        </NavLink>
-                        <span>Pools</span>
-                    </StyledLink>
-                    <StyledLink>
-                        <NavLink to='/' className='lobby'>
-                            <LobbyIcon />
-                        </NavLink>
-                        <span>Lobby</span>
-                    </StyledLink>
-                    <StyledLink>
-                        <NavLink to='/' className='user-statistics'>
-                            <StatsIcon />
-                        </NavLink>
-                        <span>Stats</span>
-                    </StyledLink>
-                </GlobalNavigation> */}
-                
-            </AppHeader>
-            <AppMain className='content-wrapper'>
-                <RenderRoutes routes={ROUTES} />
-            </AppMain>
-            {/* <AppFooter>
-                <div><LogoIcon /></div>
-            </AppFooter> */}
-        </UserProvider>
-    </AppWrapper>
-  );
+            <AppWrapper className='app-wrapper'>
+                <UserProvider>
+                    <AppHeader className='global-header'>
+                        <div className='top-nav'>
+                            <div><button className='btn btn-home' onClick={() => history.push('/')}><LogoIcon /></button></div>
+                            <div><button className='btn btn-menu' ><MenuIcon /></button></div>
+                        </div>
+                    </AppHeader>
+                    <AppMain className='content-wrapper'>
+                        <RenderRoutes routes={ROUTES} />
+                    </AppMain>
+                </UserProvider>
+            </AppWrapper>
+        );
 }
 
 export default App;
