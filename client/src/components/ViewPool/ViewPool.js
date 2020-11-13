@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useReducer } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Route, Switch, useHistory, useParams, useRouteMatch } from 'react-router-dom';
 import styled from'styled-components';
 
@@ -7,7 +7,7 @@ import pickleApi from '../../services/pickle_api';
 import { currencyFormatter } from '../../utilities/helpers';
 
 import FullPageSpinner from '../FullPageSpinner';
-import GameOdds from '../betslip/GameOdds';
+import GameOdds from '../Betslip/GameOdds';
 import OpenBetCard from './OpenBetCard';
 import PoolUserCard from './PoolUserCard';
 import RowResult from './RowResult';

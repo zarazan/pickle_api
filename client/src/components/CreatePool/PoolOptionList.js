@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import RadioButton from '../stories/RadioButton';
-import DatePicker from '../stories/DatePicker';
-import Checkbox from '../stories/Checkbox';
+import RadioButton from '../../stories/RadioButton';
+import DatePicker from '../../stories/DatePicker';
+import Checkbox from '../../stories/Checkbox';
 
 const PoolOptionList = ({ 
     setName, 

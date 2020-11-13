@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight, faPlus } from '@fortawesome/free-solid-svg-icons';
 import PoolTypeList from './PoolTypeList';
 import PoolOptionList from './PoolOptionList';
-import pickleApi from '../services/pickle_api';
+import pickleApi from '../../services/pickle_api';
 import VerifyPool from './VerifyPool';
 
 const PoolCreate = props => {
