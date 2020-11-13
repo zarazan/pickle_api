@@ -38,6 +38,18 @@ fixtures_attributes = [
         team_name: 'Denver Broncos'
       },
       {
+        type: 'SpreadOdd',
+        metric: '-3.5',
+        ratio: '1.9',
+        team_name: 'Kansas City Chiefs'
+      },
+      {
+        type: 'SpreadOdd',
+        metric: '3.5',
+        ratio: '1.9',
+        team_name: 'Denver Broncos'
+      },
+      {
         type: 'OverOdd',
         ratio: '1.9',
         metric: '50.5'
@@ -55,6 +67,16 @@ fixtures_attributes = [
     away_team_name: 'Seattle Seahawks',
     start_time: (@now + 2.days),
     odds: [
+      {
+        type: 'MoneyLineOdd',
+        ratio: '1.5',
+        team_name: 'Seattle Seahawks'
+      },
+      {
+        type: 'MoneyLineOdd',
+        ratio: '2.3',
+        team_name: 'Arizona Cardinals'
+      },
       {
         type: 'SpreadOdd',
         metric: '-3.5',
