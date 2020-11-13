@@ -33,7 +33,7 @@ const RowWrapper = styled.div`
     margin-bottom: 0.2rem;
     padding: 0.3rem 0.5rem 0.3rem 0.5rem;
 
-    border-radius: 0.2em;
+    border-radius: 0.2rem;
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 3px 0px, rgba(60, 64, 67, 0.15) 0px 1px 2px 0px;
     font-family: 'Inter', 'Sans Serif';
     font-size: .85rem;

@@ -17,7 +17,7 @@ import useAuthHandler from '../hooks/AuthHandler';
 
 const App = () => {
   const history = useHistory();
-  const { user } = useAuthHandler();
+//   const { user } = useAuthHandler();
 
   return (
             <AppWrapper className='app-wrapper'>
@@ -42,6 +42,7 @@ const AppWrapper = styled.div`
     height: 100vh;
     width: 100vw;
     overflow: auto;
+    box-sizing: border-box;
 `;
   
 const AppHeader = styled.header`
@@ -76,7 +77,7 @@ const AppHeader = styled.header`
 
 const AppMain = styled.main`
     box-sizing: border-box;
-    padding: 1em 1em 0 1em;
+    height: 100%;
 `;
 
 const GlobalNavigation = styled.nav`

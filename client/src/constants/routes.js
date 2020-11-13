@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 // import GameOdds from '../components/betslip/GameOdds';
-import Dashboard from '../components/Dashboard';
+import Dashboard from '../components/Dashboard/Dashboard';
 // import Leaderboard from '../components/view-pool/Leaderboard';
 import PoolCreate from '../components/PoolCreate';
 import SignIn from '../components/SignIn';
