@@ -93,18 +93,20 @@ const GameOdds = () => {
                                             </div>
                                         </BetSlipTotals>
                                         <BetCardList className='game-odds-cardlist'>
-                                            {(fixtures || []).map((fixture, index) => (
-                                                <BetCard 
-                                                    key={index}
-                                                    id={fixture.id}
-                                                    homeTeamName={fixture.homeTeamName}
-                                                    homeTeamId={fixture.homeTeamId}
-                                                    awayTeamName={fixture.awayTeamName}
-                                                    awayTeamId={fixture.awayTeamId}
-                                                    odds={fixture.odds}
-                                                    gameDate={fixture.startTime}
-                                                    selectBet={selectBet}
-                                                /> 
+                                            {(fixtures || [])
+                                                .map((fixture, index) => (
+                                                    <BetCard 
+                                                        key={index}
+                                                        fixtureId={fixture.id}
+                                                        locked={fixture.locked}
+                                                        homeTeamName={fixture.homeTeamName}
+                                                        homeTeamId={fixture.homeTeamId}
+                                                        awayTeamName={fixture.awayTeamName}
+                                                        awayTeamId={fixture.awayTeamId}
+                                                        odds={fixture.odds}
+                                                        gameDate={fixture.startTime}
+                                                        selectBet={selectBet}
+                                                    /> 
                                             ))}
                                         </BetCardList>
                                     </>
@@ -115,16 +117,18 @@ const GameOdds = () => {
         </>
     );
 
+    /** closeBetSlip: Toggle the bet slip display and clears the current fixture and bet from state. */
     function closeBetSlip() {
         setToggleBetSlip(!toggleBetSlip);
         setCurrentFixture(null);
         setCurrentBet(null);
     }
 
+    /** selectBet: Adds the selected fixture and bet to state and opens the bet slip wager form. */
     function selectBet(fixtureId, betId) {
-        const fixtureObject = fixtures.filter(fixture => fixture.id === fixtureId).pop();
+        const [ fixtureObject ] = fixtures.filter(fixture => fixture.id === fixtureId);
         setCurrentFixture(fixtureObject);
-        const betObject = fixtureObject.odds.filter(odd => odd.id === betId).pop();
+        const [ betObject ] = fixtureObject.odds.filter(odd => odd.id === betId);
         setCurrentBet(betObject);
         setToggleBetSlip(!toggleBetSlip);
     }
