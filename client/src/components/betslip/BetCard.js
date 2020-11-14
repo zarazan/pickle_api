@@ -9,6 +9,7 @@ const BetCard = ({ selectBet, homeTeamName, homeTeamId, awayTeamName, awayTeamId
     const [homeOdds, setHomeOdds] = useState({ 'pointSpread': { 'betId': null, 'metric': null, 'ratio': null }, 'moneyLine': { 'betId': null, 'metric': null, 'ratio': null }, 'totalPoints': { 'betId': null, 'metric': null, 'ratio': null } });
     const [awayOdds, setAwayOdds] = useState({ 'pointSpread': { 'betId': null, 'metric': null, 'ratio': null }, 'moneyLine': { 'betId': null, 'metric': null, 'ratio': null }, 'totalPoints': { 'betId': null, 'metric': null, 'ratio': null } });
     const [fixture, setFixture] = useState(null);
+    const [game, setGame] = useState('');
     
     useEffect(() => {
         // seed state
@@ -22,7 +23,9 @@ const BetCard = ({ selectBet, homeTeamName, homeTeamId, awayTeamName, awayTeamId
     return (
         <BetCardWrapper className='bet-card'>
             <div className='bet-card__headers'>
-                <div className='header date-time'><h3>{zuluToStringFormat(gameDate)}</h3></div>
+                {/* <div className='header date-time'><h3>{zuluToStringFormat(gameDate)}</h3></div> */}
+                <h3>{zuluToStringFormat(gameDate)}</h3>
+                <h4>{`${awayTeamName} vs ${homeTeamName}`}</h4>
             </div>
             <div className='card-row bet-card__home'>
                 <Team className='team-home'>{homeTeamName}</Team>
@@ -147,7 +150,7 @@ const BetCardWrapper = styled.div`
 
     .bet-card__headers {
         display: flex;
-        align-items: center;
+        flex-flow: column nowrap;
         box-sizing: border-box;
         padding: 0 0 0 1em;
         font-weight: 700;
@@ -156,6 +159,14 @@ const BetCardWrapper = styled.div`
             font-size: 0.8rem;
             margin: 1rem 0 0.5rem 0;
             color: #808080;
+            font-weight: 300;
+        }
+
+        & h4 {
+            font-size: 0.8rem;
+            margin: 0 0 1rem;
+            color: #404040;
+            font-weight: 700;
         }
     }
 

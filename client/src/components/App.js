@@ -2,24 +2,23 @@ import React, { useContext } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import ROUTES, { RenderRoutes} from '../constants/routes';
 import styled from 'styled-components';
+import { PoolProvider } from '../contexts/PoolContext';
 import { UserContext, UserProvider } from '../contexts/UserContext'
-import SignIn from './SignIn';
 import { ReactComponent as Logo } from '../icons/pickle.svg';
 import { ReactComponent as Menu } from '../icons/menu.svg';
 import { ReactComponent as Home } from '../icons/beach-hut.svg';
 import { ReactComponent as Pool } from '../icons/pool.svg';
 import { ReactComponent as Lobby } from '../icons/boxing-gloves.svg';
 import { ReactComponent as Stats } from '../icons/analytics.svg';
-import useAuthHandler from '../hooks/AuthHandler';
 
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faUser, faChartLine, faTrophy, faHome } from '@fortawesome/free-solid-svg-icons';
 
 const App = () => {
-  const history = useHistory();
-//   const { user } = useAuthHandler();
+    const history = useHistory();
 
-  return (
+    return (
+        <PoolProvider>
             <AppWrapper className='app-wrapper'>
                 <UserProvider>
                     <AppHeader className='global-header'>
@@ -33,7 +32,8 @@ const App = () => {
                     </AppMain>
                 </UserProvider>
             </AppWrapper>
-        );
+        </PoolProvider>
+    );
 }
 
 export default App;

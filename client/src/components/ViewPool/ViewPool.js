@@ -3,6 +3,7 @@ import { Route, Switch, useHistory, useParams, useRouteMatch } from 'react-route
 import styled from'styled-components';
 
 import { UserContext } from '../../contexts/UserContext';
+import { usePoolDispatch } from '../../contexts/PoolContext';
 import pickleApi from '../../services/pickle_api';
 import { currencyFormatter } from '../../utilities/helpers';
 
@@ -17,6 +18,10 @@ import { faArrowRight, faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 
 const ViewPool = () => {
     const [ user ] = useContext(UserContext);
+    const dispatch = usePoolDispatch();
+    const setPoolId = () => dispatch({ type: 'SET_POOL_ID', data: poolId });
+    const setBankroll = () => dispatch({ type: 'SET_BANKROLL', data: parseFloat(myInfo.bankrollPlusActiveBets) });
+
     const { poolId } = useParams(); // pool id from url
     const { path, url } = useRouteMatch(); // path and url for route matching
     const history = useHistory();
@@ -44,6 +49,11 @@ const ViewPool = () => {
         setState('loading');
         fetchAndSetBets(poolId);
     }, []);
+
+    useEffect(() => {
+        setBankroll();
+        setPoolId();
+    })
 
 
     // useEffect(() => {        
@@ -105,7 +115,7 @@ const ViewPool = () => {
                                                             rank={winner.position}
                                                             avatar={null}
                                                             name={winner.userName}
-                                                            bankroll={winner.bankrollPlusActiveBets}
+                                                            bankroll={currencyFormatter.format(winner.bankrollPlusActiveBets)}
                                                         />
                                                     ))}
                                                 </div>
@@ -119,7 +129,7 @@ const ViewPool = () => {
                                                         rank={myInfo.position}
                                                         avatar={null}
                                                         name={myInfo.userName}
-                                                        bankroll={myInfo.bankrollPlusActiveBets}
+                                                        bankroll={currencyFormatter.format(myInfo.bankrollPlusActiveBets)}
                                                     />
                                                 </div>
                                             </div>

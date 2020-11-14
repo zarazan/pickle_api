@@ -9,7 +9,7 @@ const PoolUserCard = ({ name, avatar, bankroll }) => {
         <CardWrapper className='pool-user-card'>
             <span className='pool-user-card__avatar'>{avatar ? avatar : <FontAwesomeIcon icon={faUserCircle} size='3x' />}</span>
             <h2 className='pool-user-card__name'>{name ? name : 'Lorem Ipsum'}</h2>
-            <span className='pool-user-card__bankroll'>{bankroll ? bankroll : '$999'}</span>
+            <span className='pool-user-card__bankroll'>{bankroll ? bankroll : '$0'}</span>
         </CardWrapper>
     );
 };
