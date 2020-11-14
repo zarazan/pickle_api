@@ -3,10 +3,10 @@ import { Route, Switch } from 'react-router-dom';
 // import GameOdds from '../components/betslip/GameOdds';
 import Dashboard from '../components/Dashboard/Dashboard';
 // import Leaderboard from '../components/view-pool/Leaderboard';
-import PoolCreate from '../components/PoolCreate';
+import PoolCreate from '../components/CreatePool/PoolCreate';
 import SignIn from '../components/SignIn';
 import ViewPool from '../components/ViewPool/ViewPool';
-import EditScores from '../components/admin/EditScores';
+import EditScores from '../components/Admin/EditScores';
 
 const ROUTES = [
     { path: '/', key: 'ROOT', exact: true, component: Dashboard },

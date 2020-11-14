@@ -1,22 +1,26 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 import pickleApi from '../../services/pickle_api';
+import { usePoolDispatch, usePoolState } from '../../contexts/PoolContext';
 
 import BetCard from './BetCard';
 import EnterWager from './EnterWager';
 import FullPageSpinner from '../FullPageSpinner';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faDollarSign } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
-const GameOdds = ({ bankroll }) => {
+const GameOdds = () => {
     const { poolId } = useParams(); // pool id from url
     const history = useHistory();
+    const dispatch = usePoolDispatch();
+    const state = usePoolState();
+    const placeWager = (amount) => dispatch({ type: 'PLACE_WAGER', data: amount });
 
-    const [state, setState] = useState('idle'); // used for component state tracking
+    const [componentState, setState] = useState('idle'); // used for component state tracking
     const [errorMessage, setErrorMessage] = useState(''); // used for displaying errors
 
     const [betCount, setBetCount] = useState(0); // counter for bets made
@@ -36,78 +40,78 @@ const GameOdds = ({ bankroll }) => {
 
     return (
         <>
-            {state === 'error' 
+            {componentState === 'error' 
                 ? <div>{errorMessage}</div>
-                : state === 'loading'
+                : componentState === 'loading'
                     ? <FullPageSpinner loading={true} optionalMessage={'Loading Odds'}/>
-                    : state === 'finished' &&
-                        <>
+                    : componentState === 'finished' &&
                             <GameOddsWrapper className='game-odds-container'>
+                                <Header className='game-odds-header'>
+                                    <button 
+                                        className='game-odds__back-nav' 
+                                        onClick={() =>history.push(`/pools/${poolId}`)}
+                                    >
+                                        <FontAwesomeIcon icon={faArrowLeft} size='lg' />
+                                    </button>
+                                    <Title className='game-odds__title'>{'SCHEDULE & ODDS'}</Title>
+                                </Header>
+                                <Bankroll className='user-bankroll'>
+                                    <h3>{'YOUR BANKROLL'}</h3>
+                                    <h2 className='user-bankroll'>{state.bankroll ? `$${state.bankroll}` : '$0.00'}</h2>
+                                    <h4>{`${betCount} OPEN BETS`}</h4>
+                                </Bankroll>
+
                                 {toggleBetSlip 
-                                    ?
-                                        <EnterWager
-                                            className='enter-wager-form'
-                                            currentBet={currentBet}
-                                            currentFixture={currentFixture}
-                                            placeBet={placeBet}
-                                            closeBetSlip={closeBetSlip}
-                                            errors={errorMessage}
-                                        />
-                                    :
-                                        <>
-                                            <Header className='game-odds-header'>
-                                                <button 
-                                                    className='game-odds__back-nav' 
-                                                    onClick={() => {}}
-                                                >
-                                                    <FontAwesomeIcon icon={faArrowLeft} size='1x' />
-                                                </button>
-                                                <Title className='game-odds__title'>{'SCHEDULE & ODDS'}</Title>
-                                            </Header>
-                                            <Bankroll>
-                                                <h3>{'Bankroll:'}</h3>
-                                                <FontAwesomeIcon icon={faDollarSign} size='2x' color='#8fd6a9' />
-                                                <h3 className='user-bankroll'>{bankroll ? bankroll : '0.00'}</h3>
-                                            </Bankroll>
-                                            <BetSlipTotals className='game-odds-totals'>
-                                                <div className='totals__bankroll'></div>
-                                                <div className='totals__headers'>
-                                                    <div className='headers__game header-label'>
-                                                        <h4>{'GAME'}</h4>
+                                ?
+                                    <EnterWager
+                                        className='enter-wager-form'
+                                        currentBet={currentBet}
+                                        currentFixture={currentFixture}
+                                        placeBet={placeBet}
+                                        closeBetSlip={closeBetSlip}
+                                        errors={errorMessage}
+                                    />
+                                :
+                                    <>
+                                        <BetSlipTotals className='game-odds-totals'>
+                                            <div className='totals__bankroll'></div>
+                                            <div className='totals__headers'>
+                                                <div className='headers__game header-label'>
+                                                    <h4>{'GAME'}</h4>
+                                                </div>
+                                                <div className='headers__odd-labels'>
+                                                    <div className='headers__spread header-label'>
+                                                        <h4>{'POINT'}</h4><h4>{'SPREAD'}</h4>
                                                     </div>
-                                                    <div className='headers__odd-labels'>
-                                                        <div className='headers__spread header-label'>
-                                                            <h4>{'POINT'}</h4><h4>{'SPREAD'}</h4>
-                                                        </div>
-                                                        <div className='headers__points header-label'>
-                                                            <h4>{'TOTAL'}</h4><h4>{'POINTS'}</h4>
-                                                        </div>
-                                                        <div className='headers__moneyline header-label'>
-                                                            <h4>{'MONEY'}</h4><h4>{'LINE'}</h4>
-                                                        </div>
+                                                    <div className='headers__points header-label'>
+                                                        <h4>{'TOTAL'}</h4><h4>{'POINTS'}</h4>
+                                                    </div>
+                                                    <div className='headers__moneyline header-label'>
+                                                        <h4>{'MONEY'}</h4><h4>{'LINE'}</h4>
                                                     </div>
                                                 </div>
-                                            </BetSlipTotals>
-                                            <BetCardList className='game-odds-cardlist'>
-                                                {(fixtures || []).map((fixture, index) => (
-                                                    <BetCard 
-                                                        key={index}
-                                                        id={fixture.id}
-                                                        homeTeamName={fixture.homeTeamName}
-                                                        homeTeamId={fixture.homeTeamId}
-                                                        awayTeamName={fixture.awayTeamName}
-                                                        awayTeamId={fixture.awayTeamId}
-                                                        odds={fixture.odds}
-                                                        gameDate={fixture.startTime}
-                                                        selectBet={selectBet}
-                                                    /> 
-                                                ))}
-                                            </BetCardList>
-                                        </>
+                                            </div>
+                                        </BetSlipTotals>
+                                        <BetCardList className='game-odds-cardlist'>
+                                            {(fixtures || []).map((fixture, index) => (
+                                                <BetCard 
+                                                    key={index}
+                                                    id={fixture.id}
+                                                    homeTeamName={fixture.homeTeamName}
+                                                    homeTeamId={fixture.homeTeamId}
+                                                    awayTeamName={fixture.awayTeamName}
+                                                    awayTeamId={fixture.awayTeamId}
+                                                    odds={fixture.odds}
+                                                    gameDate={fixture.startTime}
+                                                    selectBet={selectBet}
+                                                /> 
+                                            ))}
+                                        </BetCardList>
+                                    </>
                                 }
+
                             </GameOddsWrapper>
-                        </>
-            }
+                }
         </>
     );
 
@@ -150,6 +154,7 @@ const GameOdds = ({ bankroll }) => {
         pickleApi.createBet(resp)
             .then(data => {
                 setBetCount(betCount + 1);
+                placeWager(data.amount);
                 setToggleBetSlip(false);
                 setState('finished');
             })
@@ -214,26 +219,31 @@ const Title = styled.h3`
 
 const Bankroll = styled.div`
     display: flex;
-    justify-content: center;
+    flex-flow: column nowrap;
+    align-items: center;
     margin: 1.5rem 0 1rem 0;
 
-    & > * {
-        height: 100%;
+    & h4 {
+        margin: 0;
+        font-family: 'Inter', 'Sans Serif';
+        font-size: .7rem;
+        font-weight: 300;
+        color: black;
     }
 
     & h3 {
         margin: 0;
+        font-size: .8125rem;
+        font-family: 'Inter', 'Sans Serif';
+        letter-spacing: 0.6125;
+        color: #8b8c8f;
+    }
+
+    & h2 {
+        margin: 0.7rem 0 0.3rem 0;
         font-family: 'Poppins', 'Sans Serif';
-        font-size: 1.5rem;
+        font-size: 2.5rem;
         color: #8fd6a9;
-    }
-
-    & > svg {
-        margin: 0 0.5rem 0 0.5rem;
-    }
-
-    & h3.user-bankroll {
-        font-weight: 700;
     }
 `;
 

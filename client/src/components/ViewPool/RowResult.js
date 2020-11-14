@@ -10,7 +10,7 @@ const RowResult = ({ rank, avatar, name, bankroll }) => {
             <div className='leaderboard-row__telemetry row-item'>{rank + 1}</div>
             <div className='leaderboard-row__avatar row-item'><FontAwesomeIcon icon={!avatar ? faUserCircle : avatar} size='2x'/></div>
             <div className='leaderboard-row__name row-item'>{name ? name : 'Lorem Ipsum'}</div>
-            <div className='leaderboard-row__bankroll row-item'>${bankroll ? bankroll : '$999'}</div>
+            <div className='leaderboard-row__bankroll row-item'>{bankroll ? bankroll : '$0'}</div>
         </RowWrapper>
     );
 };
