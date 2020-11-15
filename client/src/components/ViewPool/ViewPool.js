@@ -53,37 +53,7 @@ const ViewPool = () => {
     useEffect(() => {
         setBankroll();
         setPoolId();
-    })
-
-
-    // useEffect(() => {        
-    //     // fetchInfo
-    //     // fetchFixtures
-    //     // fetchBets
-    //     // pickleApi.getEntries(poolId)
-    //     //     .then(entries => {
-    //     //         setEntries(entries);
-    //     //         setMyInfo(entries.filter(entry => entry.userName === 'Kyle Zarazan').pop());
-    //     //         pickleApi.getFixtures(poolId)
-    //     //         .then(fixtures => {
-    //     //             setFixtures(fixtures);
-    //     //             pickleApi.getBets(poolId)
-    //     //                 .then(bets => {
-    //     //                     setBets(bets);
-    //     //                     setIsLoading(false);
-    //     //                 })
-    //     //                 .catch(error => {
-    //     //                     setErrorMessage(error.toString());
-    //     //                 })
-    //     //         })
-    //     //         .catch(error => {
-    //     //             setErrorMessage(error.toString());
-    //     //         })
-    //     //     })
-    //     //     .catch(error => {
-    //     //         setErrorMessage(error.toString());
-    //     //     })
-    //   }, []);
+    });
 
     return (
         <Switch>
@@ -301,67 +271,4 @@ const BetSlipWrapper = styled.div`
     padding-bottom: 1rem;
 `;
 
-const NoBets = styled.div`
-
-`;
-
-// const ViewToggle = styled.section`
-//     display: grid;
-//     grid-gap: 0em;
-//     grid-template-columns: 1fr 1fr 1fr;
-//     margin-bottom: 1.5em;
-
-//     & div[class^='toggle-container'] {
-//         border: 2px solid #eaf3fd;
-//         background-color: #eaf3fd;
-
-//         &:first-of-type {
-//             border-radius: 0.5em 0 0 0.5em;;
-//         }
-
-//         &:last-of-type {
-//             border-radius: 0 0.5em 0.5em 0;;
-//         }
-//     }
-
-//     & .toggle-container-selected > .btn {
-//         border: 2px solid #eaf3fd;
-//         background-color: #2e8dfe;
-//         color: white;
-//     }
-// `;
-
-// const ClickableToggle = styled.button`
-//     box-sizing: border-box;
-//     height: 3em;
-//     width: 100%;
-
-//     font-family: 'Poppins', 'Sans Serif';
-//     font-size: 0.8em;
-
-//     border: none;
-//     border-radius: 0.5em;
-//     outline: none;
-//     background-color: #eaf3fd;
-//     color: #5698d6;
-// `;
-
-// const UserData = styled.section`
-//     display: grid;
-//     grid-template-columns: 1fr 1fr;
-//     box-sizing: border-box;
-//     margin-bottom: 1.5em;
-
-//     font-family: 'Poppins', 'Sans Serif';
-
-//     & > div {
-//         display: flex;
-//         flex-flow: column nowrap;
-//         align-items: center;
-
-//         & h2 {
-//             margin: 0 0 0.3em 0;
-//             font-size: 1.25em;
-//         }
-//     }
-// `;
+const NoBets = styled.div``;
