@@ -51,7 +51,7 @@ export default Dashboard;
 const DashboardWrapper = styled.div`
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 4em auto 1fr;
+    grid-template-rows: 4em 1fr 1fr;
     grid-template-areas:
         'welcome'
         'stats'
@@ -59,7 +59,7 @@ const DashboardWrapper = styled.div`
     box-sizing: border-box;
     height: 100%;
     overflow: auto;
-    margin: 1em;
+    margin: 1em 1em 0 1em;
 `;
 
 const Welcome = styled.section`

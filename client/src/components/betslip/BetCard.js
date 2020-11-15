@@ -199,8 +199,8 @@ const LockedMessage = styled.div`
     padding-bottom: 0.7rem;
 
     & > svg.locked-status__icon {
-        height: 1.5rem;
-        width: 1.5rem;
+        height: 1.25rem;
+        width: 1.25rem;
         fill: #bfbfbf;
     }
 
