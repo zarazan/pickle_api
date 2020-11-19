@@ -3,7 +3,6 @@ class User < ApplicationRecord
   extend Devise::Models
   include DeviseTokenAuth::Concerns::User
 
-  # Include default devise modules.
   devise :database_authenticatable,
          :recoverable, :rememberable, :trackable
 

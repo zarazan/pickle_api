@@ -8,7 +8,7 @@ import pickleApi from '../../services/pickle_api';
 import { currencyFormatter } from '../../utilities/helpers';
 
 import FullPageSpinner from '../FullPageSpinner';
-import GameOdds from '../Betslip/GameOdds';
+import GameOdds from '../betslip/GameOdds';
 import OpenBetCard from './OpenBetCard';
 import PoolUserCard from './PoolUserCard';
 import RowResult from './RowResult';
