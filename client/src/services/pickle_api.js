@@ -1,5 +1,5 @@
 import axios from 'axios'
-import history from '../history';
+import { useHistory } from 'react-router-dom';
 
 class PickleApi {
 
@@ -77,6 +77,7 @@ class PickleApi {
     })
     .catch(error => {
       if(error.response && error.response.status === 401) {
+        const history = useHistory();
         history.push('/sign-in');
       } else {
         throw error;
