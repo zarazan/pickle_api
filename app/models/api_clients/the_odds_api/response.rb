@@ -32,7 +32,7 @@ module ApiClients::TheOddsApi
       start_time = DateTime.parse(fixture_json['commence_time'].to_s)
 
       fixture = {
-        sport: sport
+        sport: sport,
         home_team_name: home_team,
         away_team_name: away_team,
         start_time: start_time,
