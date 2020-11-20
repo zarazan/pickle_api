@@ -1,8 +1,8 @@
 entries = @pool.entries.map do |entry|
-  {
+  entry.as_json.merge({
     userName: entry.user.name,
     bankrollPlusActiveBets: entry.bankroll_plus_active_bets
-  }
+  })
 end
 entries.sort_by { |entry| entry[:bankrollPlusActiveBets] }
 
