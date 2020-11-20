@@ -6,22 +6,23 @@
 image: python:3.7.2
 
 pipelines:
-  default:
-    - step:
-        name: Build
-        script:
-          - git archive --format=tar.gz master -o pickle_api.tar.gz
-        artifacts:
-          - pickle_api.tar.gz
-      
-    - step:
-        name: Deploy to production
-        deployment: production
-        caches:
-          - pip
-        script:
-          - pipe: atlassian/heroku-deploy:0.1.1
-            variables:
-              HEROKU_API_KEY: $HEROKU_API_KEY
-              HEROKU_APP_NAME: $HEROKU_APP_NAME
-              ZIP_FILE: pickle_api.tar.gz
+  custom:
+    deploy:
+      - step:
+          name: Build
+          script:
+            - git archive --format=tar.gz master -o pickle_api.tar.gz
+          artifacts:
+            - pickle_api.tar.gz
+
+      - step:
+          name: Deploy to production
+          deployment: production
+          caches:
+            - pip
+          script:
+            - pipe: atlassian/heroku-deploy:0.1.1
+              variables:
+                HEROKU_API_KEY: $HEROKU_API_KEY
+                HEROKU_APP_NAME: $HEROKU_APP_NAME
+                ZIP_FILE: pickle_api.tar.gz
