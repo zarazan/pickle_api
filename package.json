@@ -1,0 +1,11 @@
+{
+  "name": "Pickle Web Client",
+  "engines": {
+    "node": "10.15.0"
+  },
+  "scripts": {
+    "build": "npm run build --prefix client",
+    "deploy": "cp -a client/build/. public/",
+    "heroku-postbuild": "npm build && npm deploy"
+  }
+}
