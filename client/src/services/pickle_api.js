@@ -69,6 +69,7 @@ class PickleApi {
   }
 
   sendRequest(options) {
+    options.url = '/api' + options.url;
     options = { ...options, headers: this.getAuthHeaders() };
     return this.client.request(options)
     .then(response => {
@@ -104,8 +105,9 @@ class PickleApi {
   }
 
   axios_client() {
+    const baseUrl = process.env.NODE_ENV === 'production' ? 'https://pickle-skin.herokuapp.com' : 'http://localhost:3001'
     return axios.create({
-      baseURL: 'http://localhost:3001'
+      baseURL: baseUrl
     });
   }
 
