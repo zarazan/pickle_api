@@ -4,8 +4,8 @@
     "node": "10.15.0"
   },
   "scripts": {
-    "build": "yarn --cwd client install && yarn --cwd client build",
+    "build": "npm install --prefix client && npm build --prefix client",
     "deploy": "cp -a client/build/. public/",
-    "heroku-postbuild": "yarn build && yarn deploy"
+    "heroku-postbuild": "npm run build && npm run deploy"
   }
 }
