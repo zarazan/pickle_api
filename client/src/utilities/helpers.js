@@ -16,10 +16,17 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
     minimumFractionDigits: 2
-  });
+});
+
+const calculatePayout = (wager, odds) => {
+    let multiplier = Math.abs(odds) / 100;
+    let profit = wager / multiplier;
+    return(parseInt(wager + profit, 10));
+};
 
 export {
     decToAmerican,
     zuluToStringFormat,
     currencyFormatter,
+    calculatePayout,
 };

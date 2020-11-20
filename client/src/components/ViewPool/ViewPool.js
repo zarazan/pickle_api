@@ -123,7 +123,7 @@ const ViewPool = () => {
                                                             <button>View Schedule to Place Bets</button>
                                                         </NoBets>
                                                     : openBets.map((bet, i) => (
-                                                        <OpenBetCard key={i} gameName={null} bet={bet} />
+                                                        <OpenBetCard key={i} gameName={null} bet={bet} result={bet.result}/>
                                                     ))}
                                                 </BetSlipWrapper>
                                             </div>
