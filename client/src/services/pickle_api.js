@@ -69,6 +69,7 @@ class PickleApi {
   }
 
   sendRequest(options) {
+    options.url = '/api' + options.url;
     options = { ...options, headers: this.getAuthHeaders() };
     return this.client.request(options)
     .then(response => {
