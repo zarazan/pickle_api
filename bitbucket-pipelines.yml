@@ -10,10 +10,9 @@ pipelines:
     - step:
         name: Build
         script:
-          - cd pickle_api
           - git archive --format=tar.gz master -o pickle_api.tar.gz
         artifacts:
-          - pickle_api/pickle_api.tar.gz
+          - pickle_api.tar.gz
       
     - step:
         name: Deploy to production
@@ -25,4 +24,4 @@ pipelines:
             variables:
               HEROKU_API_KEY: $HEROKU_API_KEY
               HEROKU_APP_NAME: $HEROKU_APP_NAME
-              ZIP_FILE: pickle_api/pickle_api.tar.gz
+              ZIP_FILE: pickle_api.tar.gz
