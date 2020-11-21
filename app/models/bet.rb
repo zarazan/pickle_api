@@ -40,9 +40,9 @@ class Bet < ApplicationRecord
     transaction do
       self.result = odd.get_result
       if(result.won?)
-        entry.update!(bank: bank + payout)
+        entry.update!(bank: entry.bank + payout)
       elsif(result.draw?)
-        entry.update!(bank: bank + amount)
+        entry.update!(bank: entry.bank + amount)
       end
       save!
     end
