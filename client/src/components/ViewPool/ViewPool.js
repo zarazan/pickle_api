@@ -56,8 +56,8 @@ const ViewPool = () => {
     });
 
     return (
-        <Switch>
-            <Route exact path={`${path}`}>
+        // <Switch>
+        //     <Route exact path={`${path}`}>
                 <ViewPoolWrapper className='pool-view-container'>
                     {state === 'error' 
                         ? <div>{errorMessage}</div>
@@ -132,11 +132,11 @@ const ViewPool = () => {
                                 : null
                     }
                 </ViewPoolWrapper>
-            </Route>
-            <Route path={`${path}/schedule`} >
-                <GameOdds />
-            </Route>
-        </Switch>     
+        //     </Route>
+        //     <Route path={`${path}/schedule`} >
+        //         <GameOdds />
+        //     </Route>
+        // </Switch>     
     );
 
     /** fetchAndSetEntries: Fetches the entries for the pool and adds them to state. */
