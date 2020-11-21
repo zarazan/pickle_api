@@ -1,13 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { decToAmerican, calculatePayout } from '../../utilities/helpers';
+import PropTypes from 'prop-types';
+
+import { usePoolState } from '../../contexts/PoolContext';
+import { decToAmerican } from '../../utilities/helpers';
 
 const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, betCount, errors }) => { 
     const [wager, setWager] = useState(0);
     const [payout, setPayout] = useState(0);
     const [ratio, setRatio] = useState(null);
     const [game, setGame] = useState('');
+
+    const { bankroll } = usePoolState();
 
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -37,13 +41,13 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, betCou
     return (
         <EnterWagerWrapper className='enter-wager-container'>
             <CalculatorHeader className='wager-row header'>
-                <div className='enter-wager__counter'>
+                {/* <div className='enter-wager__counter'>
                     <div className='counter__number'>{betCount ? betCount : 1}</div>
                     <div>Bet Slip</div>
                 </div>
                 <div className='enter-wager__toggle-multibet'>
                     <AddMoreButton disabled>+ Add More</AddMoreButton>
-                </div>
+                </div> */}
             </CalculatorHeader>            
             <CalculatorSummary className='wager-row summary'>
                 <div className='enter-wager__bet-summary summary-item'>
@@ -107,17 +111,17 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, betCou
             </Calculator>            
             <CalculatorFooter className='wager-row complete-cancel'>
                 <CalculatorButton
-                    className='btn complete-cancel__button'
-                    disabled={wager && wager !== 0 ? false : true}
+                    className={`btn complete complete-cancel__button ${wager > bankroll && 'overdraft'}`}
+                    disabled={wager && wager !== 0 && wager <= bankroll ? false : true}
                     onClick={() => placeBet(currentBet.id, wager)}
                 >
-                    Enter Wager Amount
+                    {wager <= bankroll ? `Enter Wager Amount` : `Insufficient Funds!`}
                 </CalculatorButton>
                 <CalculatorButton 
-                    className='btn complete-cancel__button'
+                    className='btn cancel complete-cancel__button'
                     onClick={closeBetSlip}
                 >
-                    Cancel
+                    Cancel Wager
                 </CalculatorButton>
             </CalculatorFooter>
         </EnterWagerWrapper>
@@ -152,11 +156,13 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, betCou
 
     /** calculatePayout: Calculate payout based on the odds and entered wager. */
     function calculatePayout(){
-        const currentWager = wager;
-        let currentOdds = -150;
-        let multiplier = Math.abs(currentOdds) / 100;
-        let profit = currentWager / multiplier;
-        setPayout(parseInt(currentWager + profit, 10));
+        if (wager > 0) {
+            const currentWager = wager;
+            let currentOdds = ratio;
+            let multiplier = Math.abs(currentOdds) / 100;
+            let profit = currentWager / multiplier;
+            setPayout(parseInt(currentWager + profit, 10));
+        }
     }
 
     /** clearWager: Resets the wager entry and payout state. */
@@ -317,19 +323,30 @@ const CalculatorButton = styled.button`
     background: white;
     border: 1px solid lightgrey;
     box-sizing: border-box;
+    outline: none;
 
     &.complete-cancel__button {
+        padding: 1em 0 1em 0;
+
+        border: none;
         border-radius: 0.4em;
         background-color: #eaf3fd;
         color: #5698d6;
-        border: none;
-        outline: none;
-        padding: 1em 0 1em 0;
         font-size: 0.8rem;
 
+        &[class~='complete'] {
+            background: #34b25e;
+            color: white;
+        }
+
         &:disabled {
-            background: lightgrey;
-            color: grey;
+            background: #eee;
+            color: #b3b3b3;
+        }
+
+        &[class~='overdraft'] {
+            background: #e44242;
+            color: white;
         }
     }
 `;
