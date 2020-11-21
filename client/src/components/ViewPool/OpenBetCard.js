@@ -1,20 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { decToAmerican } from '../../utilities/helpers';
+import { decToAmerican, zuluToStringFormat, calculatePayout, currencyFormatter } from '../../utilities/helpers';
 
 import { ReactComponent as Football } from '../../icons/american-football.svg';
 
-const OpenBets = ({ gameName, bet }) => {
+const OpenBets = ({ gameName, bet, result }) => {
     const [ratio, setRatio] = useState(null);
 
-    const formatter = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-        minimumFractionDigits: 2
-      });
-
-      useEffect(() => (
+    useEffect(() => (
         setRatio(decToAmerican(bet.odd.ratio))
     ), []);
 
@@ -29,7 +23,27 @@ const OpenBets = ({ gameName, bet }) => {
                     </div>
                     <div className='sport-league'>NFL</div>
                 </div>
-                <div className='game-date'>{`SUN, NOV 09`}</div>
+                <div className='header__info'>
+                    <div className='game-date'>{zuluToStringFormat(bet.createdAt)}</div>
+                    <div className={`bet-status 
+                        ${!bet.result 
+                            ? 'in-progress' 
+                            : bet.result === 'W'
+                                ? 'win'
+                                : bet.result === 'L'
+                                    ? 'loss'
+                                    : 'tie'
+                        }`
+                    }>
+                        {!bet.result 
+                            ? 'O' 
+                            : bet.result === 'W'
+                                ? 'W'
+                                : bet.result === 'L'
+                                    ? 'L'
+                                    : 'T'}
+                    </div>
+                </div>
             </div>
 
             <div className='content'>
@@ -55,8 +69,8 @@ const OpenBets = ({ gameName, bet }) => {
                     </div>
                 </div>
                 <div className='content__game content-row'>
-                    <div className='betslip__game-name'>{'Away Team at Home Team'}</div>
-                    <div className='betslip__bet-amount'>{`STAKE: ${formatter.format(bet.amount)}`}</div>
+                    <div className='betslip__bet-amount'>{`STAKE: ${currencyFormatter.format(bet.amount)}`}</div>
+                    <div className='betslip__bet-payout'>{`TO WIN: ${currencyFormatter.format(calculatePayout(bet.amount, decToAmerican(bet.odd.ratio)))}`}</div>
                 </div>
 
             </div>
@@ -84,13 +98,6 @@ const BetSlip = styled.div`
         justify-content: space-between;
         align-items: flex-end;
         margin-bottom: 0.4rem;
-
-        .game-date {
-            display: flex;
-            margin: 0.5rem 1rem 0.3rem 0;
-            font-size: 0.7rem;
-            color: #8b8c8f;
-        }
 
         .header__sport {
             display: flex;
@@ -120,12 +127,51 @@ const BetSlip = styled.div`
                 color: #808080;
             }
         }
+
+        .header__info {
+            display: flex;
+            align-items: center;
+            margin-right: 0.5rem;
+
+            .game-date {
+                display: flex;
+                margin: 0.5rem 1rem 0.3rem 0;
+                font-size: 0.7rem;
+                color: #8b8c8f;
+            }
+
+            .bet-status {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                box-sizing: border-box;
+                border-radius: 0.15rem;
+                padding: 0.1rem 0.2rem 0.1em 0.2rem;
+                color: white;
+                font-size: 0.8rem;
+                
+                &[class~='in-progress'] {
+                    background: #cfd6db;
+                }
+
+                &[class~='win'] {
+                    background: #34b25e;
+                }
+
+                &[class~='loss'] {
+                    background: #e44242;
+                }
+
+                &[class~='tie'] {
+                    background: #31a0fe;
+                }
+            }
+        }
     }
 
     .content {
         box-sizing: border-box;
-        margin-left:0.5rem;
-        padding-bottom: 0.7rem;
+        margin: 0 0.5rem; 0 0.5rem;
 
         & .content-row {
             margin-bottom: 0.3rem;
@@ -138,22 +184,22 @@ const BetSlip = styled.div`
             & .betslip__bet-odds {
                 display: flex;
                 align-items: center;
-                margin-right: 1rem;
             }
         }
 
         & .content__game {
             display: flex;
-            justify-content: space-between;
+            flex-flow: column nowrap;
+            box-sizing: border-box;
+            margin-top: 0.5rem;
+            padding: 0.5rem 0 0.5rem 0;
+
+            border-top: 1px solid #f0f3f4;
             font-size: 0.7rem;
-
-            & .betslip__game-name {
-                color: #8b8c8f;
-            }
-
+            font-weight: 500;
+            
             & .betslip__bet-amount {
-                margin-right: 1rem;
-                font-weight: 700;
+                margin-bottom: 0.25rem
             }
         }
         
