@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { decToAmerican } from '../../utilities/helpers';
+import { decToAmerican, calculatePayout } from '../../utilities/helpers';
 
 const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, betCount, errors }) => { 
     const [wager, setWager] = useState(0);
