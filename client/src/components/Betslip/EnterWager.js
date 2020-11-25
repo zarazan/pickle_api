@@ -11,7 +11,7 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, betCou
     const [ratio, setRatio] = useState(null);
     const [game, setGame] = useState('');
 
-    const { bankroll } = usePoolState();
+    const { bank } = usePoolState();
 
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -111,11 +111,11 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, betCou
             </Calculator>            
             <CalculatorFooter className='wager-row complete-cancel'>
                 <CalculatorButton
-                    className={`btn complete complete-cancel__button ${wager > bankroll && 'overdraft'}`}
-                    disabled={wager && wager !== 0 && wager <= bankroll ? false : true}
+                    className={`btn complete complete-cancel__button ${wager > bank && 'overdraft'}`}
+                    disabled={wager && wager !== 0 && wager <= bank ? false : true}
                     onClick={() => placeBet(currentBet.id, wager)}
                 >
-                    {wager <= bankroll ? `Enter Wager Amount` : `Insufficient Funds!`}
+                    {wager <= bank ? `Enter Wager Amount` : `Insufficient Funds!`}
                 </CalculatorButton>
                 <CalculatorButton 
                     className='btn cancel complete-cancel__button'
