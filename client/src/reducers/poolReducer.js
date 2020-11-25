@@ -1,24 +1,37 @@
 const type = {
-    SET_POOL_ID: 'SET_POOL_ID',
+    SEED_POOL: 'SEED_POOL',
+    UPDATE_BET_COUNT: 'UPDATE_BET_COUNT',
     SET_BANKROLL: 'SET_BANKROLL',
     PLACE_WAGER: 'PLACE_WAGER',
 };
 
 const INITIAL_STATE = {
     poolId: null,
-    bankroll: null,
+    bank: 0,
+    bankroll: 0,
+    betCount: 0,
 };
 
 function reducer(state = INITIAL_STATE, action) {
     switch (action.type) {
-        case type.SET_POOL_ID:
-            return { ...state, poolId: action.data };
+        case type.SEED_POOL:
+            return { 
+                ...state,
+                poolId: action.poolId,
+                bank: action.bank,
+            };
+        case type.UPDATE_BET_COUNT:
+            return {
+                ...state,
+                betCount: action.bets,
+            };
         case type.SET_BANKROLL:
-            return { ...state, bankroll: action.data };
         case type.PLACE_WAGER:
-            let newRoll = parseFloat(state.bankroll);
-            newRoll -= parseFloat(action.data);
-            return { ...state, bankroll: newRoll };
+            return {
+                ...state,
+                bank: state.bank - action.wager,
+                betCount: state.betCount + 1,
+            }
         default:
             return state
     }

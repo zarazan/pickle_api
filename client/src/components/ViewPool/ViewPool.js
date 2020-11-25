@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Route, Switch, useHistory, useParams, useRouteMatch } from 'react-router-dom';
+import { useHistory, useParams, useRouteMatch } from 'react-router-dom';
 import styled from'styled-components';
 
 import { UserContext } from '../../contexts/UserContext';
@@ -8,7 +8,6 @@ import pickleApi from '../../services/pickle_api';
 import { currencyFormatter } from '../../utilities/helpers';
 
 import FullPageSpinner from '../FullPageSpinner';
-import GameOdds from '../Betslip/GameOdds';
 import OpenBetCard from './OpenBetCard';
 import PoolUserCard from './PoolUserCard';
 import RowResult from './RowResult';
@@ -18,9 +17,10 @@ import { faArrowRight, faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 
 const ViewPool = () => {
     const [ user ] = useContext(UserContext);
+    const [myInfo, setMyInfo] = useState({ userName: '', bank: 10, bankrollPlusActiveBets: 0, rank: 0 });
     const dispatch = usePoolDispatch();
-    const setPoolId = () => dispatch({ type: 'SET_POOL_ID', data: poolId });
-    const setBankroll = () => dispatch({ type: 'SET_BANKROLL', data: parseFloat(myInfo.bankrollPlusActiveBets) });
+    const setBankroll = (pool, bank) => dispatch({ type: 'SEED_POOL', poolId: pool, bank: bank });
+    const updateBetCount = (pool, count) => dispatch({ type: 'UPDATE_BET_COUNT', poolId: pool, bets: count});
 
     const { poolId } = useParams(); // pool id from url
     const { path, url } = useRouteMatch(); // path and url for route matching
@@ -29,16 +29,14 @@ const ViewPool = () => {
     const [state, setState] = useState('idle'); // used for component state tracking
     const [errorMessage, setErrorMessage] = useState(''); // used for displaying errors
 
-    const [display, setDisplay] = useState('dashboard'); // used for toggling the display to render
     const [winnersCircle, setWinnersCircle] = useState([]); // array of top placers of the leaderboard
     const [entries, setEntries] = useState([]); // array of entries
     const [fixtures, setFixtures] = useState([]); // array of fixtures
     const [openBets, setOpenBets] = useState(null); //
-    const [myInfo, setMyInfo] = useState({ userName: '', bankrollPlusActiveBets: 0, rank: 0 });
 
     useEffect(() => {
         window.scrollTo(0, 0);
-    });
+    }, []);
 
     useEffect(() => {
         setState('loading');
@@ -49,11 +47,6 @@ const ViewPool = () => {
         setState('loading');
         fetchAndSetBets(poolId);
     }, []);
-
-    useEffect(() => {
-        setBankroll();
-        setPoolId();
-    });
 
     return (
         // <Switch>
@@ -71,12 +64,12 @@ const ViewPool = () => {
                                                 <h2>{'Pool Name'}</h2>
                                             </div>
                                             <div className='pool-content__user-stats'>
-                                                <PoolUserCard name={myInfo.userName} avatar={null} bankroll={currencyFormatter.format(myInfo.bankrollPlusActiveBets)}/>
+                                                <PoolUserCard name={myInfo.userName} avatar={null} bankroll={currencyFormatter.format(myInfo.bank)}/>
                                             </div>
                                             <div className='pool-content__leaderboard-container'>
                                                 <div className='leaderboard-header'>
                                                     <h3>{'LEADERBOARD'}</h3>
-                                                    <button onClick={() => toggleDisplay('leaderboard')}><FontAwesomeIcon icon={faArrowRight} size='sm' /></button>
+                                                    <button onClick={() => {}}><FontAwesomeIcon icon={faArrowRight} size='sm' /></button>
                                                 </div>
                                                 <div className='pool-content__leaderboard-list'>
                                                     {winnersCircle.map((winner, i) => (
@@ -149,12 +142,15 @@ const ViewPool = () => {
                 // TODO: change this to an ID in the future
                 const [ info ] = entries.filter(entry => entry.userName === user.name);
                 const topEntries = entries.filter(entry => entry.position < 3);
+                // send dispatch
+                setBankroll(poolId, info.bank);
                 // add info to state
                 setMyInfo(info);
                 setWinnersCircle(topEntries);
                 setState('finished');
         })
         .catch(error => {
+            console.log(error.toString());
             history.push('/sign-in');
             setErrorMessage(error.toString());
             setState('error');
@@ -167,21 +163,16 @@ const ViewPool = () => {
             .then(bets => {
                 // add bets to state
                 setOpenBets(bets);
+                // send dispatch
+                updateBetCount(poolId, bets.length);
                 setState('finished');
             })
             .catch(error => {
+                console.log(error.toString());
                 history.push('/sign-in');
                 setErrorMessage(error.toString());
                 setState('error');
             });
-    }
-
-    /** toggleDisplay: Toggles the view to be displayed. **/
-    function toggleDisplay(value) {
-        const currentDisplay = display;
-        if (currentDisplay !== value) {
-            setDisplay(value);
-        }
     }
 };
 

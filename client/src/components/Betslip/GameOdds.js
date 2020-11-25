@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 import pickleApi from '../../services/pickle_api';
 import { usePoolDispatch, usePoolState } from '../../contexts/PoolContext';
+import { currencyFormatter } from '../../utilities/helpers';
 
 import BetCard from './BetCard';
 import EnterWager from './EnterWager';
@@ -18,7 +19,7 @@ const GameOdds = () => {
     const history = useHistory();
     const dispatch = usePoolDispatch();
     const state = usePoolState();
-    const placeWager = (amount) => dispatch({ type: 'PLACE_WAGER', data: amount });
+    const placeWager = (amount) => dispatch({ type: 'PLACE_WAGER', wager: amount });
 
     const [componentState, setState] = useState('idle'); // used for component state tracking
     const [errorMessage, setErrorMessage] = useState(''); // used for displaying errors
@@ -57,8 +58,8 @@ const GameOdds = () => {
                                 </Header>
                                 <Bankroll className='user-bankroll'>
                                     <h3>{'YOUR BANKROLL'}</h3>
-                                    <h2 className='user-bankroll'>{state.bankroll ? `$${state.bankroll}` : '$0.00'}</h2>
-                                    <h4>{`${betCount} OPEN BETS`}</h4>
+                                    <h2 className='user-bankroll'>{currencyFormatter.format(state.bank)}</h2>
+                                    <h4>{`${state.betCount} OPEN BETS`}</h4>
                                 </Bankroll>
 
                                 {toggleBetSlip 
@@ -159,6 +160,7 @@ const GameOdds = () => {
             .then(data => {
                 setBetCount(betCount + 1);
                 placeWager(data.amount);
+                
                 setToggleBetSlip(false);
                 setState('finished');
             })
