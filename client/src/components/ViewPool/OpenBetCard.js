@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { decToAmerican, zuluToStringFormat, calculatePayout, currencyFormatter } from '../../utilities/helpers';
+import { decToAmerican, zuluToStringFormat, currencyFormatter } from '../../utilities/helpers';
 
 import { ReactComponent as Football } from '../../icons/american-football.svg';
 
-const OpenBets = ({ gameName, bet, result }) => {
+const OpenBets = ({ gameName, bet }) => {
     const [ratio, setRatio] = useState(null);
+    const [payout, setPayout] = useState(0);
 
     useEffect(() => (
         setRatio(decToAmerican(bet.odd.ratio))
+    ), []);
+
+    useEffect(() => (
+        calculatePayout()
     ), []);
 
     return (
@@ -70,13 +75,30 @@ const OpenBets = ({ gameName, bet, result }) => {
                 </div>
                 <div className='content__game content-row'>
                     <div className='betslip__bet-amount'>{`STAKE: ${currencyFormatter.format(bet.amount)}`}</div>
-                    <div className='betslip__bet-payout'>{`TO WIN: ${currencyFormatter.format(calculatePayout(bet.amount, decToAmerican(bet.odd.ratio)))}`}</div>
+                    <div className='betslip__bet-payout'>{`TO WIN: ${currencyFormatter.format(payout)}`}</div>
                 </div>
 
             </div>
 
         </BetSlip>
     );
+
+    /** calculatePayout: Calculate payout based on the odds and entered wager. */
+    function calculatePayout(){
+        if (bet.amount > 0) {
+            const currentWager = bet.amount;
+            // console.log(`wager: ${currentWager}`);
+            let currentOdds = decToAmerican(bet.odd.ratio);
+            // console.log(`ratio: ${currentOdds}`);
+            let multiplier = Math.abs(currentOdds) / 100;
+            // console.log(`multiplier: ${multiplier}`);
+            let profit = currentWager / multiplier;
+            // console.log(`profit: ${profit}`);
+            let payout = parseInt(profit, 10) + parseInt(currentWager, 10);
+            // console.log(`payout: ${payout}`);
+            setPayout(parseInt(payout, 10));
+        }
+    }
 };
 
 OpenBets.propTypes = {
