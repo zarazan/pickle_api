@@ -29,6 +29,7 @@ class Fixture < ApplicationRecord
     fixture = Fixture.find_by(attributes)
     return fixture if fixture
     attributes.merge!(status: :scheduled)
+    puts "Creating fixture #{attributes}"
     Fixture.create(attributes)
   end
 

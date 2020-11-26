@@ -1,8 +1,9 @@
 require 'test_helper'
 
 class PoolTest < ActiveSupport::TestCase
-    
+
   describe 'validations' do
+
     before do
       user = User.new(email: 'asdf@asdf.com', password: 'password')
       now = DateTime.now
@@ -46,9 +47,9 @@ class PoolTest < ActiveSupport::TestCase
     end
 
     it 'requires a sport' do
-      @pool.bet_types = nil
+      @pool.sports = nil
       refute @pool.save
-      assert @pool.errors['bet_types'].any?
+      assert @pool.errors['sports'].any?
     end
 
     it 'blocks invalid sports' do
