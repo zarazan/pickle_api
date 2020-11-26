@@ -35,8 +35,8 @@ class Bet < ApplicationRecord
   end
 
   def settle
-    return if result
-    return if odd.get_result_or_pending == :pending
+    return true if result
+    return false if odd.get_result_or_pending == :pending
     transaction do
       self.result = odd.get_result
       if(result.won?)

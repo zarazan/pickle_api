@@ -112,19 +112,19 @@ const BetCard = ({ fixtureId, locked, homeTeamName, homeTeamId, awayTeamName, aw
         const under = oddsData.filter(d => d.type === 'under').pop();
         
         // seed team-based data
-        newState.moneyLine = { 'betId': moneyBet.id, 'metric': '', 'ratio': moneyBet.ratio };
-        newState.pointSpread = { 'betId': spreadBet.id, 'metric': spreadBet.metric, 'ratio': spreadBet.ratio };
+        newState.moneyLine = { 'betId': moneyBet && moneyBet.id, 'metric': '', 'ratio': moneyBet && moneyBet.ratio };
+        newState.pointSpread = { 'betId': spreadBet && spreadBet.id, 'metric': spreadBet && spreadBet.metric, 'ratio': spreadBet && spreadBet.ratio };
         
         if(teamType === 'home') {            
-            totalPoints.betId = over.id;
-            totalPoints.metric = over.metric;
-            totalPoints.ratio = over.ratio;
+            totalPoints.betId = over && over.id;
+            totalPoints.metric = over && over.metric;
+            totalPoints.ratio = over && over.ratio;
             newState.totalPoints = totalPoints;
 
         } else {
-            totalPoints.betId = under.id;
-            totalPoints.metric = under.metric;
-            totalPoints.ratio = under.ratio;
+            totalPoints.betId = under && under.id;
+            totalPoints.metric = under && under.metric;
+            totalPoints.ratio = under && under.ratio;
             newState.totalPoints = totalPoints;
         }
         return newState;
