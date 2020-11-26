@@ -57,7 +57,7 @@ class Fixture < ApplicationRecord
   end
 
   def complete?
-    [:home_win, :away_win, :draw].include?(status)
+    [:home_win, :away_win, :draw].include?(status.to_sym)
   end
 
   def locked?
