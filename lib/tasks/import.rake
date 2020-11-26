@@ -8,8 +8,8 @@ namespace :import do
     Pool.create_and_enter(
       user: User.first,
       name: 'Thanksgiving Test Pool',
-      start_date: @today,
-      end_date: @end_date,
+      start_date: DateTime.current.beginning_of_day,
+      end_date: (DateTime.current.end_of_day + 5.days),
       bankroll: 500,
       bet_types: ['money_line', 'total_points', 'spread'],
       sports: ['americanfootball_nfl'],
