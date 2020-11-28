@@ -9,7 +9,7 @@ class Odd < ApplicationRecord
 
   belongs_to :fixture
   has_many :bets
-  belongs_to :team, optional: true
+  belongs_to :team, optional: -> { !team_is_required }
 
   validates :ratio, presence: true
 
@@ -49,6 +49,10 @@ class Odd < ApplicationRecord
   def get_result_or_pending
     return :pending unless fixture.complete?
     get_result
+  end
+
+  def team_is_required
+    false
   end
 
   def as_json(options = {})
