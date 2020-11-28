@@ -49,87 +49,80 @@ const ViewPool = () => {
     }, []);
 
     return (
-        // <Switch>
-        //     <Route exact path={`${path}`}>
-                <ViewPoolWrapper className='pool-view-container'>
-                    {state === 'error' 
-                        ? <div>{errorMessage}</div>
-                        : state === 'loading'
-                             ? <FullPageSpinner loading={true} optionalMessage={'Loading Your Pool'}/>
-                            : state === 'finished'
-                                ?
-                                    <>
-                                        <PoolContent className='pool-content'>
-                                            <div className='pool-content__title'>
-                                                <h2>{'Pool Name'}</h2>
-                                            </div>
-                                            <div className='pool-content__user-stats'>
-                                                <PoolUserCard name={myInfo.userName} avatar={null} bankroll={currencyFormatter.format(myInfo.bank)}/>
-                                            </div>
-                                            <div className='pool-content__leaderboard-container'>
-                                                <div className='leaderboard-header'>
-                                                    <h3>{'LEADERBOARD'}</h3>
-                                                    <button onClick={() => {}}><FontAwesomeIcon icon={faArrowRight} size='sm' /></button>
-                                                </div>
-                                                <div className='pool-content__leaderboard-list'>
-                                                    {winnersCircle.map((winner, i) => (
-                                                        <RowResult 
-                                                            key={i}
-                                                            rank={winner.position}
-                                                            avatar={null}
-                                                            name={winner.userName}
-                                                            bankroll={currencyFormatter.format(winner.bankrollPlusActiveBets)}
-                                                        />
-                                                    ))}
-                                                </div>
-                                            </div>
-                                            <div className='pool-content__separator'>
-                                                <span><FontAwesomeIcon icon={faEllipsisH} size='1x' color={'#e5e5e6'}/></span>
-                                            </div>
-                                            <div>
-                                                <div className='pool-user-placement'>
-                                                    <RowResult 
-                                                        rank={myInfo.position}
-                                                        avatar={null}
-                                                        name={myInfo.userName}
-                                                        bankroll={currencyFormatter.format(myInfo.bankrollPlusActiveBets)}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div className='schedule-header'>
-                                                    <h3>{'SCHEDULE & BETS'}</h3>
-                                                </div>
-                                                <div className='pool-fixture-schedule'>
-                                                    <div className='btn schedule-btn'><button onClick={() => history.push(`${url}/schedule`)}>View Full Schedule</button></div>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div className='open-bets-header'>
-                                                    <h3>{'OPEN BETS'}</h3>
-                                                </div>
-                                                <BetSlipWrapper className='betslip-container'>
-                                                    {!openBets
-                                                    ? 
-                                                        <NoBets>
-                                                            <span>You have no open bets</span>
-                                                            <button>View Schedule to Place Bets</button>
-                                                        </NoBets>
-                                                    : openBets.map((bet, i) => (
-                                                        <OpenBetCard key={i} gameName={null} bet={bet} result={bet.result}/>
-                                                    ))}
-                                                </BetSlipWrapper>
-                                            </div>
-                                        </PoolContent>
-                                    </>
-                                : null
-                    }
-                </ViewPoolWrapper>
-        //     </Route>
-        //     <Route path={`${path}/schedule`} >
-        //         <GameOdds />
-        //     </Route>
-        // </Switch>     
+        <ViewPoolWrapper className='pool-view-container'>
+            {state === 'error' 
+                ? <div>{errorMessage}</div>
+                : state === 'loading'
+                        ? <FullPageSpinner loading={true} optionalMessage={'Loading Your Pool'}/>
+                    : state === 'finished'
+                        ?
+                            <>
+                                <PoolContent className='pool-content'>
+                                    <div className='pool-content__title'>
+                                        <h2>{'Pool Name'}</h2>
+                                    </div>
+                                    <div className='pool-content__user-stats'>
+                                        <PoolUserCard name={myInfo.userName} avatar={null} bankroll={currencyFormatter.format(myInfo.bank)}/>
+                                    </div>
+                                    <div className='pool-content__leaderboard-container'>
+                                        <div className='leaderboard-header'>
+                                            <h3>{'LEADERBOARD'}</h3>
+                                            <button onClick={() => {}}><FontAwesomeIcon icon={faArrowRight} size='sm' /></button>
+                                        </div>
+                                        <div className='pool-content__leaderboard-list'>
+                                            {winnersCircle.map((winner, i) => (
+                                                <RowResult 
+                                                    key={i}
+                                                    rank={winner.position}
+                                                    avatar={null}
+                                                    name={winner.userName}
+                                                    bankroll={currencyFormatter.format(winner.bankrollPlusActiveBets)}
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className='pool-content__separator'>
+                                        <span><FontAwesomeIcon icon={faEllipsisH} size='1x' color={'#e5e5e6'}/></span>
+                                    </div>
+                                    <div>
+                                        <div className='pool-user-placement'>
+                                            <RowResult 
+                                                rank={myInfo.position}
+                                                avatar={null}
+                                                name={myInfo.userName}
+                                                bankroll={currencyFormatter.format(myInfo.bankrollPlusActiveBets)}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div className='schedule-header'>
+                                            <h3>{'SCHEDULE & BETS'}</h3>
+                                        </div>
+                                        <div className='pool-fixture-schedule'>
+                                            <div className='btn schedule-btn'><button onClick={() => history.push(`${url}/schedule`)}>View Full Schedule</button></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div className='open-bets-header'>
+                                            <h3>{'OPEN BETS'}</h3>
+                                        </div>
+                                        <BetSlipWrapper className='betslip-container'>
+                                            {!openBets
+                                            ? 
+                                                <NoBets>
+                                                    <span>You have no open bets</span>
+                                                    <button>View Schedule to Place Bets</button>
+                                                </NoBets>
+                                            : openBets.map((bet, i) => (
+                                                <OpenBetCard key={i} gameName={null} bet={bet} result={bet.result}/>
+                                            ))}
+                                        </BetSlipWrapper>
+                                    </div>
+                                </PoolContent>
+                            </>
+                        : null
+            }
+        </ViewPoolWrapper>  
     );
 
     /** fetchAndSetEntries: Fetches the entries for the pool and adds them to state. */
