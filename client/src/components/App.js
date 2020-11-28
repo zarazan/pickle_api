@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import ROUTES, { RenderRoutes} from '../constants/routes';
 import styled from 'styled-components';
@@ -10,21 +10,24 @@ import { ReactComponent as Home } from '../icons/beach-hut.svg';
 import { ReactComponent as Pool } from '../icons/pool.svg';
 import { ReactComponent as Lobby } from '../icons/boxing-gloves.svg';
 import { ReactComponent as Stats } from '../icons/analytics.svg';
+import Sidebar from './Sidebar';
 
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faUser, faChartLine, faTrophy, faHome } from '@fortawesome/free-solid-svg-icons';
 
 const App = () => {
     const history = useHistory();
+    const [sidebar, setSidebar] = useState(false);
 
     return (
         <PoolProvider>
             <AppWrapper className='app-wrapper'>
                 <UserProvider>
+                    {sidebar && <Sidebar />}
                     <AppHeader className='global-header'>
                         <div className='top-nav'>
                             <div><button className='btn btn-home' onClick={() => history.push('/')}><LogoIcon /></button></div>
-                            <div><button className='btn btn-menu' ><MenuIcon /></button></div>
+                            <div><button className='btn btn-menu' onClick={(e) => toggleSidebar(e)}><MenuIcon /></button></div>
                         </div>
                     </AppHeader>
                     <AppMain className='content-wrapper'>
@@ -34,6 +37,12 @@ const App = () => {
             </AppWrapper>
         </PoolProvider>
     );
+
+    /** toggleSidebar: toggles the app sidebar. */
+    function toggleSidebar(e) {
+        console.log(e.target.id);
+        setSidebar(!sidebar);
+    }
 }
 
 export default App;

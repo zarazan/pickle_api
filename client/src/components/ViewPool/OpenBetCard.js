@@ -68,8 +68,8 @@ const OpenBets = ({ gameName, bet }) => {
                             ? bet.odd.metric > 0 
                                 ? `+${bet.odd.metric}` 
                                 : bet.odd.metric
-                            : ''}
-                            {`(${ratio})`}
+                            : ' '}
+                            {ratio > 0 ? `(+${ratio})` : `(${ratio})`}
                         </div>
                     </div>
                 </div>
