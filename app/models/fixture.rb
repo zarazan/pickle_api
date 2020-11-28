@@ -29,6 +29,7 @@ class Fixture < ApplicationRecord
     fixture = Fixture.find_by(attributes)
     return fixture if fixture
     attributes.merge!(status: :scheduled)
+    puts "Creating fixture #{attributes}"
     Fixture.create(attributes)
   end
 
@@ -56,7 +57,7 @@ class Fixture < ApplicationRecord
   end
 
   def complete?
-    [:home_win, :away_win, :draw].include?(status)
+    [:home_win, :away_win, :draw].include?(status.to_sym)
   end
 
   def locked?

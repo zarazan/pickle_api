@@ -13,14 +13,18 @@ class LoadOddsService
   ]
 
   def self.process
-    new.populate_all_odds
+    new.populate_all_sports
   end
 
-  def populate_all_odds
+  def populate_all_sports
     SPORTS.each do |sport|
-      ODD_TYPES.each do |odd_type|
-        populate_odds(sport, odd_type)
-      end
+      populate_sport(sport)
+    end
+  end
+
+  def populate_sport(sport)
+    ODD_TYPES.each do |odd_type|
+      populate_odds(sport, odd_type)
     end
   end
 

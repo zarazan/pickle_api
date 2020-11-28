@@ -9,8 +9,8 @@ class Pool < ApplicationRecord
   validates :end_date, presence: true
   validates :bankroll, presence: true
 
-  # validate :validate_bet_types
-  # validate :validate_sport_types
+  validate :validate_bet_types
+  validate :validate_sport_types
 
   BET_TYPES = [
     'money_line',

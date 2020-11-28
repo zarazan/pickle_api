@@ -45,6 +45,7 @@ class Odd < ApplicationRecord
     transaction do
       active_odds = Odd.where(attributes.slice(:fixture, :type, :ratio, :metric, :team))
       active_odds.update_all(active: false)
+      puts "Creating odd #{attributes}"
       return Odd.create!(attributes)
     end
   end
