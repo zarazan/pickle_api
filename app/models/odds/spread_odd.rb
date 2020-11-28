@@ -22,4 +22,8 @@ class SpreadOdd < Odd
     fixture.away_team == team
   end
 
+  def team_is_required
+    true
+  end
+
 end

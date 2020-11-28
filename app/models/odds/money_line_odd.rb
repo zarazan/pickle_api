@@ -5,4 +5,8 @@ class MoneyLineOdd < Odd
     team == fixture.winning_team ? :won : :lost
   end
 
+  def team_is_required
+    true
+  end
+
 end
