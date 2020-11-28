@@ -55,20 +55,33 @@ const OpenBets = ({ gameName, bet }) => {
                 <div className='content__bet content-row'>
                     <div className='betslip__bet-type'>
                         {bet.odd.type === 'money_line'
-                        ? <BetTypeLabel className='bet-type-label'>{'M/L'}</BetTypeLabel>
-                        : bet.odd.type === 'spread'
-                            ? <BetTypeLabel className='bet-type-label'>{'P/S'}</BetTypeLabel>
-                            : <BetTypeLabel className='bet-type-label'>{'T/P'}</BetTypeLabel>
+                            ? <BetTypeLabel className='bet-type-label'>{'M/L'}</BetTypeLabel>
+                            : bet.odd.type === 'spread'
+                                ? <BetTypeLabel className='bet-type-label'>{'P/S'}</BetTypeLabel>
+                                : <BetTypeLabel className='bet-type-label'>{'T/P'}</BetTypeLabel>
                         }
-                        <div className='betslip__team-name'>{bet.odd.teamName}</div>
+                        <div className='betslip__team-name'>
+                            {bet.odd.type === 'over'
+                                ? bet.homeTeamName
+                                : bet.odd.type === 'under'
+                                    ? bet.awayTeamName
+                                    : bet.odd.teamName
+                            }
+                        </div>
                     </div>
                     <div className='betslip__bet-odds'>
                         <div className='odds betslip__metric-ratio'>
-                            {bet.odd.metric 
-                            ? bet.odd.metric > 0 
-                                ? `+${bet.odd.metric}` 
-                                : bet.odd.metric
-                            : ' '}
+                            {bet.odd.type === 'over'
+                                ? `O ${bet.odd.metric}`
+                                : bet.odd.type === 'under'
+                                    ? `U ${bet.odd.metric}`
+                                    : bet.odd.metric
+                                        ? bet.odd.metric > 0
+                                            ? `+${bet.odd.metric}` 
+                                            : bet.odd.metric
+                                        : ' '
+                            }
+                            {' '}
                             {ratio > 0 ? `(+${ratio})` : `(${ratio})`}
                         </div>
                     </div>
