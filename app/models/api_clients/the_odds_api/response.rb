@@ -75,7 +75,7 @@ module ApiClients::TheOddsApi
 
     def parse_totals_odds(fixture_json, site)
       [0, 1].map do |index|
-        odd_type = site['odds']['totals']['position'] == 'over' ? 'OverOdd' : 'UnderOdd'
+        odd_type = site['odds']['totals']['position'][index] == 'over' ? 'OverOdd' : 'UnderOdd'
         {
           type: odd_type,
           ratio: site['odds']['totals']['odds'][index],

@@ -8,8 +8,8 @@ class Odd < ApplicationRecord
   # active
 
   belongs_to :fixture
-  has_many :bets
   belongs_to :team, optional: -> { !team_is_required }
+  has_many :bets
 
   validates :ratio, presence: true
 
@@ -40,7 +40,6 @@ class Odd < ApplicationRecord
     transaction do
       active_odds = Odd.where(attributes.slice(:fixture, :type, :ratio, :metric, :team))
       active_odds.update_all(active: false)
-      puts "Creating odd #{attributes}"
       return Odd.create!(attributes)
     end
   end
