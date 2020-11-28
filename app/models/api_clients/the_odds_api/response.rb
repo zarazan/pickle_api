@@ -57,7 +57,7 @@ module ApiClients::TheOddsApi
         {
           type: 'MoneyLineOdd',
           ratio: site['odds']['h2h'][index],
-          team: fixture_json['teams'][index]
+          team_name: fixture_json['teams'][index]
         }
       end
     end
@@ -67,7 +67,7 @@ module ApiClients::TheOddsApi
         {
           type: 'SpreadOdd',
           ratio: site['odds']['spreads']['odds'][index],
-          team: fixture_json['teams'][index],
+          team_name: fixture_json['teams'][index],
           metric: site['odds']['spreads']['points'][index]
         }
       end

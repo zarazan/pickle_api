@@ -9,7 +9,7 @@ class Odd < ApplicationRecord
 
   belongs_to :fixture
   has_many :bets
-  belongs_to :team, optional: !team_is_required
+  belongs_to :team, optional: -> { !team_is_required }
 
   validates :ratio, presence: true
 
@@ -33,11 +33,6 @@ class Odd < ApplicationRecord
     fixture = attributes[:fixture]
 
     attributes[:team] = fixture.get_team_by_name(team_name)
-
-    if !attributes[:team]
-      puts team_name
-      binding.pry
-    end
 
     duplicate_odd = Odd.find_by(attributes)
     return duplicate_odd if duplicate_odd
