@@ -8,12 +8,12 @@ class PickleApi {
   }
 
   getAdminFixtures(pool_id) {
-    const options = {method: 'get', url: `admin/pools/${pool_id}/fixtures`}
+    const options = {method: 'get', url: `/admin/pools/${pool_id}/fixtures`}
     return this.sendRequest(options); 
   }
 
   saveAdminFixtures(fixtures) {
-    const options = {method: 'patch', url: 'admin/fixtures', data: {fixtures: fixtures}}
+    const options = {method: 'patch', url: '/admin/fixtures', data: {fixtures: fixtures}}
     return this.sendRequest(options);
   }
 

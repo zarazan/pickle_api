@@ -72,6 +72,7 @@ const EditScores = props => {
                 <th>Home Score</th>
                 <th>Away Team</th>
                 <th>Away Score</th>
+                <th>Status</th>
             </tr>
         )
     }
@@ -95,6 +96,25 @@ const EditScores = props => {
         )
     }
 
+    function renderStatusSelect(fixture) {
+        return (
+            <select 
+                value={fixture.status} 
+                onChange={event => dispatch({
+                    type: 'update',
+                    id: fixture.id,
+                    attribute: 'status',
+                    value: event.target.value
+                })}>
+                <option value="scheduled">Scheduled</option>
+                <option value="in_progress">In Progress</option>
+                <option value="home_win">Home Win</option>
+                <option value="away_win">Away Win</option>
+                <option value="draw">Draw</option>
+            </select>
+        )
+    }
+
     function renderFixture(fixture) {
         return (
             <tr key={fixture.id}>
@@ -104,6 +124,7 @@ const EditScores = props => {
                 <td>{renderFixtureInput(fixture, 'homeScore')}</td>
                 <td>{fixture.awayTeamName}</td>
                 <td>{renderFixtureInput(fixture, 'awayScore')}</td>
+                <td>{renderStatusSelect(fixture)}</td>
             </tr>
         )
     }
