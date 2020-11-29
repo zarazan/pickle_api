@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Dashboard from '../components/Dashboard/Dashboard';
-// import Leaderboard from '../components/view-pool/Leaderboard';
+import Leaderboard from '../components/ViewPool/Leaderboard';
 import PoolCreate from '../components/CreatePool/PoolCreate';
 import SignIn from '../components/SignIn';
 import ViewPool from '../components/ViewPool/ViewPool';
@@ -13,6 +13,7 @@ const ROUTES = [
     { path: '/sign-in', key: 'SIGN_IN', exact: true, component: SignIn },
     { path: '/create-pool', key: 'CREATE_POOL', exact: true, component: PoolCreate },
     { path: '/pools/:poolId/schedule', key: 'GAME_ODDS', component: GameOdds },
+    { path: '/pools/:poolId/leaderboard', key: 'LEADERBOARD', component: Leaderboard },
     { path: '/pools/:poolId', key: 'VIEW_POOL', component: ViewPool },
     { path: '/admin/scores/:poolId', key: 'EDIT_SCORES', component: EditScores },
 ];

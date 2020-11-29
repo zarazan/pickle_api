@@ -13,7 +13,7 @@ import PoolUserCard from './PoolUserCard';
 import RowResult from './RowResult';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight, faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 
 const ViewPool = () => {
     const [ user ] = useContext(UserContext);
@@ -71,7 +71,7 @@ const ViewPool = () => {
                                     <div className='pool-content__leaderboard-container'>
                                         <div className='leaderboard-header'>
                                             <h3>{'LEADERBOARD'}</h3>
-                                            <button onClick={() => {}}><FontAwesomeIcon icon={faArrowRight} size='sm' /></button>
+                                            <button className='btn expand-leaderboard-btn' onClick={() => history.push(`${url}/leaderboard`)}>MORE</button>
                                         </div>
                                         <div className='pool-content__leaderboard-list'>
                                             {winnersCircle.map((winner, i) => (
@@ -227,6 +227,16 @@ const PoolContent = styled.section`
         & > h2 {
             margin: 0 0 0.5em;
         }
+    }
+
+    & .expand-leaderboard-btn {
+        box-sizing: border-box;
+        background: none;
+        outline: none;
+        font-family: 'Inter', 'Sans Serif';
+        font-size: .7rem;
+        font-weight: 500;
+        color: black;
     }
 
     & .schedule-btn {
