@@ -4,9 +4,9 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 
-const RowResult = ({ rank, avatar, name, bankroll }) => {
+const RowResult = ({ isUser, rank, avatar, name, bankroll }) => {
     return (
-        <RowWrapper className='leaderboard-row'>
+        <RowWrapper className={`leaderboard-row ${isUser ? 'active-user' : ''}`}>
             <div className='leaderboard-row__telemetry row-item'>{rank + 1}</div>
             <div className='leaderboard-row__avatar row-item'><FontAwesomeIcon icon={!avatar ? faUserCircle : avatar} size='2x'/></div>
             <div className='leaderboard-row__name row-item'>{name ? name : 'Lorem Ipsum'}</div>
@@ -16,14 +16,22 @@ const RowResult = ({ rank, avatar, name, bankroll }) => {
 };
 
 RowResult.propTypes = {
+    isUser: PropTypes.bool.isRequired,
     rank: PropTypes.number.isRequired,
     avatar: PropTypes.object,
     name: PropTypes.string.isRequired,
     bankroll: PropTypes.string.isRequired,
 };
 
-export default RowResult;
+RowResult.defaultProps = {
+    isUser: false,
+    rank: 0,
+    avatar: null,
+    name: 'Larry David',
+    bankroll: 0,
+}
 
+export default RowResult;
 
 const RowWrapper = styled.div`
     display: grid;
@@ -38,6 +46,10 @@ const RowWrapper = styled.div`
     font-family: 'Inter', 'Sans Serif';
     font-size: .85rem;
     font-weight: 500;
+
+    &[class~='active-user'] {
+        background: #e9e8fc;
+    }
 
     div.row-item {
         display: flex;

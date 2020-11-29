@@ -1,53 +1,99 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
+
+import pickleApi from '../../services/pickle_api';
+
+import FullPageSpinner from '../FullPageSpinner';
 import RowResult from './RowResult';
 import WinnerCard from './WinnerCard';
+
 import MOCK_ENTRIES from '../../constants/mockEntries';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
+const Leaderboard = () => {
+    const { poolId } = useParams(); // pool id from url
+    const history = useHistory();
 
-const Leaderboard = ({ toggleDisplay, winnersCircle, entries }) => {
+    const [componentState, setComponentState] = useState('idle');
+    const [errorMessage, setErrorMessage] = useState(''); // used for displaying errors
+    const [entries, setEntries] = useState([]); // array of entries
+    const [winnersCircle, setWinnersCircle] = useState([]); // array of top placers of the leaderboard
+
+    useEffect(() => {
+        setComponentState('loading');
+        fetchAndSetEntries(poolId);
+    }, []);
+
     return (
         <LeaderboardWrapper className='leaderboard-container'>
-            <Header>
-                <button className='leaderboard__back-nav' onClick={() => toggleDisplay('dashboard')}><FontAwesomeIcon icon={faArrowLeft} size='1x' /></button>
-                <Title className='leaderboard__title subsection'>LEADERBOARD</Title>
-            </Header>
-            <WinnerCircle className='leaderboard__leader subsection'>
-                {(winnersCircle || MOCK_ENTRIES).map((result, index) => (
-                    <WinnerCard 
-                        key={index}
-                        rank={index + 1}
-                        avatar={result.image}
-                        name={result.userName}
-                        bankroll={result.bankrollPlusActiveBets}
-                    />
-                ))}
-            </WinnerCircle>
-            <PlacesList className='leaderboard__places subsection'>
-                {(entries || MOCK_ENTRIES).map((result, index) => (
-                    <RowResult 
-                        key={index}
-                        rank={index}
-                        avatar={result.image}
-                        name={result.userName}
-                        bankroll={result.bankrollPlusActiveBets}
-                    />
-                ))}
-            </PlacesList>
+            {componentState === 'error'
+                ? <div>{errorMessage}</div>
+                : componentState === 'loading'
+                    ? <FullPageSpinner loading={true} optionalMessage={'Loading Leaderboard'}/>
+                    : componentState === 'finished'
+                        ? 
+                            <>
+                                <Header>
+                                    <button className='leaderboard__back-nav' onClick={() => history.push(`/pools/${poolId}`)}><FontAwesomeIcon icon={faArrowLeft} size='1x' /></button>
+                                    <Title className='leaderboard__title subsection'>LEADERBOARD</Title>
+                                </Header>
+                                <WinnerCircle className='leaderboard__leader subsection'>
+                                    {(winnersCircle || MOCK_ENTRIES).map((result, index) => (
+                                        <WinnerCard 
+                                            key={index}
+                                            rank={index + 1}
+                                            avatar={result.image}
+                                            name={result.userName}
+                                            bankroll={result.bankrollPlusActiveBets}
+                                        />
+                                    ))}
+                                </WinnerCircle>
+                                <PlacesList className='leaderboard__places subsection'>
+                                    {(entries || MOCK_ENTRIES).map((result, index) => (
+                                        <RowResult 
+                                            key={index}
+                                            rank={index}
+                                            avatar={result.image}
+                                            name={result.userName}
+                                            bankroll={result.bankrollPlusActiveBets}
+                                        />
+                                    ))}
+                                </PlacesList>
+
+                            </>
+                        : null
+            }
         </LeaderboardWrapper>
     );
+
+     /** fetchAndSetEntries: Fetches the entries for the pool and adds them to state. */
+     function fetchAndSetEntries(id) {
+        pickleApi.getEntries(id)
+            .then(entries => {
+                // add entries to state
+                setEntries(entries);
+                const topEntries = entries.filter(entry => entry.position < 3);
+                // add info to state
+                setWinnersCircle(topEntries);
+                setComponentState('finished');
+        })
+        .catch(error => {
+            console.log(error.toString());
+            history.push('/sign-in');
+            setErrorMessage(error.toString());
+            setComponentState('error');
+        });
+    }
 };
 
 export default Leaderboard;
 
-const LeaderboardWrapper = styled.section`
-    display: flex;
-    flex-flow: column nowrap;
-
+const LeaderboardWrapper = styled.div`
     box-sizing: border-box;
-    height: auto;
+    margin: 1em 1em 0 1em;
+    height: 100%;
     overflow: auto;
 `;
 

@@ -112,7 +112,6 @@ const GameOdds = () => {
                                         </BetCardList>
                                     </>
                                 }
-
                             </GameOddsWrapper>
                 }
         </>

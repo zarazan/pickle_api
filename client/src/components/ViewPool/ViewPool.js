@@ -13,7 +13,7 @@ import PoolUserCard from './PoolUserCard';
 import RowResult from './RowResult';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight, faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 
 const ViewPool = () => {
     const [ user ] = useContext(UserContext);
@@ -36,6 +36,10 @@ const ViewPool = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
+    }, []);
+
+    useEffect(() => {
+        fetchPoolInfo(poolId);
     }, []);
 
     useEffect(() => {
@@ -67,12 +71,13 @@ const ViewPool = () => {
                                     <div className='pool-content__leaderboard-container'>
                                         <div className='leaderboard-header'>
                                             <h3>{'LEADERBOARD'}</h3>
-                                            <button onClick={() => {}}><FontAwesomeIcon icon={faArrowRight} size='sm' /></button>
+                                            <button className='btn expand-leaderboard-btn' onClick={() => history.push(`${url}/leaderboard`)}>MORE</button>
                                         </div>
                                         <div className='pool-content__leaderboard-list'>
                                             {winnersCircle.map((winner, i) => (
                                                 <RowResult 
                                                     key={i}
+                                                    isUser={winner.userId === user.id}
                                                     rank={winner.position}
                                                     avatar={null}
                                                     name={winner.userName}
@@ -81,19 +86,25 @@ const ViewPool = () => {
                                             ))}
                                         </div>
                                     </div>
-                                    <div className='pool-content__separator'>
-                                        <span><FontAwesomeIcon icon={faEllipsisH} size='1x' color={'#e5e5e6'}/></span>
-                                    </div>
-                                    <div>
-                                        <div className='pool-user-placement'>
-                                            <RowResult 
-                                                rank={myInfo.position}
-                                                avatar={null}
-                                                name={myInfo.userName}
-                                                bankroll={currencyFormatter.format(myInfo.bankrollPlusActiveBets)}
-                                            />
-                                        </div>
-                                    </div>
+                                    {myInfo.position > 2
+                                        ?
+                                            <>
+                                                <div className='pool-content__separator'>
+                                                    <span><FontAwesomeIcon icon={faEllipsisH} size='1x' color={'#e5e5e6'}/></span>
+                                                </div>
+                                                <div>
+                                                    <div className='pool-user-placement'>
+                                                        <RowResult 
+                                                            rank={myInfo.position}
+                                                            avatar={null}
+                                                            name={myInfo.userName}
+                                                            bankroll={currencyFormatter.format(myInfo.bankrollPlusActiveBets)}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </>
+                                        : null
+                                    }
                                     <div>
                                         <div className='schedule-header'>
                                             <h3>{'SCHEDULE & BETS'}</h3>
@@ -107,7 +118,7 @@ const ViewPool = () => {
                                             <h3>{'OPEN BETS'}</h3>
                                         </div>
                                         <BetSlipWrapper className='betslip-container'>
-                                            {!openBets
+                                            {!openBets || openBets.length < 1
                                             ? 
                                                 <NoBets>
                                                     <span>You have no open bets</span>
@@ -124,6 +135,11 @@ const ViewPool = () => {
             }
         </ViewPoolWrapper>  
     );
+
+    /** fetchPoolInfo: Fetches the pool index data and adds it to state. */
+    function fetchPoolInfo(id) {
+        
+    }
 
     /** fetchAndSetEntries: Fetches the entries for the pool and adds them to state. */
     function fetchAndSetEntries(id) {
@@ -211,6 +227,16 @@ const PoolContent = styled.section`
         & > h2 {
             margin: 0 0 0.5em;
         }
+    }
+
+    & .expand-leaderboard-btn {
+        box-sizing: border-box;
+        background: none;
+        outline: none;
+        font-family: 'Inter', 'Sans Serif';
+        font-size: .7rem;
+        font-weight: 500;
+        color: black;
     }
 
     & .schedule-btn {
