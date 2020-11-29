@@ -39,6 +39,10 @@ const ViewPool = () => {
     }, []);
 
     useEffect(() => {
+        fetchPoolInfo(poolId);
+    }, []);
+
+    useEffect(() => {
         setState('loading');
         fetchAndSetEntries(poolId);
     }, []);
@@ -81,19 +85,25 @@ const ViewPool = () => {
                                             ))}
                                         </div>
                                     </div>
-                                    <div className='pool-content__separator'>
-                                        <span><FontAwesomeIcon icon={faEllipsisH} size='1x' color={'#e5e5e6'}/></span>
-                                    </div>
-                                    <div>
-                                        <div className='pool-user-placement'>
-                                            <RowResult 
-                                                rank={myInfo.position}
-                                                avatar={null}
-                                                name={myInfo.userName}
-                                                bankroll={currencyFormatter.format(myInfo.bankrollPlusActiveBets)}
-                                            />
-                                        </div>
-                                    </div>
+                                    {myInfo.position > 2
+                                        ?
+                                            <>
+                                                <div className='pool-content__separator'>
+                                                    <span><FontAwesomeIcon icon={faEllipsisH} size='1x' color={'#e5e5e6'}/></span>
+                                                </div>
+                                                <div>
+                                                    <div className='pool-user-placement'>
+                                                        <RowResult 
+                                                            rank={myInfo.position}
+                                                            avatar={null}
+                                                            name={myInfo.userName}
+                                                            bankroll={currencyFormatter.format(myInfo.bankrollPlusActiveBets)}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </>
+                                        : null
+                                    }
                                     <div>
                                         <div className='schedule-header'>
                                             <h3>{'SCHEDULE & BETS'}</h3>
@@ -107,7 +117,7 @@ const ViewPool = () => {
                                             <h3>{'OPEN BETS'}</h3>
                                         </div>
                                         <BetSlipWrapper className='betslip-container'>
-                                            {!openBets
+                                            {!openBets || openBets.length < 1
                                             ? 
                                                 <NoBets>
                                                     <span>You have no open bets</span>
@@ -124,6 +134,11 @@ const ViewPool = () => {
             }
         </ViewPoolWrapper>  
     );
+
+    /** fetchPoolInfo: Fetches the pool index data and adds it to state. */
+    function fetchPoolInfo(id) {
+        
+    }
 
     /** fetchAndSetEntries: Fetches the entries for the pool and adds them to state. */
     function fetchAndSetEntries(id) {
