@@ -32,6 +32,17 @@ class Fixture < ApplicationRecord
     Fixture.create(attributes)
   end
 
+  def change_status!(new_status)
+    if new_status == 'in_progress' && self.status == 'scheduled'
+      update!(status: new_status)
+    end
+
+    if ['scheduled', 'in_progress'].include?(self.status) && ['home_win', 'away_win', 'draw'].include?(new_status)
+      update!(status: new_status)
+      settle_bets
+    end
+  end
+
   def settle_bets
     odds.each do |odd|
       odd.bets.map(&:settle)
