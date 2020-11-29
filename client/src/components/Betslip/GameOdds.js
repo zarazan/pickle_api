@@ -32,7 +32,7 @@ const GameOdds = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
-    });
+    }, []);
 
     useEffect(() => {
         setState('loading');
