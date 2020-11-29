@@ -77,6 +77,7 @@ const ViewPool = () => {
                                             {winnersCircle.map((winner, i) => (
                                                 <RowResult 
                                                     key={i}
+                                                    isUser={winner.userId === user.id}
                                                     rank={winner.position}
                                                     avatar={null}
                                                     name={winner.userName}
