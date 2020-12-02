@@ -19,8 +19,8 @@ export const AuthenticatedApp = () => {
         <AppWrapper>
             <AppHeader className='global-header'>
                 <div className='top-nav'>
-                    <div><button className='btn btn-home' onClick={() => handleSignOut()}><LogoIcon /></button></div>
-                    <div><button className='btn btn-menu' onClick={(e) => toggleSidebar(e)}><MenuIcon /></button></div>
+                    <div><button className='btn btn-home' onClick={() => history.push('/')}><LogoIcon /></button></div>
+                    <div><button className='btn btn-menu' onClick={() => handleSignOut()}><MenuIcon /></button></div>
                 </div>
             </AppHeader>
             <AppMain className='content-wrapper'>
