@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
+import { zuluToStringFormat } from '../../utilities/helpers';
+
 import { ReactComponent as Group } from '../../icons/group.svg';
 import { ReactComponent as Sport } from '../../icons/sport.svg';
 import { ReactComponent as Timer } from '../../icons/timer.svg';
@@ -21,15 +23,15 @@ const PoolCard = ({ displayPool, index, name, startDate, sports, privacy, partic
                     </CardHeader>
                     <RowBaseWrapper>
                         <Group style={{ height: '1rem', width: '1rem', fill: '#8f8e8e' }}/>
-                        <span>{participants ? participants.length : 0} users</span>
+                        <span>{participants ? participants : 0} users</span>
                     </RowBaseWrapper>
                     <RowBaseWrapper>
                         <Sport style={{ height: '.9rem', width: '.9rem', fill: '#8f8e8e' }}/>
-                        <span>{sports ? sports.length : 0} sports</span>
+                        <span>{sports > 1 ? `${sports} sports` : `1 sport`} </span>
                     </RowBaseWrapper>
                     <RowBaseWrapper>
                         <Timer style={{ height: '.9rem', width: '.9rem', fill: '#8f8e8e' }}/>
-                        <span>Deadline: {startDate}</span>
+                        <span>{`${zuluToStringFormat(startDate)} deadline`}</span>
                     </RowBaseWrapper>
                 </CardContents>
             </button>
