@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-
 const StatCardLite = ({ title, value, icon, telemetry, timespan, color }) => {
     return (
         <CardWrapper className='card'>
@@ -43,7 +42,7 @@ const CardWrapper = styled.div`
     & .card__title {
         grid-area: header;
         font-family: 'Inter', 'Sans Serif';
-        font-size: 0.8em;
+        font-size: 0.95em;
         color: #082344;
     }
 
@@ -64,7 +63,7 @@ const CardWrapper = styled.div`
 
         & span {
             font-family: 'Inter', 'Sans Serif';
-            font-size: 0.7em;
+            font-size: 0.85em;
         }
     }
 `;
