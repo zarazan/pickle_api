@@ -1,4 +1,4 @@
-import { faArrowCircleUp, faArrowCircleDown } from '@fortawesome/free-solid-svg-icons';
+import { faArrowCircleUp } from '@fortawesome/free-solid-svg-icons';
 
 export const SAMPLE_STATS = [
     {
