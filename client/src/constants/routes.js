@@ -8,9 +8,8 @@ import ViewPool from '../components/ViewPool/ViewPool';
 import EditScores from '../components/Admin/EditScores';
 import GameOdds from '../components/Betslip/GameOdds';
 
-const ROUTES = [
+const AUTH_ROUTES = [
     { path: '/', key: 'ROOT', exact: true, component: Dashboard },
-    { path: '/sign-in', key: 'SIGN_IN', exact: true, component: SignIn },
     { path: '/create-pool', key: 'CREATE_POOL', exact: true, component: PoolCreate },
     { path: '/pools/:poolId/schedule', key: 'GAME_ODDS', component: GameOdds },
     { path: '/pools/:poolId/leaderboard', key: 'LEADERBOARD', component: Leaderboard },
@@ -18,7 +17,14 @@ const ROUTES = [
     { path: '/admin/scores/:poolId', key: 'EDIT_SCORES', component: EditScores },
 ];
 
-export default ROUTES;
+const UNAUTH_ROUTES = [
+    { path: '/sign-in', key: 'SIGN_IN', exact: true, component: SignIn },
+    { path: '/', key: 'SIGN_IN', exact: true, component: SignIn },
+    // { path: '/sign-up', key: 'CREATE_POOL', exact: true, component: PoolCreate },
+    // { path: '/forgot-password', key: 'ROOT', exact: true, component: Dashboard },
+];
+
+export { AUTH_ROUTES, UNAUTH_ROUTES };
 
 function RouteWithSubRoutes(route) {
     return (
