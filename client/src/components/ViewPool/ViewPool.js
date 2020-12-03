@@ -81,7 +81,7 @@ const ViewPool = () => {
                                                     rank={winner.position}
                                                     avatar={null}
                                                     name={winner.userName}
-                                                    bankroll={currencyFormatter.format(winner.bankrollPlusActiveBets)}
+                                                    bankroll={winner.bankrollPlusActiveBets}
                                                 />
                                             ))}
                                         </div>
@@ -98,7 +98,7 @@ const ViewPool = () => {
                                                             rank={myInfo.position}
                                                             avatar={null}
                                                             name={myInfo.userName}
-                                                            bankroll={currencyFormatter.format(myInfo.bankrollPlusActiveBets)}
+                                                            bankroll={myInfo.bankrollPlusActiveBets}
                                                         />
                                                     </div>
                                                 </div>

@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
+
+import { currencyFormatter } from '../../utilities/helpers';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle, faCrown } from '@fortawesome/free-solid-svg-icons';
 
@@ -15,7 +18,7 @@ const WinnerCard = ({ rank, avatar, name, bankroll }) => {
         <WinnerCardWrapper className={`winner-card-${rank}`}>
             <div className='winner-card__rank'>{isLeader ? <FontAwesomeIcon icon={faCrown} size='2x' /> : rank}</div>
             <div className='winner-card__avatar'>{!avatar ? <FontAwesomeIcon icon={faUserCircle} size={isLeader ? '3x' : '2x'} /> : avatar}</div>
-            <h3 className='winner-card__bankroll'>${bankroll}</h3>
+            <h3 className='winner-card__bankroll'>{currencyFormatter.format(bankroll)}</h3>
             <h4 className='winner-card__name'>{name}</h4>
         </WinnerCardWrapper>
     );

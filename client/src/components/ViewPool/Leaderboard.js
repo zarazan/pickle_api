@@ -54,7 +54,7 @@ const Leaderboard = () => {
                                     {(entries || MOCK_ENTRIES).map((result, index) => (
                                         <RowResult 
                                             key={index}
-                                            rank={index}
+                                            rank={index + 1}
                                             avatar={result.image}
                                             name={result.userName}
                                             bankroll={result.bankrollPlusActiveBets}
