@@ -78,7 +78,7 @@ const ViewPool = () => {
                                                 <RowResult 
                                                     key={i}
                                                     isUser={winner.userId === user.id}
-                                                    rank={winner.position}
+                                                    rank={winner.position + 1}
                                                     avatar={null}
                                                     name={winner.userName}
                                                     bankroll={winner.bankrollPlusActiveBets}
@@ -95,7 +95,7 @@ const ViewPool = () => {
                                                 <div>
                                                     <div className='pool-user-placement'>
                                                         <RowResult 
-                                                            rank={myInfo.position}
+                                                            rank={myInfo.position + 1}
                                                             avatar={null}
                                                             name={myInfo.userName}
                                                             bankroll={myInfo.bankrollPlusActiveBets}
