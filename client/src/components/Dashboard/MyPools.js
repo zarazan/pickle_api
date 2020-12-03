@@ -35,11 +35,11 @@ const MyPools = ({ displayPool }) => {
                             key={pool.id}
                             index={pool.id}
                             name={pool.name}
-                            amount={500}
+                            amount={pool.bankroll}
                             privacy={pool.private}
-                            startDate={pool.start_date}
-                            sports={pool.sports}
-                            participants={pool.email_invites}
+                            startDate={pool.startDate}
+                            sports={pool.sports.length}
+                            participants={pool.userCount}
                             displayPool={displayPool}
                         />
                     ))}

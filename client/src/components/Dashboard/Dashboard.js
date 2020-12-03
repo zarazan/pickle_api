@@ -51,7 +51,7 @@ export default Dashboard;
 const DashboardWrapper = styled.div`
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 4em auto 1fr;
+    grid-template-rows: 5em auto 1fr;
     grid-template-areas:
         'welcome'
         'stats'
@@ -66,6 +66,7 @@ const Welcome = styled.section`
     grid-area: welcome;
     display: flex;
     flex-flow: column nowrap;
+    margin-top: 1rem;
 
     font-family: 'Poppins', 'Sans Serif';
     font-size: 1.25em;
@@ -82,6 +83,8 @@ const StatsWrapper = styled.section`
     flex-flow: column nowrap;
     
     & .stats__cardlist {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
         border: 2px solid #ebeff4;
         border-radius: 0.5em;
     }

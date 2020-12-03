@@ -1,9 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { useHistory } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUsers, faFootballBall, faClock } from '@fortawesome/free-solid-svg-icons';
+import PropTypes from 'prop-types';
+
+import { zuluToStringFormat } from '../../utilities/helpers';
+
+import { ReactComponent as Group } from '../../icons/group.svg';
+import { ReactComponent as Sport } from '../../icons/sport.svg';
+import { ReactComponent as Timer } from '../../icons/timer.svg';
+import { ReactComponent as Private } from '../../icons/padlock-filled.svg';
+import { ReactComponent as Public } from '../../icons/unlock-filled.svg';
 
 const PoolCard = ({ displayPool, index, name, startDate, sports, privacy, participants }) => {
     return (
@@ -12,19 +17,21 @@ const PoolCard = ({ displayPool, index, name, startDate, sports, privacy, partic
                 <CardContents>
                     <CardHeader>
                         <CardName>{name}</CardName>
-                        <PrivacyLabel>{privacy}</PrivacyLabel>
+                        {privacy 
+                            ? <Private style={{ height: '1.25rem', width: '1.25rem' }}/> 
+                            : <Public style={{ height: '1.25rem', width: '1.25rem' }}/>}
                     </CardHeader>
                     <RowBaseWrapper>
-                        <FontAwesomeIcon icon={faUsers} size="sm"/>
-                        <span>{participants ? participants.length : 0} users</span>
+                        <Group style={{ height: '1rem', width: '1rem', fill: '#8f8e8e' }}/>
+                        <span>{participants ? participants : 0} users</span>
                     </RowBaseWrapper>
                     <RowBaseWrapper>
-                        <FontAwesomeIcon icon={faFootballBall} size="sm"/>
-                        <span>{sports ? sports.length : 0} sports</span>
+                        <Sport style={{ height: '.9rem', width: '.9rem', fill: '#8f8e8e' }}/>
+                        <span>{sports > 1 ? `${sports} sports` : `1 sport`} </span>
                     </RowBaseWrapper>
                     <RowBaseWrapper>
-                        <FontAwesomeIcon icon={faClock} size="sm"/>
-                        <span>Deadline: {startDate}</span>
+                        <Timer style={{ height: '.9rem', width: '.9rem', fill: '#8f8e8e' }}/>
+                        <span>{`${zuluToStringFormat(startDate)} deadline`}</span>
                     </RowBaseWrapper>
                 </CardContents>
             </button>
@@ -64,32 +71,29 @@ const CardWrapper = styled.div`
 const CardContents= styled.div`
     display: grid;
     grid-template-columns: auto;
-    grid-template-rows: 2em repeat(3, 1.5em);
+    grid-template-rows: 1.5em repeat(3, 1.25em);
     grid-template-areas:
-        "header"
-        "row1"
-        "row2"
-        "row3";
+        'header'
+        'row1'
+        'row2'
+        'row3';
     box-sizing: border-box;
     padding: 1em;
 `;
 
 const CardHeader = styled.div`
-    grid-area: "header";
+    grid-area: 'header';
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
-    align-items: center;
+    margin-bottom: 0.5rem;
 `;
 
-const CardName = styled.h4`
+const CardName = styled.span`
     margin: 0;
-    font-size: 1.25em;
-`;
-
-const PrivacyLabel = styled.span`
-    border: solid 1px red;
-    border-radius: 0.8em;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 1em;
 `;
 
 const RowBaseWrapper = styled.div`
@@ -97,7 +101,15 @@ const RowBaseWrapper = styled.div`
     grid-template-columns: 2em auto;
     grid-template-rows: 1fr;
 
+    & > svg, span {
+        align-self: center;
+    }
+
     & span {
+        font-family: 'Inter', sans-serif;
         text-align: left;
+        font-size: .85rem;
+        font-weight: 300;
+        color: #8f8e8e;
     }
 `;

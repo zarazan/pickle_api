@@ -1,16 +1,19 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
+
+import { currencyFormatter } from '../../utilities/helpers';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 
 const RowResult = ({ isUser, rank, avatar, name, bankroll }) => {
     return (
         <RowWrapper className={`leaderboard-row ${isUser ? 'active-user' : ''}`}>
-            <div className='leaderboard-row__telemetry row-item'>{rank + 1}</div>
+            <div className='leaderboard-row__telemetry row-item'>{rank}</div>
             <div className='leaderboard-row__avatar row-item'><FontAwesomeIcon icon={!avatar ? faUserCircle : avatar} size='2x'/></div>
             <div className='leaderboard-row__name row-item'>{name ? name : 'Lorem Ipsum'}</div>
-            <div className='leaderboard-row__bankroll row-item'>{bankroll ? bankroll : '$0'}</div>
+            <div className='leaderboard-row__bankroll row-item'>{bankroll ? currencyFormatter.format(parseFloat(bankroll)) : '$0'}</div>
         </RowWrapper>
     );
 };
@@ -28,7 +31,7 @@ RowResult.defaultProps = {
     rank: 0,
     avatar: null,
     name: 'Larry David',
-    bankroll: 0,
+    bankroll: '0',
 }
 
 export default RowResult;
