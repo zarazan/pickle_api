@@ -51,8 +51,8 @@ class PoolsController < ApplicationController
 
   def pool_params
     params.require(:pool).permit(
-      :name, :start_date, :end_date,
-      :bankroll, :bet_types, :sports, :private, :email_invites
+      :name, :start_date, :end_date, :bankroll, :private, :email_invites,
+      bet_types: [], sports: []
     )
   end
 
