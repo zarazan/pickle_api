@@ -63,7 +63,7 @@ const ViewPool = () => {
                             <>
                                 <PoolContent className='pool-content'>
                                     <div className='pool-content__title'>
-                                        <h2>{'Pool Name'}</h2>
+                                        <h2 onClick={() => history.push(`/admin/scores/${poolId}`)}>{'Pool Name'}</h2>
                                     </div>
                                     <div className='pool-content__user-stats'>
                                         <PoolUserCard name={myInfo.userName} avatar={null} bankroll={currencyFormatter.format(myInfo.bank)}/>
