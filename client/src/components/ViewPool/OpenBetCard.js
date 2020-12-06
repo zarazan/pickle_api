@@ -33,20 +33,20 @@ const OpenBets = ({ gameName, bet }) => {
                     <div className={`bet-status 
                         ${!bet.result 
                             ? 'in-progress' 
-                            : bet.result === 'W'
+                            : bet.result === 'won'
                                 ? 'win'
-                                : bet.result === 'L'
+                                : bet.result === 'loss'
                                     ? 'loss'
-                                    : 'tie'
+                                    : 'draw'
                         }`
                     }>
                         {!bet.result 
                             ? 'O' 
-                            : bet.result === 'W'
-                                ? 'W'
-                                : bet.result === 'L'
-                                    ? 'L'
-                                    : 'T'}
+                            : bet.result === 'won'
+                                ? 'won'
+                                : bet.result === 'loss'
+                                    ? 'loss'
+                                    : 'draw'}
                     </div>
                 </div>
             </div>
