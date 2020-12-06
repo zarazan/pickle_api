@@ -11,7 +11,7 @@ class SpreadOdd < Odd
   end
 
   def team_bet_against_score
-    team_is_away? ? fixture.away_score : fixture.home_score
+    team_is_home? ? fixture.away_score : fixture.home_score
   end
 
   def team_is_home?

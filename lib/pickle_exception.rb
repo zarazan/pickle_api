@@ -6,4 +6,10 @@ module PickleException
     end
   end
 
+  class InsufficientFunds < StandardError
+    def message
+      'Insufficient Funds'
+    end
+  end
+
 end

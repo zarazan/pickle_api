@@ -28,8 +28,6 @@ class Pool < ApplicationRecord
     user = attributes[:user]
     attributes[:private] = true
 
-    # TODO - validate attributes[:bet_types]
-
     # TODO - date = turn into start and end of day
 
     # MVP - REMOVE AFTER

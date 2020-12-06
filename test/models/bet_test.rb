@@ -2,26 +2,63 @@ require 'test_helper'
 
 class BetTest < ActiveSupport::TestCase
 
-  describe '.settle' do
-
+  describe '.settle_bet' do
     before do
       @pool = Pool.new
       @pool.save!(validate: false)
 
-      @user = User.new
+      @user = User.new(email: "#{SecureRandom.uuid}@domain.com")
       @user.save!(validate: false)
 
-      @entry = Entry.create(user: user, pool: pool)
+      @entry = Entry.create!(user: @user, pool: @pool, bank: 500)
 
-      # fixture
-      # odd
-      # bet
+      @fixture = Fixture.import({
+        sport: 'americanfootball_nfl', 
+        start_time: DateTime.current + 1.day,
+        home_team_name: 'Chiefs',
+        away_team_name: 'Steelers'
+      })
+
+      @odd = Odd.import({
+        fixture: @fixture,
+        type: MoneyLineOdd.name,
+        ratio: 1.5,
+        team_name: 'Chiefs'
+      })
+
+      @bet = Bet.place_bet({
+        user: @user,
+        pool_id: @pool.id,
+        odd_id: @odd.id,
+        amount: 50
+      })
     end
 
-    it 'works' do
-      puts @entry.as_json
+    it 'settles a winning money_line bet' do
+      assert_equal 450.0, @entry.reload.bank
+      @fixture.change_status!('home_win')
+      assert_equal 525, @entry.reload.bank
     end
 
+    it 'settles a winning spread bet' do
+      @odd.update(type: SpreadOdd.name, metric: -10)
+      @fixture.update(home_score: 52, away_score: 7)
+      @fixture.change_status!('home_win')
+      assert_equal 525, @entry.reload.bank
+    end
+
+    it 'settles an over bet' do
+      @odd.update(type: OverOdd.name, metric: 55, team: nil)
+      @fixture.update(home_score: 52, away_score: 7)
+      @fixture.change_status!('home_win')
+      assert_equal 525, @entry.reload.bank
+    end
+
+    it 'settles an under bet' do
+      @odd.update(type: UnderOdd.name, metric: 60, team: nil)
+      @fixture.update(home_score: 52, away_score: 7)
+      @fixture.change_status!('home_win')
+      assert_equal 525, @entry.reload.bank
+    end
   end
-
 end
