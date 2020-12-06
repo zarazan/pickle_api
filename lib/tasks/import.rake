@@ -1,21 +1,17 @@
 namespace :import do
 
-  desc 'Delete all bets, entries, pools, odds, fixtures, and teams'
-
-  task :clear_fixtures => [:environment] do
-    Bet.delete_all
-    Entry.delete_all
-    Pool.delete_all
-    Odd.delete_all
-    Fixture.delete_all
-    Team.delete_all
+  desc 'Create founder users'
+  task :founders => [:environment] do
+    User.create_default_users!
   end
 
   desc 'Import NFL Fixtures and Odds'
-
   task :nfl => [:environment] do
-    User.create_default_users!
     LoadOddsService.new.populate_sport('americanfootball_nfl')
+  end
+
+  desc 'Create alpha test pool'
+  task :alpha_pool => [:environment] do
     Pool.create_and_enter(
       user: User.first,
       name: 'NFL Test Pool',

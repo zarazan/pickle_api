@@ -29,6 +29,8 @@ class Bet < ApplicationRecord
     entry = Entry.find_by!(pool_id: bet_attributes[:pool_id], user: bet_attributes[:user])
     bet_attributes[:entry] = entry
     transaction do
+      entry.lock!
+      raise PickleException::InsufficientFunds if entry.bank < bet_attributes[:amount].to_d
       entry.update!(bank: entry.bank - bet_attributes[:amount].to_d)
       Bet.create!(bet_attributes)
     end
@@ -39,9 +41,9 @@ class Bet < ApplicationRecord
     return false if odd.get_result_or_pending == :pending
     transaction do
       self.result = odd.get_result
-      if(result.won?)
+      if(won?)
         entry.update!(bank: entry.bank + payout)
-      elsif(result.draw?)
+      elsif(draw?)
         entry.update!(bank: entry.bank + amount)
       end
       save!
