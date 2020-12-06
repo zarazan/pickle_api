@@ -37,7 +37,7 @@ const OpenBets = ({ gameName, bet }) => {
                                 ? 'in-progress' 
                                 : bet.result === 'won' // bet is won
                                     ? 'win' 
-                                    : bet.result === 'loss' // bet is lost
+                                    : bet.result === 'lost' // bet is lost
                                         ? 'loss'
                                         : 'draw' // bet is a draw
                         }`
@@ -48,7 +48,7 @@ const OpenBets = ({ gameName, bet }) => {
                                 ? 'I/P'
                                 : bet.result === 'won'
                                     ? 'W'
-                                    : bet.result === 'loss'
+                                    : bet.result === 'lost'
                                         ? 'L'
                                         : 'P'
                         }
