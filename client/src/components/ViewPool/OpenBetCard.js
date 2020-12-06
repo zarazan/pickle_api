@@ -31,22 +31,27 @@ const OpenBets = ({ gameName, bet }) => {
                 <div className='header__info'>
                     <div className='game-date'>{zuluToStringFormat(bet.createdAt)}</div>
                     <div className={`bet-status 
-                        ${!bet.result 
-                            ? 'in-progress' 
-                            : bet.result === 'won'
-                                ? 'win'
-                                : bet.result === 'loss'
-                                    ? 'loss'
-                                    : 'draw'
+                        ${!bet.result || bet.result === '' // bet is open
+                            ? 'open'
+                            : bet.result === 'in-progress' // bet is in progress
+                                ? 'in-progress' 
+                                : bet.result === 'won' // bet is won
+                                    ? 'win' 
+                                    : bet.result === 'loss' // bet is lost
+                                        ? 'loss'
+                                        : 'draw' // bet is a draw
                         }`
                     }>
-                        {!bet.result 
-                            ? 'O' 
-                            : bet.result === 'won'
-                                ? 'won'
-                                : bet.result === 'loss'
-                                    ? 'loss'
-                                    : 'draw'}
+                        {!bet.result || bet.result === '' // no bet result
+                            ? 'O'
+                            : bet.result === 'in-progress'
+                                ? 'I/P'
+                                : bet.result === 'won'
+                                    ? 'W'
+                                    : bet.result === 'loss'
+                                        ? 'L'
+                                        : 'P'
+                        }
                     </div>
                 </div>
             </div>
@@ -197,7 +202,7 @@ const BetSlip = styled.div`
                     background: #e44242;
                 }
 
-                &[class~='tie'] {
+                &[class~='draw'] {
                     background: #31a0fe;
                 }
             }
