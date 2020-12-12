@@ -4,7 +4,7 @@ entries = @pool.entries.map do |entry|
     bankrollPlusActiveBets: entry.bankroll_plus_active_bets
   })
 end
-entries.sort_by { |entry| entry[:bankrollPlusActiveBets] }
+entries.sort_by! { |entry| -entry[:bankrollPlusActiveBets] }
 
 entries.each_with_index do |entry, index|
   entry[:position] = index
