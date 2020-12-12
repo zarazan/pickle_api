@@ -54,10 +54,19 @@ class Odd < ApplicationRecord
     false
   end
 
+  def american
+    if ratio >= 2
+      ((ratio - 1) * 100).round
+    else
+      ((-100) / (ratio - 1)).round
+    end
+  end
+
   def as_json(options = {})
     super.merge({
       type: odd_type,
-      teamName: team&.name
+      teamName: team&.name,
+      american: american
     })
   end
 
