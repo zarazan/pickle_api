@@ -50,4 +50,10 @@ class Bet < ApplicationRecord
     end
   end
 
+  def as_json(options = {})
+    super.merge({
+      payout: payout
+    })
+  end
+
 end
