@@ -5,7 +5,11 @@ class Entry < ApplicationRecord
   has_many :bets
 
   def bankroll_plus_active_bets
-    bank + bets.where(result: nil).sum(&:amount)
+    bank + active_bets.sum(&:amount)
+  end
+
+  def active_bets
+    bets.select { |bet| bet.result.nil? }
   end
 
 end
