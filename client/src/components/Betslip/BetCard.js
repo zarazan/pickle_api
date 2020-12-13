@@ -110,11 +110,6 @@ const BetCard = ({ fixtureId, locked, homeTeamName, homeTeamId, awayTeamName, aw
         const [ moneyBet ] = teamOdds.filter(d => d.teamId === teamId && d.type === 'money_line');
         const [ over ] = oddsData.filter(d => d.type === 'over');
         const [ under ] = oddsData.filter(d => d.type === 'under');
-
-        console.log(spreadBet);
-        console.log(moneyBet);
-        console.log(over);
-        console.log(under);
         
         // seed team-based data
         newState.moneyLine = { 'betId': moneyBet && moneyBet.id, 'metric': '', 'ratio': moneyBet && moneyBet.ratio };

@@ -1,5 +1,4 @@
 const decToAmerican = (value) => {
-    let odd;
     if (value >= 2.00) {
         return ((value - 1) * 100).toFixed(0);
     } else {
@@ -9,7 +8,7 @@ const decToAmerican = (value) => {
 
 const zuluToStringFormat = (date) => {
     let d = new Date(date);
-    return `${d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }).replace(',', '')} ${d.toLocaleTimeString('en-US')}`
+    return `${d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }).replace(',', '')} ${d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit'})}`
 };
 
 const currencyFormatter = new Intl.NumberFormat('en-US', {
@@ -21,8 +20,8 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
 const calculatePayout = (wager, odds) => {
     let multiplier = Math.abs(odds) / 100;
     return odds < 0 
-        ? parseInt(wager + wager / multiplier, 10) 
-        : parseInt(wager + wager * multiplier, 10);
+        ? parseFloat(wager + wager / multiplier) 
+        : parseFloat(wager + wager * multiplier);
 };
 
 export {
