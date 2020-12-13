@@ -7,7 +7,14 @@ class BetsController < ApplicationController
   end
 
   def pool_bets
+    # All bets of games that have started
+    @pool = Pool.find(params[:id])
+    @bets = @pool.fixtures.locked.
+  end
+
+  def my_bets
     @bets = current_user.bets.where(pool_id: params[:id])
+    render :pool_bets
   end
 
   private
