@@ -33,6 +33,7 @@ const ViewPool = () => {
     const [entries, setEntries] = useState([]); // array of entries
     const [fixtures, setFixtures] = useState([]); // array of fixtures
     const [openBets, setOpenBets] = useState(null); //
+    const [poolName, setPoolName] = useState(`Pool ${poolId}`);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -63,7 +64,7 @@ const ViewPool = () => {
                             <>
                                 <PoolContent className='pool-content'>
                                     <div className='pool-content__title'>
-                                        <h2 onClick={() => history.push(`/admin/scores/${poolId}`)}>{'Pool Name'}</h2>
+                                        <h2 onClick={() => history.push(`/admin/scores/${poolId}`)}>{poolName}</h2>
                                     </div>
                                     <div className='pool-content__user-stats'>
                                         <PoolUserCard name={myInfo.userName} avatar={null} bankroll={currencyFormatter.format(myInfo.bank)}/>
@@ -147,6 +148,8 @@ const ViewPool = () => {
             .then(entries => {
                 // add entries to state
                 setEntries(entries);
+                const firstEntry = entries[0];
+                if(firstEntry) setPoolName(firstEntry.poolName);
                 // get the entry for the current user
                 // TODO: change this to an ID in the future
                 const [ info ] = entries.filter(entry => entry.userName === user.name);

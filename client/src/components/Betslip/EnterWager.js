@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { usePoolState } from '../../contexts/PoolContext';
 import { decToAmerican, calculatePayout } from '../../utilities/helpers';
 
-const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, betCount, errors }) => { 
+const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip }) => { 
     const [wager, setWager] = useState(0);
     const [payout, setPayout] = useState(0);
     const [ratio, setRatio] = useState(null);
@@ -26,6 +26,10 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, betCou
         'under': 'Total Points',
     };
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     useEffect(() => (
         handlePayout()
     ), [wager]);
@@ -39,16 +43,7 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, betCou
     ), []);
 
     return (
-        <EnterWagerWrapper className='enter-wager-container'>
-            <CalculatorHeader className='wager-row header'>
-                {/* <div className='enter-wager__counter'>
-                    <div className='counter__number'>{betCount ? betCount : 1}</div>
-                    <div>Bet Slip</div>
-                </div>
-                <div className='enter-wager__toggle-multibet'>
-                    <AddMoreButton disabled>+ Add More</AddMoreButton>
-                </div> */}
-            </CalculatorHeader>            
+        <EnterWagerWrapper className='enter-wager-container'>   
             <CalculatorSummary className='wager-row summary'>
                 <div className='enter-wager__bet-summary summary-item'>
                     <div className=''>
@@ -135,22 +130,18 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, betCou
     /** appendNumber: Appends a number on the wager entry. */
     function appendNumber(amount) {
         let currentWager = wager;
-        // console.log(`appendNumber: initial wager: ${currentWager}`);
         if(wager === 0) {
             setWager(parseInt(amount, 10))
             return;
         }
         currentWager += '' + amount;
-        // console.log(`appendNumber: after append: ${currentWager}`);
         setWager(parseInt(currentWager, 10));
     };
 
     /** addNumber: Adds a number to the wager entry. */
     function addNumber(amount) {
         let currentWager = wager;
-        // console.log(`addNumber: initial wager: ${currentWager}`);
         currentWager += parseInt(amount, 10);
-        // console.log(`appendNumber: after add: ${currentWager}`);
         setWager(parseInt(currentWager, 10));
     };
 
@@ -167,57 +158,20 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, betCou
 };
 
 EnterWager.propTypes = {
-
+    currentFixture: PropTypes.object.isRequired, 
+    currentBet: PropTypes.object.isRequired, 
+    placeBet: PropTypes.func.isRequired, 
+    closeBetSlip: PropTypes.func.isRequired, 
 };
 
 export default EnterWager;
 
 const EnterWagerWrapper = styled.div`
     display: grid;
-    grid-template-rows: 2em 1fr auto 4m;
+    grid-template-rows: 4rem min-content 4rem;
     height: 100%;
     width: 100%;
     box-sizing: border-box;
-`;
-
-const CalculatorHeader = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-content: center;
-    align-items: center;
-    font-family: 'Poppins', 'Sans Serif';
-    font-size: 0.7em;
-    padding: 1em 0 1em 0;
-    margin-bottom: 2em;
-    border-bottom: 1px solid lightgrey;
-
-    & .enter-wager__counter {
-        display: flex;
-
-        & > * {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        & .counter__number {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-sizing: border-box;
-            width: 2em;
-            height: 2em;
-            border-radius: 1em;
-            background: green;
-            color: white;
-        }
-
-        & div:last-of-type{
-            margin-left: 1em;
-            font-weight: 700;
-        }
-    }
-    
 `;
 
 const CalculatorSummary = styled.div`
@@ -295,19 +249,6 @@ const CalculatorFooter = styled.div`
     grid-column-gap: 0.5em;
     margin-top: 1em;
     box-sizing: border-box;
-`;
-
-const AddMoreButton = styled.button`
-    box-sizing: border-box;
-    width: 100%;
-    height: 100%;
-    font-family: 'Inter', 'Sans Serif';
-    color: green;
-    font-weight: 700;
-    border: none;
-    outline: none;
-    background: white;
-    font-size: 1em;
 `;
 
 const CalculatorButton = styled.button`
