@@ -47,71 +47,76 @@ const GameOdds = () => {
                     ? <FullPageSpinner loading={true} optionalMessage={'Loading Odds'}/>
                     : componentState === 'finished' &&
                             <GameOddsWrapper className='game-odds-container'>
-                                <Header className='game-odds-header'>
-                                    <button 
-                                        className='game-odds__back-nav' 
-                                        onClick={() =>history.push(`/pools/${poolId}`)}
-                                    >
-                                        <FontAwesomeIcon icon={faArrowLeft} size='lg' />
-                                    </button>
-                                    <Title className='game-odds__title'>{'SCHEDULE & ODDS'}</Title>
-                                </Header>
-                                <Bankroll className='user-bankroll'>
-                                    <h3>{'YOUR BANKROLL'}</h3>
-                                    <h2 className='user-bankroll'>{currencyFormatter.format(state.bank)}</h2>
-                                    <h4>{`${state.betCount} OPEN BETS`}</h4>
-                                </Bankroll>
+                                <div className='game-odds-info'>
+                                    <Header className='game-odds-header'>
+                                        <button 
+                                            className='game-odds__back-nav' 
+                                            onClick={() =>history.push(`/pools/${poolId}`)}
+                                        >
+                                            <FontAwesomeIcon icon={faArrowLeft} size='lg' />
+                                        </button>
+                                        <Title className='game-odds__title'>{'SCHEDULE & ODDS'}</Title>
+                                    </Header>
+                                    <Bankroll className='user-bankroll'>
+                                        <h3>{'YOUR BANKROLL'}</h3>
+                                        <h2 className='user-bankroll'>{currencyFormatter.format(state.bank)}</h2>
+                                        <h4>{`${state.betCount} OPEN BETS`}</h4>
+                                    </Bankroll>
 
-                                {toggleBetSlip 
-                                ?
-                                    <EnterWager
-                                        className='enter-wager-form'
-                                        currentBet={currentBet}
-                                        currentFixture={currentFixture}
-                                        placeBet={placeBet}
-                                        closeBetSlip={closeBetSlip}
-                                        errors={errorMessage}
-                                    />
-                                :
-                                    <>
-                                        <BetSlipTotals className='game-odds-totals'>
-                                            <div className='totals__bankroll'></div>
-                                            <div className='totals__headers'>
-                                                <div className='headers__game header-label'>
-                                                    <h4>{'GAME'}</h4>
+                                </div>
+                                <div className='game-odds-main'>
+                                    {toggleBetSlip 
+                                    ?
+                                        <EnterWager
+                                            className='enter-wager-form'
+                                            currentBet={currentBet}
+                                            currentFixture={currentFixture}
+                                            placeBet={placeBet}
+                                            closeBetSlip={closeBetSlip}
+                                            errors={errorMessage}
+                                        />
+                                    :
+                                        <>
+                                            <BetSlipTotals className='game-odds-totals'>
+                                                <div className='totals__bankroll'></div>
+                                                <div className='totals__headers'>
+                                                    <div className='headers__game header-label'>
+                                                        <h4>{'GAME'}</h4>
+                                                    </div>
+                                                    <div className='headers__odd-labels'>
+                                                        <div className='headers__spread header-label'>
+                                                            <h4>{'POINT'}</h4><h4>{'SPREAD'}</h4>
+                                                        </div>
+                                                        <div className='headers__points header-label'>
+                                                            <h4>{'TOTAL'}</h4><h4>{'POINTS'}</h4>
+                                                        </div>
+                                                        <div className='headers__moneyline header-label'>
+                                                            <h4>{'MONEY'}</h4><h4>{'LINE'}</h4>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div className='headers__odd-labels'>
-                                                    <div className='headers__spread header-label'>
-                                                        <h4>{'POINT'}</h4><h4>{'SPREAD'}</h4>
-                                                    </div>
-                                                    <div className='headers__points header-label'>
-                                                        <h4>{'TOTAL'}</h4><h4>{'POINTS'}</h4>
-                                                    </div>
-                                                    <div className='headers__moneyline header-label'>
-                                                        <h4>{'MONEY'}</h4><h4>{'LINE'}</h4>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </BetSlipTotals>
-                                        <BetCardList className='game-odds-cardlist'>
-                                            {(fixtures || [])
-                                                .map((fixture, index) => (
-                                                    <BetCard 
-                                                        key={index}
-                                                        fixtureId={fixture.id}
-                                                        locked={fixture.locked}
-                                                        homeTeamName={fixture.homeTeamName}
-                                                        homeTeamId={fixture.homeTeamId}
-                                                        awayTeamName={fixture.awayTeamName}
-                                                        awayTeamId={fixture.awayTeamId}
-                                                        odds={fixture.odds}
-                                                        gameDate={fixture.startTime}
-                                                        selectBet={selectBet}
-                                                    /> 
-                                            ))}
-                                        </BetCardList>
-                                    </>
-                                }
+                                            </BetSlipTotals>
+                                            <BetCardList className='game-odds-cardlist'>
+                                                {(fixtures || [])
+                                                    .map((fixture, index) => (
+                                                        <BetCard 
+                                                            key={index}
+                                                            fixtureId={fixture.id}
+                                                            locked={fixture.locked}
+                                                            homeTeamName={fixture.homeTeamName}
+                                                            homeTeamId={fixture.homeTeamId}
+                                                            awayTeamName={fixture.awayTeamName}
+                                                            awayTeamId={fixture.awayTeamId}
+                                                            odds={fixture.odds}
+                                                            gameDate={fixture.startTime}
+                                                            selectBet={selectBet}
+                                                        /> 
+                                                ))}
+                                            </BetCardList>
+                                        </>
+                                    }
+
+                                </div>
                             </GameOddsWrapper>
                 }
         </>
@@ -174,13 +179,18 @@ const GameOdds = () => {
 export default GameOdds; 
 
 const GameOddsWrapper = styled.section`
-    display: flex;
-    flex-flow: column nowrap;
-    height: 100%;
-
+    display: grid;
+    grid-template-rows: min-content 1fr;
+    grid-row-gap: 1rem;
     box-sizing: border-box;
+
+    height: 100%;
     margin: 1em 1em 0 1em;
-    overflow: auto;
+
+    & > div {
+        display: flex;
+        flex-flow: column nowrap;
+    }
 `;
 
 const BetCardList = styled.div`
