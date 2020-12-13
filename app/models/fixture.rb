@@ -21,6 +21,9 @@ class Fixture < ApplicationRecord
   belongs_to :away_team, class_name: 'Team'
 
   has_many :odds
+  has_many :bets
+
+  scope :locked, -> { where('start_time < ?', DateTime.current) }
 
   def self.import(attributes)
     sport = attributes[:sport]
