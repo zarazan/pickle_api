@@ -1,5 +1,7 @@
 class AdminController < ApplicationController
 
+  before_action :verify_admin
+
   def fixtures
     @fixtures = Pool.find(params[:pool_id]).fixtures.order('start_time')
   end
@@ -25,6 +27,11 @@ class AdminController < ApplicationController
       home_score: fixture_params[:homeScore],
       away_score: fixture_params[:awayScore],
     }
+  end
+
+  def verify_admin
+    return if current_user.admin
+    raise 'Authentication Error'
   end
 
 end

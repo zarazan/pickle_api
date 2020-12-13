@@ -1,5 +1,6 @@
-entries = @pool.entries.map do |entry|
+entries = @pool.entries.preload(:pool, :user, :bets).map do |entry|
   entry.as_json.merge({
+    poolName: entry.pool.name,
     userName: entry.user.name,
     bankrollPlusActiveBets: entry.bankroll_plus_active_bets
   })
