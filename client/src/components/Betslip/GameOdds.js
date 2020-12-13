@@ -181,10 +181,10 @@ export default GameOdds;
 const GameOddsWrapper = styled.section`
     display: flex;
     flex-flow: column nowrap;
+    height: 100%;
 
     box-sizing: border-box;
     margin: 1em 1em 0 1em;
-    height: auto;
     overflow: auto;
 `;
 

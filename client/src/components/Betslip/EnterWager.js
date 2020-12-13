@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { usePoolState } from '../../contexts/PoolContext';
 import { decToAmerican, calculatePayout } from '../../utilities/helpers';
 
-const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, betCount, errors }) => { 
+const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip }) => { 
     const [wager, setWager] = useState(0);
     const [payout, setPayout] = useState(0);
     const [ratio, setRatio] = useState(null);
@@ -26,6 +26,10 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, betCou
         'under': 'Total Points',
     };
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     useEffect(() => (
         handlePayout()
     ), [wager]);
@@ -39,16 +43,7 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, betCou
     ), []);
 
     return (
-        <EnterWagerWrapper className='enter-wager-container'>
-            <CalculatorHeader className='wager-row header'>
-                {/* <div className='enter-wager__counter'>
-                    <div className='counter__number'>{betCount ? betCount : 1}</div>
-                    <div>Bet Slip</div>
-                </div>
-                <div className='enter-wager__toggle-multibet'>
-                    <AddMoreButton disabled>+ Add More</AddMoreButton>
-                </div> */}
-            </CalculatorHeader>            
+        <EnterWagerWrapper className='enter-wager-container'>   
             <CalculatorSummary className='wager-row summary'>
                 <div className='enter-wager__bet-summary summary-item'>
                     <div className=''>
@@ -174,7 +169,7 @@ export default EnterWager;
 
 const EnterWagerWrapper = styled.div`
     display: grid;
-    grid-template-rows: 2em 1fr auto 4m;
+    grid-template-rows: 4rem min-content 4rem;
     height: 100%;
     width: 100%;
     box-sizing: border-box;
