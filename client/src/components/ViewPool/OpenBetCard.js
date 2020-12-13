@@ -1,25 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { decToAmerican, zuluToStringFormat, currencyFormatter } from '../../utilities/helpers';
+import { decToAmerican, zuluToStringFormat, currencyFormatter, calculatePayout } from '../../utilities/helpers';
 
 import { ReactComponent as Football } from '../../icons/american-football.svg';
 
 const OpenBets = ({ gameName, bet }) => {
-    const [ratio, setRatio] = useState(null);
-    const [payout, setPayout] = useState(0);
-
-    useEffect(() => (
-        setRatio(decToAmerican(bet.odd.ratio))
-    ), []);
-
-    useEffect(() => (
-        calculatePayout()
-    ), []);
-
     return (
         <BetSlip className='betslip'>
-
             <div className='header'>
                 <div className='header__sport'>
                     <div className='sport-banner'>
@@ -87,36 +75,17 @@ const OpenBets = ({ gameName, bet }) => {
                                         : ' '
                             }
                             {' '}
-                            {ratio > 0 ? `(+${ratio})` : `(${ratio})`}
+                            {bet.odd.american > 0 ? `(+${bet.odd.american})` : `(${bet.odd.american})`}
                         </div>
                     </div>
                 </div>
                 <div className='content__game content-row'>
                     <div className='betslip__bet-amount'>{`STAKE: ${currencyFormatter.format(bet.amount)}`}</div>
-                    <div className='betslip__bet-payout'>{`TO WIN: ${currencyFormatter.format(payout)}`}</div>
+                    <div className='betslip__bet-payout'>{`TO WIN: ${currencyFormatter.format(bet.payout)}`}</div>
                 </div>
-
             </div>
-
         </BetSlip>
     );
-
-    /** calculatePayout: Calculate payout based on the odds and entered wager. */
-    function calculatePayout(){
-        if (bet.amount > 0) {
-            const currentWager = bet.amount;
-            // console.log(`wager: ${currentWager}`);
-            let currentOdds = decToAmerican(bet.odd.ratio);
-            // console.log(`ratio: ${currentOdds}`);
-            let multiplier = Math.abs(currentOdds) / 100;
-            // console.log(`multiplier: ${multiplier}`);
-            let profit = currentWager / multiplier;
-            // console.log(`profit: ${profit}`);
-            let payout = parseInt(profit, 10) + parseInt(currentWager, 10);
-            // console.log(`payout: ${payout}`);
-            setPayout(parseInt(payout, 10));
-        }
-    }
 };
 
 OpenBets.propTypes = {

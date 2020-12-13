@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 import { usePoolState } from '../../contexts/PoolContext';
-import { decToAmerican } from '../../utilities/helpers';
+import { decToAmerican, calculatePayout } from '../../utilities/helpers';
 
 const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, betCount, errors }) => { 
     const [wager, setWager] = useState(0);
@@ -27,7 +27,7 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, betCou
     };
 
     useEffect(() => (
-        calculatePayout()
+        handlePayout()
     ), [wager]);
 
     useEffect(() => (
@@ -130,7 +130,7 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, betCou
     /** setGameName: Sets the name of the game for display. */
     function setGameName() {
         setGame(`${currentFixture.awayTeamName} vs. ${currentFixture.homeTeamName}`);
-    }
+    };
 
     /** appendNumber: Appends a number on the wager entry. */
     function appendNumber(amount) {
@@ -143,7 +143,7 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, betCou
         currentWager += '' + amount;
         // console.log(`appendNumber: after append: ${currentWager}`);
         setWager(parseInt(currentWager, 10));
-    }
+    };
 
     /** addNumber: Adds a number to the wager entry. */
     function addNumber(amount) {
@@ -152,24 +152,18 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, betCou
         currentWager += parseInt(amount, 10);
         // console.log(`appendNumber: after add: ${currentWager}`);
         setWager(parseInt(currentWager, 10));
-    }
+    };
 
-    /** calculatePayout: Calculate payout based on the odds and entered wager. */
-    function calculatePayout(){
-        if (wager > 0) {
-            const currentWager = wager;
-            let currentOdds = ratio;
-            let multiplier = Math.abs(currentOdds) / 100;
-            let profit = currentWager / multiplier;
-            setPayout(parseInt(currentWager + profit, 10));
-        }
-    }
+    /** handlePayout: Handle payout based on the odds and entered wager. */
+    function handlePayout(){
+        setPayout(calculatePayout(wager, ratio))
+    };
 
     /** clearWager: Resets the wager entry and payout state. */
     function clearWager() {
         setWager(0);
         setPayout(0);
-    }
+    };
 };
 
 EnterWager.propTypes = {

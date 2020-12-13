@@ -20,8 +20,9 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
 
 const calculatePayout = (wager, odds) => {
     let multiplier = Math.abs(odds) / 100;
-    let profit = wager / multiplier;
-    return(parseInt(wager + profit, 10));
+    return odds < 0 
+        ? parseInt(wager + wager / multiplier, 10) 
+        : parseInt(wager + wager * multiplier, 10);
 };
 
 export {
