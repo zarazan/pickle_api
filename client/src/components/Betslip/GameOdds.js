@@ -171,11 +171,6 @@ const GameOdds = () => {
     }
 };
 
-GameOdds.propTypes = {
-    poolId: PropTypes.string,
-    fixtures: PropTypes.array,
-};
-
 export default GameOdds; 
 
 const GameOddsWrapper = styled.section`
