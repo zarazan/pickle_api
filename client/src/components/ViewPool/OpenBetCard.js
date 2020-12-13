@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { decToAmerican, zuluToStringFormat, currencyFormatter, calculatePayout } from '../../utilities/helpers';
+
+import { zuluToStringFormat, currencyFormatter } from '../../utilities/helpers';
 
 import { ReactComponent as Football } from '../../icons/american-football.svg';
 
@@ -159,8 +160,12 @@ const BetSlip = styled.div`
                 color: white;
                 font-size: 0.8rem;
                 
-                &[class~='in-progress'] {
+                &[class~='open'] {
                     background: #cfd6db;
+                }
+
+                &[class~='in-progress'] {
+                    background: #ff9933;
                 }
 
                 &[class~='win'] {

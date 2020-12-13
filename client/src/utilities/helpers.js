@@ -8,8 +8,8 @@ const decToAmerican = (value) => {
 };
 
 const zuluToStringFormat = (date) => {
-        let d = new Date(date);
-        return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }).replace(',', '');
+    let d = new Date(date);
+    return `${d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }).replace(',', '')} ${d.toLocaleTimeString('en-US')}`
 };
 
 const currencyFormatter = new Intl.NumberFormat('en-US', {
