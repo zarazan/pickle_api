@@ -1,4 +1,4 @@
-@bets.map do |bet|
+@bets.preload(odd: [:team, fixture: [:home_team, :away_team]]).map do |bet|
   bet.as_json.merge({
     homeTeamName: bet.odd.fixture.home_team.name,
     awayTeamName: bet.odd.fixture.away_team.name,
