@@ -32,8 +32,9 @@ const ViewPool = () => {
     const [winnersCircle, setWinnersCircle] = useState([]); // array of top placers of the leaderboard
     const [entries, setEntries] = useState([]); // array of entries
     const [fixtures, setFixtures] = useState([]); // array of fixtures
-    const [openBets, setOpenBets] = useState(null); //
+    const [openBets, setOpenBets] = useState(null); // array of open bets
     const [poolName, setPoolName] = useState(`Pool ${poolId}`);
+    const [potentialPayout, setPotentialPayout] = useState(0);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -67,7 +68,12 @@ const ViewPool = () => {
                                         <h2 onClick={() => history.push(`/admin/scores/${poolId}`)}>{poolName}</h2>
                                     </div>
                                     <div className='pool-content__user-stats'>
-                                        <PoolUserCard name={myInfo.userName} avatar={null} bankroll={currencyFormatter.format(myInfo.bank)}/>
+                                        <PoolUserCard
+                                            name={myInfo.userName} 
+                                            avatar={null} 
+                                            bankroll={currencyFormatter.format(myInfo.bank)}
+                                            potentialPayout={currencyFormatter.format(potentialPayout)}
+                                        />
                                     </div>
                                     <div className='pool-content__leaderboard-container'>
                                         <div className='leaderboard-header'>
@@ -177,6 +183,12 @@ const ViewPool = () => {
                 setOpenBets(bets);
                 // send dispatch
                 updateBetCount(poolId, bets.length);
+                // calculate potential payout
+                let payout = bets
+                    .filter(b => b.result !== 'lost' || b.result !== 'draw')
+                    .reduce((accumulator, currentValue) => accumulator + parseFloat(currentValue.payout), 0.00);
+                
+                setPotentialPayout(payout);
                 setState('finished');
             })
             .catch(error => {

@@ -4,12 +4,13 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 
-const PoolUserCard = ({ name, avatar, bankroll }) => {
+const PoolUserCard = ({ name, avatar, bankroll, potentialPayout }) => {
     return (
         <CardWrapper className='pool-user-card'>
             <span className='pool-user-card__avatar'>{avatar ? avatar : <FontAwesomeIcon icon={faUserCircle} size='3x' />}</span>
-            <h2 className='pool-user-card__name'>{name ? name : 'Lorem Ipsum'}</h2>
-            <span className='pool-user-card__bankroll'>{bankroll ? bankroll : '$0'}</span>
+            <span className='pool-user-card__name'>{name}</span>
+            <h2 className='pool-user-card__bankroll'>{bankroll}</h2>
+            <h3 className='pool-user-card__potential-payout'>{`Potential ${potentialPayout}`}</h3>
         </CardWrapper>
     );
 };
@@ -18,6 +19,7 @@ PoolUserCard.propTypes = {
     name: PropTypes.string,
     avatar: PropTypes.object,
     bankroll: PropTypes.string,
+    potentialPayout: PropTypes.string
 };
 
 export default PoolUserCard;
@@ -34,9 +36,23 @@ const CardWrapper = styled.div`
     font-family: 'Inter', 'Sans Serif';
     font-size: 1rem;
 
-    & h2 {
+    & svg {
+        margin-bottom: 0.5rem;
+    }
+
+    & .pool-user-card__bankroll {
         font-family: 'Poppins', 'Sans Serif';
-        font-size: 1.25rem;
+        font-size: 2rem;
+        font-weight: 700;
+        color: #8fd6a9;
         margin: 0.75rem 0 0.5rem 0;
+    }
+
+    & h3 {
+        font-family: 'Inter', 'Sans Serif';
+        font-size: 1rem;
+        font-weight: 300;
+        color: #bfbfbf;
+        margin: 0;
     }
 `;
