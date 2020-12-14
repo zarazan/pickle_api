@@ -184,9 +184,8 @@ const ViewPool = () => {
                 // send dispatch
                 updateBetCount(poolId, bets.length);
                 // calculate potential payout
-                let payout = bets
-                    .filter(b => b.result !== 'lost' || b.result !== 'draw')
-                    .reduce((accumulator, currentValue) => accumulator + parseFloat(currentValue.payout), 0.00);
+                const wonAndOpenBets = bets.filter(bet => bet.result !== 'lost' || bet.result !== 'draw');
+                const payout = wonAndOpenBets.reduce((acc, cur) => acc + parseFloat(cur.payout), 0.00);
                 
                 setPotentialPayout(payout);
                 setState('finished');
