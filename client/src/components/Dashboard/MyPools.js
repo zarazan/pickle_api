@@ -22,28 +22,35 @@ const MyPools = ({ displayPool }) => {
     return (
         <MyPoolsWrapper className='my-pools-container'>
             {state === 'error'
-            ? <div>{errorMessage}</div>
-            : state === 'loading'
-                ? 
-                    <div className='loading-pools'>
-                        <FullPageSpinner size={20} loading={true} optionalMessage={'Loading Your Pools'}/>
-                    </div>
-                : state === 'finished' &&
-                <>
-                    {(pools || []).map((pool) => (
-                        <PoolCard
-                            key={pool.id}
-                            index={pool.id}
-                            name={pool.name}
-                            amount={pool.bankroll}
-                            privacy={pool.private}
-                            startDate={pool.startDate}
-                            sports={pool.sports.length}
-                            participants={pool.userCount}
-                            displayPool={displayPool}
-                        />
-                    ))}
-                </>
+                ? <div>{errorMessage}</div>
+                : state === 'loading'
+                    ? 
+                        <div className='loading-pools'>
+                            <FullPageSpinner size={20} loading={true} optionalMessage={'Loading Your Pools'}/>
+                        </div>
+                    : state === 'finished' &&
+                    <>
+                        {!pools || pools.length < 1
+                            ?
+                                <PoolsNullState>
+                                    <span>No Pools Created Yet</span>
+                                    <span>Your pool list is empty. Go to Create Pool to create one.</span>
+                                </PoolsNullState>
+                            : 
+                                pools.map((pool) => (
+                                    <PoolCard
+                                        key={pool.id}
+                                        index={pool.id}
+                                        name={pool.name}
+                                        amount={pool.bankroll}
+                                        privacy={pool.private}
+                                        startDate={pool.startDate}
+                                        sports={pool.sports.length}
+                                        participants={pool.userCount}
+                                        displayPool={displayPool}
+                                    />
+                                ))}
+                    </>
             }
         </MyPoolsWrapper>
     );
@@ -79,5 +86,24 @@ const MyPoolsWrapper = styled.div`
         display: flex;
         justify-content: center;
         margin: 2rem;
+    }
+`;
+
+const PoolsNullState = styled.div`
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+
+    & span:first-of-type {
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: .7rem;
+    }
+
+    & span:last-of-type {
+        font-size: 0.85rem;
+        color: #bdbdc1;
+        text-align: center;
+        width: 70%
     }
 `;

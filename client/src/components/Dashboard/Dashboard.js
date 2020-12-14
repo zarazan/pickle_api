@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -7,9 +7,11 @@ import { SAMPLE_STATS } from '../../constants/mockStats';
 
 import MyPools from './MyPools';
 import StatCardLite from './StatCardLite';
+import { ReactComponent as Stats } from '../../icons/stats.svg';
 
 const Dashboard = () => {
     const [ user ] = useContext(UserContext);
+    const [userStats, setUserStats] = useState([]);
     const history = useHistory();
 
     return (
@@ -20,19 +22,29 @@ const Dashboard = () => {
             </Welcome>
             <StatsWrapper className='stats'>
                 <StatsHeader className='stats__header'>MY STATS</StatsHeader>
-                <div className='stats__cardlist'>
-                    {SAMPLE_STATS.map((s) => (
-                        <StatCardLite 
-                            key={s.index}
-                            title={s.title}
-                            value={s.value}
-                            icon={s.icon}
-                            telemetry={s.telemetry}
-                            timespan={s.timespan}
-                            color={s.color}
-                        />
-                    ))}
-                </div>
+                    {!userStats || userStats.length < 1
+                        ?
+                            <StatsNullState className='null-state'>
+                                <Stats className='null-state__icon'/>
+                                <span className='null-state__message'>No Stats Generated Yet</span>
+                            </StatsNullState>
+                        :
+                            <div className='stats__cardlist'>
+                                {
+                                    userStats.map((s) => (
+                                        <StatCardLite 
+                                            key={s.index}
+                                            title={s.title}
+                                            value={s.value}
+                                            icon={s.icon}
+                                            telemetry={s.telemetry}
+                                            timespan={s.timespan}
+                                            color={s.color}
+                                        />
+                                    ))
+                                }
+                            </div>
+                    }
             </StatsWrapper>
             <MainWrapper>
                 <PoolsHeader className='my-pools__header'>MY POOLS</PoolsHeader>
@@ -95,6 +107,28 @@ const StatsHeader = styled.h3`
     font-size: .8125rem;
     letter-spacing: .0625em;
     color: #8b8c8f;
+`;
+
+const StatsNullState = styled.div`
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items center;
+    padding-bottom: 0.7rem;
+
+    & > svg.null-state__icon {
+        height: 1.25rem;
+        width: 1.25rem;
+        fill: #bfbfbf;
+        margin-bottom: 1rem;
+    }
+
+    & > span {
+        margin: 0 0 0 0.5rem;
+        font-family: 'Poppins', 'Sans Serif';
+        font-size: 0.8125rem;
+        color: #bfbfbf;
+    }
 `;
 
 const MainWrapper = styled.section`
