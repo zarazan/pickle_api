@@ -105,11 +105,14 @@ const GameOdds = () => {
                                                             locked={fixture.locked}
                                                             homeTeamName={fixture.homeTeamName}
                                                             homeTeamId={fixture.homeTeamId}
+                                                            homeScore={fixture.homeScore}
                                                             awayTeamName={fixture.awayTeamName}
                                                             awayTeamId={fixture.awayTeamId}
+                                                            awayScore={fixture.awayScore}
                                                             odds={fixture.odds}
                                                             gameDate={fixture.startTime}
                                                             selectBet={selectBet}
+                                                            status={fixture.status}
                                                         /> 
                                                 ))}
                                             </BetCardList>
