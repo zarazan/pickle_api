@@ -8,10 +8,22 @@ import BetButton from '../../stories/BetButton';
 import BetButtonOverUnder from '../../stories/BetButtonOverUnder';
 import { ReactComponent as Lock } from '../../icons/padlock.svg';
 
-const BetCard = ({ fixtureId, locked, homeTeamName, homeTeamId, awayTeamName, awayTeamId, odds, gameDate, selectBet }) => {
+const BetCard = ({ 
+    fixtureId, 
+    locked, 
+    homeTeamName, 
+    homeTeamId, 
+    homeScore, 
+    awayTeamName, 
+    awayTeamId, 
+    awayScore, 
+    odds, 
+    gameDate, 
+    selectBet, 
+    status 
+}) => {
     const [homeOdds, setHomeOdds] = useState({ 'pointSpread': { 'betId': null, 'metric': null, 'ratio': null }, 'moneyLine': { 'betId': null, 'metric': null, 'ratio': null }, 'totalPoints': { 'betId': null, 'metric': null, 'ratio': null } });
     const [awayOdds, setAwayOdds] = useState({ 'pointSpread': { 'betId': null, 'metric': null, 'ratio': null }, 'moneyLine': { 'betId': null, 'metric': null, 'ratio': null }, 'totalPoints': { 'betId': null, 'metric': null, 'ratio': null } });
-    const [game, setGame] = useState('');
     
     useEffect(() => {
         // seed state
@@ -27,72 +39,80 @@ const BetCard = ({ fixtureId, locked, homeTeamName, homeTeamId, awayTeamName, aw
                 <h3>{zuluToStringFormat(gameDate)}</h3>
                 <h4>{`${awayTeamName} vs ${homeTeamName}`}</h4>
             </div>
-            {locked
-            ? <LockedMessage className='locked-status'>
-                <Lock className='locked-status__icon'/>
-                <h3 className='locked-status__message'>{'Game Locked'}</h3>
-            </LockedMessage>
-            :
-                <>
-                    <div className='card-row bet-card__home'>
-                        <Team className='team-home'>{homeTeamName}</Team>
-                            <OddsContainer className='odds-container'>
+            {status === 'home_win' || status === 'away_win'
+                ? 
+                    <FinalScoreMessage className='final-status'>
+                        <h3 className='final-status__message'>
+                            {`${awayTeamName} ${awayScore} - ${homeTeamName} ${homeScore}`}
+                        </h3>
+                    </FinalScoreMessage>
+                : locked && (status === 'scheduled' || status === 'in-progress')
+                    ?
+                        <LockedMessage className='locked-status'>
+                            <Lock className='locked-status__icon'/>
+                            <h3 className='locked-status__message'>{'Game Locked'}</h3>
+                        </LockedMessage>
+                    :
+                        <>
+                            <div className='card-row bet-card__home'>
+                                <Team className='team-home'>{homeTeamName}</Team>
+                                    <OddsContainer className='odds-container'>
 
-                                <BetButton 
-                                    key={'homeSpread'}
-                                    className='odd spread'
-                                    metric={homeOdds.pointSpread.metric}
-                                    ratio={decToAmerican(homeOdds.pointSpread.ratio)}
-                                    callback={() => selectBet(fixtureId, homeOdds.pointSpread.betId)}
-                                />
-                                <BetButtonOverUnder 
-                                    key={'homeTotal'}
-                                    className='odd total'
-                                    which={'over'}
-                                    metric={homeOdds.totalPoints.metric}
-                                    ratio={decToAmerican(homeOdds.totalPoints.ratio)}
-                                    callback={() => selectBet(fixtureId, homeOdds.totalPoints.betId)}
-                                />
-                                <BetButton 
-                                    key={'homeMoney'}
-                                    className='odd money'
-                                    metric={homeOdds.moneyLine.metric}
-                                    ratio={decToAmerican(homeOdds.moneyLine.ratio)}
-                                    callback={() => selectBet(fixtureId, homeOdds.moneyLine.betId)}
-                                />
+                                        <BetButton 
+                                            key={'homeSpread'}
+                                            className='odd spread'
+                                            metric={homeOdds.pointSpread.metric}
+                                            ratio={decToAmerican(homeOdds.pointSpread.ratio)}
+                                            callback={() => selectBet(fixtureId, homeOdds.pointSpread.betId)}
+                                        />
+                                        <BetButtonOverUnder 
+                                            key={'homeTotal'}
+                                            className='odd total'
+                                            which={'over'}
+                                            metric={homeOdds.totalPoints.metric}
+                                            ratio={decToAmerican(homeOdds.totalPoints.ratio)}
+                                            callback={() => selectBet(fixtureId, homeOdds.totalPoints.betId)}
+                                        />
+                                        <BetButton 
+                                            key={'homeMoney'}
+                                            className='odd money'
+                                            metric={homeOdds.moneyLine.metric}
+                                            ratio={decToAmerican(homeOdds.moneyLine.ratio)}
+                                            callback={() => selectBet(fixtureId, homeOdds.moneyLine.betId)}
+                                        />
 
-                            </OddsContainer>
-                    </div>
-                    <div className='card-row bet-card__away'>
-                        <Team className='team-away'>{awayTeamName}</Team>
-                        <OddsContainer className='odds-container'>
+                                    </OddsContainer>
+                            </div>
+                            <div className='card-row bet-card__away'>
+                                <Team className='team-away'>{awayTeamName}</Team>
+                                <OddsContainer className='odds-container'>
 
-                            <BetButton 
-                                key={'awaySpread'}
-                                className='odd spread'
-                                metric={awayOdds.pointSpread.metric}
-                                ratio={decToAmerican(awayOdds.pointSpread.ratio)}
-                                callback={() => selectBet(fixtureId, awayOdds.pointSpread.betId)}
-                            />
-                            <BetButtonOverUnder 
-                                key={'awayTotal'}
-                                className='odd total'
-                                which={'under'}
-                                metric={awayOdds.totalPoints.metric}
-                                ratio={decToAmerican(awayOdds.totalPoints.ratio)}
-                                callback={() => selectBet(fixtureId, awayOdds.totalPoints.betId)}
-                            />
-                            <BetButton 
-                                key={'awayMoney'}
-                                className='odd money'
-                                metric={awayOdds.moneyLine.metric}
-                                ratio={decToAmerican(awayOdds.moneyLine.ratio)}
-                                callback={() => selectBet(fixtureId, awayOdds.moneyLine.betId)}
-                            />
+                                    <BetButton 
+                                        key={'awaySpread'}
+                                        className='odd spread'
+                                        metric={awayOdds.pointSpread.metric}
+                                        ratio={decToAmerican(awayOdds.pointSpread.ratio)}
+                                        callback={() => selectBet(fixtureId, awayOdds.pointSpread.betId)}
+                                    />
+                                    <BetButtonOverUnder 
+                                        key={'awayTotal'}
+                                        className='odd total'
+                                        which={'under'}
+                                        metric={awayOdds.totalPoints.metric}
+                                        ratio={decToAmerican(awayOdds.totalPoints.ratio)}
+                                        callback={() => selectBet(fixtureId, awayOdds.totalPoints.betId)}
+                                    />
+                                    <BetButton 
+                                        key={'awayMoney'}
+                                        className='odd money'
+                                        metric={awayOdds.moneyLine.metric}
+                                        ratio={decToAmerican(awayOdds.moneyLine.ratio)}
+                                        callback={() => selectBet(fixtureId, awayOdds.moneyLine.betId)}
+                                    />
 
-                        </OddsContainer>
-                    </div>
-                </>
+                                </OddsContainer>
+                            </div>
+                        </>
             }
         </BetCardWrapper>
     );
@@ -132,13 +152,25 @@ const BetCard = ({ fixtureId, locked, homeTeamName, homeTeamId, awayTeamName, aw
 };
 
 BetCard.propTypes = {
-    selectBet: PropTypes.func.isRequired,
+    fixtureId: PropTypes.number.isRequired, 
+    locked: PropTypes.bool.isRequired,
     homeTeamName: PropTypes.string.isRequired,
     homeTeamId: PropTypes.number.isRequired,
+    homeScore: PropTypes.number,
     awayTeamName: PropTypes.string.isRequired,
     awayTeamId: PropTypes.number.isRequired,
+    awayScore: PropTypes.number,
     odds: PropTypes.array.isRequired,
     gameDate: PropTypes.string,
+    selectBet: PropTypes.func.isRequired,
+    status: PropTypes.string,
+};
+
+BetCard.defaultProps = {
+    homeScore: 0,
+    awayScore: 0,
+    status: 'scheduled',
+    gameDate: '2020-12-14T18:34:07.532Z',
 };
 
 export default BetCard;
@@ -204,7 +236,22 @@ const LockedMessage = styled.div`
         fill: #bfbfbf;
     }
 
-    & > h3.locked-status__message {
+    & > h3 {
+        margin: 0 0 0 0.5rem;
+        font-family: 'Poppins', 'Sans Serif';
+        font-size: 0.8125rem;
+        color: #bfbfbf;
+    }
+`;
+
+const FinalScoreMessage = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2rem;
+    padding-bottom: 0.7rem;
+
+    & > h3 {
         margin: 0 0 0 0.5rem;
         font-family: 'Poppins', 'Sans Serif';
         font-size: 0.8125rem;

@@ -127,10 +127,10 @@ const ViewPool = () => {
                                         <BetSlipWrapper className='betslip-container'>
                                             {!openBets || openBets.length < 1
                                             ?
-                                                <NoBets>
+                                                <BetsNullState>
                                                     <span>No Bets Placed Yet</span>
                                                     <span>Your bet slips are emtpy. Go to the pool schedule to place a bet</span>
-                                                </NoBets>
+                                                </BetsNullState>
                                             : openBets.map((bet, i) => (
                                                 <OpenBetCard key={i} gameName={null} bet={bet} result={bet.result}/>
                                             ))}
@@ -296,7 +296,7 @@ const BetSlipWrapper = styled.div`
     padding-bottom: 1rem;
 `;
 
-const NoBets = styled.div`
+const BetsNullState = styled.div`
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
