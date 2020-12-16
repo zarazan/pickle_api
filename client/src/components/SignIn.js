@@ -71,7 +71,8 @@ const SignIn = () => {
 		.then(data => {
 			setIsLoading(false);
 			setUser(data);
-			console.log('auth');
+			// add heap identity
+			window.heap.identify(data.email);
 			history.push('/');
 		})
 		.catch(error => {
