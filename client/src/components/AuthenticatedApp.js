@@ -38,7 +38,9 @@ export const AuthenticatedApp = () => {
     /** handleSignout: signs out the current user. */
     function handleSignOut() {
         setUser({});
-        pickleApi.signOut()
+        pickleApi.signOut();
+        // add heap identity
+		window.heap.resetIdentity();
         history.push('/sign-in');
     };
 };
