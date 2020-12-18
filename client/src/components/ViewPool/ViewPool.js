@@ -34,7 +34,8 @@ const ViewPool = () => {
     const [fixtures, setFixtures] = useState([]); // array of fixtures
     const [openBets, setOpenBets] = useState(null); // array of open bets
     const [poolName, setPoolName] = useState(`Pool ${poolId}`);
-    const [potentialPayout, setPotentialPayout] = useState(0);
+    const [potentialPayout, setPotentialPayout] = useState(0); // for rendering potential payout
+    const [outlay, setOutlay] = useState(0); // for rendering total bet outlay
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -73,6 +74,7 @@ const ViewPool = () => {
                                             avatar={null} 
                                             bankroll={currencyFormatter.format(myInfo.bank)}
                                             potentialPayout={currencyFormatter.format(potentialPayout)}
+                                            outlay={currencyFormatter.format(outlay)}
                                         />
                                     </div>
                                     <div className='pool-content__leaderboard-container'>
@@ -186,8 +188,12 @@ const ViewPool = () => {
                 // calculate potential payout
                 const wonAndOpenBets = bets.filter(bet => bet.result !== 'lost' && bet.result !== 'draw');
                 const payout = wonAndOpenBets.reduce((acc, cur) => acc + parseFloat(cur.payout), 0.00);
+                // calculate total outlay
+                const openBets = bets.filter(bet => bet.result !== 'lost' && bet.result !== 'won' & bet.result !== 'won');
+                const outlay = openBets.reduce((acc, cur) => acc + parseFloat(cur.amount), 0.00);
                 
                 setPotentialPayout(payout);
+                setOutlay(outlay);
                 setState('finished');
             })
             .catch(error => {
