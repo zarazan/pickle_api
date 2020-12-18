@@ -40,12 +40,19 @@ const PoolCard = ({ displayPool, index, name, startDate, sports, privacy, partic
 };
 
 PoolCard.propTypes = {
-    displayPool: PropTypes.func,
+    displayPool: PropTypes.func.isRequired,
     name: PropTypes.string.isRequired,
     privacy: PropTypes.bool,
     startDate: PropTypes.string,
-    sports: PropTypes.arrayOf(PropTypes.string),
-    participants: PropTypes.arrayOf(PropTypes.string),
+    sports: PropTypes.number,
+    participants: PropTypes.number,
+};
+
+PoolCard.defaultProps = {
+    privacy: 'private',
+    startDate: '2020-12-13T00:00:00.000Z',
+    sports: 1,
+    participants: 1,
 };
 
 export default PoolCard;
