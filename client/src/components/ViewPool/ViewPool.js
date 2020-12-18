@@ -7,7 +7,7 @@ import { usePoolDispatch } from '../../contexts/PoolContext';
 import pickleApi from '../../services/pickle_api';
 import { currencyFormatter } from '../../utilities/helpers';
 
-import FullPageSpinner from '../FullPageSpinner';
+import FullPageSpinner from '../App/FullPageSpinner';
 import OpenBetCard from './OpenBetCard';
 import PoolUserCard from './PoolUserCard';
 import RowResult from './RowResult';

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { ThemeProvider } from 'styled-components';
 // import { darkTheme, lightTheme } from '../co'
 
-import { UserContext } from '../contexts/UserContext'
+import { UserContext } from '../../contexts/UserContext'
 
 import { AuthenticatedApp } from './AuthenticatedApp';
 import { UnAuthenticatedApp } from './UnAuthenticatedApp';

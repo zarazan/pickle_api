@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import pickleApi from '../../services/pickle_api';
 
-import FullPageSpinner from '../FullPageSpinner';
+import FullPageSpinner from '../App/FullPageSpinner';
 import RowResult from './RowResult';
 import WinnerCard from './WinnerCard';
 

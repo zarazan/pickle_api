@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components';
 
-import { UNAUTH_ROUTES, RenderRoutes } from '../constants/routes'
+import { UNAUTH_ROUTES, RenderRoutes } from '../../constants/routes'
 
 export const UnAuthenticatedApp = () => {
     return (

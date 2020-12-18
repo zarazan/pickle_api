@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import Dashboard from '../components/Dashboard/Dashboard';
 import Leaderboard from '../components/ViewPool/Leaderboard';
 import PoolCreate from '../components/CreatePool/PoolCreate';
-import SignIn from '../components/SignIn';
+import SignIn from '../components/App/SignIn';
 import ViewPool from '../components/ViewPool/ViewPool';
 import EditScores from '../components/Admin/EditScores';
 import GameOdds from '../components/Betslip/GameOdds';
