@@ -8,7 +8,6 @@ import FullPageSpinner from '../App/FullPageSpinner';
 import RowResult from './RowResult';
 import WinnerCard from './WinnerCard';
 
-import MOCK_ENTRIES from '../../constants/mockEntries';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
@@ -40,7 +39,7 @@ const Leaderboard = () => {
                                     <Title className='leaderboard__title subsection'>LEADERBOARD</Title>
                                 </Header>
                                 <WinnerCircle className='leaderboard__leader subsection'>
-                                    {(winnersCircle || MOCK_ENTRIES).map((result, index) => (
+                                    {entries.slice(0, 3).map((result, index) => (
                                         <WinnerCard 
                                             key={index}
                                             rank={index + 1}
@@ -50,14 +49,21 @@ const Leaderboard = () => {
                                         />
                                     ))}
                                 </WinnerCircle>
+                                <TitleBar className='leaderboard-title-bar'>
+                                    <span className='rank'>Rank</span>
+                                    <span className='user'>User</span>
+                                    <span className='bankroll'>Bankroll</span>
+                                    <span className='wagers'>Wagers</span>
+                                </TitleBar>
                                 <PlacesList className='leaderboard__places subsection'>
-                                    {(entries || MOCK_ENTRIES).map((result, index) => (
+                                    {(entries.slice(3)).map((result, index) => (
                                         <RowResult 
                                             key={index}
-                                            rank={index + 1}
+                                            rank={index + 4}
                                             avatar={result.image}
                                             name={result.userName}
                                             bankroll={result.bankrollPlusActiveBets}
+                                            wagers={null}
                                         />
                                     ))}
                                 </PlacesList>
@@ -109,6 +115,28 @@ const Header = styled.header`
         background: none;
         border: none;
         outline: none;
+    }
+`;
+
+const TitleBar = styled.div`
+    display: grid;
+    grid-template-columns: 66px 1fr 70px 70px;
+    box-sizing: border-box;
+    padding: 8px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+
+    background-color: #49BCF6;
+    color: #f2f2f2;
+
+    & span {
+        font-family: 'Inter', 'Sans Serif';
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    & span.bankroll, span.wagers {
+        text-align: center;
     }
 `;
 

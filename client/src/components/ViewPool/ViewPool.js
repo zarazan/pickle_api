@@ -82,6 +82,12 @@ const ViewPool = () => {
                                             <h3>{'LEADERBOARD'}</h3>
                                             <button className='btn expand-leaderboard-btn' onClick={() => history.push(`${url}/leaderboard`)}>MORE</button>
                                         </div>
+                                        <LeaderboardTitleBar className='leaderboard-title-bar'>
+                                            <span className='rank'>Rank</span>
+                                            <span className='user'>User</span>
+                                            <span className='bankroll'>Bankroll</span>
+                                            <span className='wagers'>Wagers</span>
+                                        </LeaderboardTitleBar>
                                         <div className='pool-content__leaderboard-list'>
                                             {winnersCircle.map((winner, i) => (
                                                 <RowResult 
@@ -91,6 +97,7 @@ const ViewPool = () => {
                                                     avatar={null}
                                                     name={winner.userName}
                                                     bankroll={winner.bankrollPlusActiveBets}
+                                                    wagers={null}
                                                 />
                                             ))}
                                         </div>
@@ -108,6 +115,7 @@ const ViewPool = () => {
                                                             avatar={null}
                                                             name={myInfo.userName}
                                                             bankroll={myInfo.bankrollPlusActiveBets}
+                                                            wagers={null}
                                                         />
                                                     </div>
                                                 </div>
@@ -211,6 +219,28 @@ const ViewPoolWrapper = styled.div`
     box-sizing: border-box;
     height: 100%;
     margin: 1em 1em 0 1em;
+`;
+
+const LeaderboardTitleBar = styled.div`
+    display: grid;
+    grid-template-columns: 66px 1fr 70px 70px;
+    box-sizing: border-box;
+    padding: 8px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+
+    background-color: #49BCF6;
+    color: #f2f2f2;
+
+    & span {
+        font-family: 'Inter', 'Sans Serif';
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    & span.bankroll, span.wagers {
+        text-align: center;
+    }
 `;
 
 const PoolContent = styled.section`
