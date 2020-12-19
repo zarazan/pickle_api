@@ -9,7 +9,7 @@ import { currencyFormatter } from '../../utilities/helpers';
 
 import BetCard from './BetCard';
 import EnterWager from './EnterWager';
-import FullPageSpinner from '../FullPageSpinner';
+import FullPageSpinner from '../App/FullPageSpinner';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';

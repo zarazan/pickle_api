@@ -2,13 +2,13 @@ import React, { useState, useContext } from 'react'
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 
-import { UserContext } from '../contexts/UserContext';
-import pickleApi from '../services/pickle_api';
+import { UserContext } from '../../contexts/UserContext';
+import pickleApi from '../../services/pickle_api';
 
-import { AUTH_ROUTES, RenderRoutes } from '../constants/routes'
+import { AUTH_ROUTES, RenderRoutes } from '../../constants/routes'
 
-import { ReactComponent as Logo } from '../icons/pickle.svg';
-import { ReactComponent as Menu } from '../icons/menu.svg';
+import { ReactComponent as Logo } from '../../icons/pickle.svg';
+import { ReactComponent as Menu } from '../../icons/menu.svg';
 
 export const AuthenticatedApp = () => {
     const history = useHistory();

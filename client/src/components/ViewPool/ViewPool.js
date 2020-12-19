@@ -7,7 +7,7 @@ import { usePoolDispatch } from '../../contexts/PoolContext';
 import pickleApi from '../../services/pickle_api';
 import { currencyFormatter } from '../../utilities/helpers';
 
-import FullPageSpinner from '../FullPageSpinner';
+import FullPageSpinner from '../App/FullPageSpinner';
 import OpenBetCard from './OpenBetCard';
 import PoolUserCard from './PoolUserCard';
 import RowResult from './RowResult';
@@ -23,18 +23,17 @@ const ViewPool = () => {
     const updateBetCount = (pool, count) => dispatch({ type: 'UPDATE_BET_COUNT', poolId: pool, bets: count});
 
     const { poolId } = useParams(); // pool id from url
-    const { path, url } = useRouteMatch(); // path and url for route matching
+    const { url } = useRouteMatch(); // path and url for route matching
     const history = useHistory();
 
     const [state, setState] = useState('idle'); // used for component state tracking
     const [errorMessage, setErrorMessage] = useState(''); // used for displaying errors
 
     const [winnersCircle, setWinnersCircle] = useState([]); // array of top placers of the leaderboard
-    const [entries, setEntries] = useState([]); // array of entries
-    const [fixtures, setFixtures] = useState([]); // array of fixtures
     const [openBets, setOpenBets] = useState(null); // array of open bets
     const [poolName, setPoolName] = useState(`Pool ${poolId}`);
-    const [potentialPayout, setPotentialPayout] = useState(0);
+    const [potentialPayout, setPotentialPayout] = useState(0); // for rendering potential payout
+    const [outlay, setOutlay] = useState(0); // for rendering total bet outlay
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -73,6 +72,7 @@ const ViewPool = () => {
                                             avatar={null} 
                                             bankroll={currencyFormatter.format(myInfo.bank)}
                                             potentialPayout={currencyFormatter.format(potentialPayout)}
+                                            outlay={currencyFormatter.format(outlay)}
                                         />
                                     </div>
                                     <div className='pool-content__leaderboard-container'>
@@ -80,6 +80,12 @@ const ViewPool = () => {
                                             <h3>{'LEADERBOARD'}</h3>
                                             <button className='btn expand-leaderboard-btn' onClick={() => history.push(`${url}/leaderboard`)}>MORE</button>
                                         </div>
+                                        <LeaderboardTitleBar className='leaderboard-title-bar'>
+                                            <span className='rank'>Rank</span>
+                                            <span className='user'>User</span>
+                                            <span className='bankroll'>Bankroll</span>
+                                            <span className='wagers'>Wagers</span>
+                                        </LeaderboardTitleBar>
                                         <div className='pool-content__leaderboard-list'>
                                             {winnersCircle.map((winner, i) => (
                                                 <RowResult 
@@ -89,6 +95,7 @@ const ViewPool = () => {
                                                     avatar={null}
                                                     name={winner.userName}
                                                     bankroll={winner.bankrollPlusActiveBets}
+                                                    wagers={null}
                                                 />
                                             ))}
                                         </div>
@@ -106,6 +113,7 @@ const ViewPool = () => {
                                                             avatar={null}
                                                             name={myInfo.userName}
                                                             bankroll={myInfo.bankrollPlusActiveBets}
+                                                            wagers={null}
                                                         />
                                                     </div>
                                                 </div>
@@ -153,7 +161,6 @@ const ViewPool = () => {
         pickleApi.getEntries(id)
             .then(entries => {
                 // add entries to state
-                setEntries(entries);
                 const firstEntry = entries[0];
                 if(firstEntry) setPoolName(firstEntry.poolName);
                 // get the entry for the current user
@@ -186,8 +193,12 @@ const ViewPool = () => {
                 // calculate potential payout
                 const wonAndOpenBets = bets.filter(bet => bet.result !== 'lost' && bet.result !== 'draw');
                 const payout = wonAndOpenBets.reduce((acc, cur) => acc + parseFloat(cur.payout), 0.00);
+                // calculate total outlay
+                const openBets = bets.filter(bet => bet.result !== 'lost' && bet.result !== 'won' & bet.result !== 'won');
+                const outlay = openBets.reduce((acc, cur) => acc + parseFloat(cur.amount), 0.00);
                 
                 setPotentialPayout(payout);
+                setOutlay(outlay);
                 setState('finished');
             })
             .catch(error => {
@@ -205,6 +216,29 @@ const ViewPoolWrapper = styled.div`
     box-sizing: border-box;
     height: 100%;
     margin: 1em 1em 0 1em;
+`;
+
+const LeaderboardTitleBar = styled.div`
+    display: grid;
+    grid-template-columns: 66px 1fr 70px 70px;
+    box-sizing: border-box;
+    padding: 8px;
+    margin-bottom: 8px;
+
+    background-color: white;
+    color: #f2f2f2;
+    border-bottom: 1px solid #f2f2f2;
+
+    & span {
+        font-family: 'Inter', 'Sans Serif';
+        font-size: 12px;
+        font-weight: 700;
+        color: #151415;
+    }
+
+    & span.bankroll, span.wagers {
+        text-align: center;
+    }
 `;
 
 const PoolContent = styled.section`
@@ -239,7 +273,7 @@ const PoolContent = styled.section`
         justify-content: center;
 
         & > h2 {
-            margin: 0 0 0.5em;
+            margin: 0 0 1em;
         }
     }
 
@@ -254,10 +288,15 @@ const PoolContent = styled.section`
     }
 
     & .schedule-btn {
+        &:active {
+            & button {
+                background-color: #23BE8F;
+            }
+        }
+
         &:hover {
             & button {
-                border-color: #8fd6a9;
-                font-weight: 500;
+                background-color: #53DFB5;
             }
         }
 
@@ -265,13 +304,15 @@ const PoolContent = styled.section`
             box-sizing: border-box;
             padding: 1rem 0 1rem;
             width: 100%;
-            background: none;
-            border: 1px solid #8b8c8f;
+            background-color: #26CF9C;
+            box-shadow: 0px 2px 6px 1px #DDDDDD;
             border-radius: 0.2rem;
             outline: none;
+            border: none;
             font-family: 'Inter', 'Sans Serif';
             font-size: .8125rem;
-            color: #8fd6a9;
+            color: #f2f2f2;
+            font-weight: 500;
         }
     }
 
