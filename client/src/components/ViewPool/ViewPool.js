@@ -23,15 +23,13 @@ const ViewPool = () => {
     const updateBetCount = (pool, count) => dispatch({ type: 'UPDATE_BET_COUNT', poolId: pool, bets: count});
 
     const { poolId } = useParams(); // pool id from url
-    const { path, url } = useRouteMatch(); // path and url for route matching
+    const { url } = useRouteMatch(); // path and url for route matching
     const history = useHistory();
 
     const [state, setState] = useState('idle'); // used for component state tracking
     const [errorMessage, setErrorMessage] = useState(''); // used for displaying errors
 
     const [winnersCircle, setWinnersCircle] = useState([]); // array of top placers of the leaderboard
-    const [entries, setEntries] = useState([]); // array of entries
-    const [fixtures, setFixtures] = useState([]); // array of fixtures
     const [openBets, setOpenBets] = useState(null); // array of open bets
     const [poolName, setPoolName] = useState(`Pool ${poolId}`);
     const [potentialPayout, setPotentialPayout] = useState(0); // for rendering potential payout
@@ -163,7 +161,6 @@ const ViewPool = () => {
         pickleApi.getEntries(id)
             .then(entries => {
                 // add entries to state
-                setEntries(entries);
                 const firstEntry = entries[0];
                 if(firstEntry) setPoolName(firstEntry.poolName);
                 // get the entry for the current user
@@ -229,8 +226,9 @@ const LeaderboardTitleBar = styled.div`
     border-radius: 4px;
     margin-bottom: 8px;
 
-    background-color: #49BCF6;
-    color: #f2f2f2;
+    background-color: #5277e4;
+    color: #f4f6fd;
+    box-shadow: 0px 2px 6px 1px rgba(143,144,148,0.85);
 
     & span {
         font-family: 'Inter', 'Sans Serif';

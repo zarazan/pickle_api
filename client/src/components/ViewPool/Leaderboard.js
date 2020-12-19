@@ -18,7 +18,10 @@ const Leaderboard = () => {
     const [componentState, setComponentState] = useState('idle');
     const [errorMessage, setErrorMessage] = useState(''); // used for displaying errors
     const [entries, setEntries] = useState([]); // array of entries
-    const [winnersCircle, setWinnersCircle] = useState([]); // array of top placers of the leaderboard
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     useEffect(() => {
         setComponentState('loading');
@@ -67,7 +70,6 @@ const Leaderboard = () => {
                                         />
                                     ))}
                                 </PlacesList>
-
                             </>
                         : null
             }
@@ -80,13 +82,9 @@ const Leaderboard = () => {
             .then(entries => {
                 // add entries to state
                 setEntries(entries);
-                const topEntries = entries.filter(entry => entry.position < 3);
-                // add info to state
-                setWinnersCircle(topEntries);
                 setComponentState('finished');
         })
         .catch(error => {
-            console.log(error.toString());
             history.push('/sign-in');
             setErrorMessage(error.toString());
             setComponentState('error');
@@ -126,8 +124,8 @@ const TitleBar = styled.div`
     border-radius: 4px;
     margin-bottom: 8px;
 
-    background-color: #49BCF6;
-    color: #f2f2f2;
+    background-color: #5277e4;
+    color: #f4f6fd;
 
     & span {
         font-family: 'Inter', 'Sans Serif';
