@@ -123,18 +123,18 @@ const BetSlip = styled.div`
             
             & .sport-banner {
                 align-items: center;
-                background: #c7ead4;
-                color: #379559;
+                background: #D9D9D9;
+                color: #8C8C8C;
     
                 & > svg {
                     margin-right: 0.5rem;
-                    fill: #379559;
+                    fill: #8C8C8C;
                 }
             }
     
             & .sport-league {
                 background: #f2f2f2;
-                color: #808080;
+                color: #8C8C8C;
             }
         }
 
@@ -161,7 +161,8 @@ const BetSlip = styled.div`
                 font-size: 0.8rem;
                 
                 &[class~='open'] {
-                    background: #cfd6db;
+                    background: #f2f2f2;
+                    color: #8C8C8C;
                 }
 
                 &[class~='in-progress'] {

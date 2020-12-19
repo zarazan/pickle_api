@@ -223,17 +223,17 @@ const LeaderboardTitleBar = styled.div`
     grid-template-columns: 66px 1fr 70px 70px;
     box-sizing: border-box;
     padding: 8px;
-    border-radius: 4px;
     margin-bottom: 8px;
 
-    background-color: #5277e4;
-    color: #f4f6fd;
-    box-shadow: 0px 2px 6px 1px rgba(143,144,148,0.85);
+    background-color: white;
+    color: #f2f2f2;
+    border-bottom: 1px solid #f2f2f2;
 
     & span {
         font-family: 'Inter', 'Sans Serif';
         font-size: 12px;
-        font-weight: 500;
+        font-weight: 700;
+        color: #151415;
     }
 
     & span.bankroll, span.wagers {
@@ -273,7 +273,7 @@ const PoolContent = styled.section`
         justify-content: center;
 
         & > h2 {
-            margin: 0 0 0.5em;
+            margin: 0 0 1em;
         }
     }
 
@@ -288,10 +288,15 @@ const PoolContent = styled.section`
     }
 
     & .schedule-btn {
+        &:active {
+            & button {
+                background-color: #23BE8F;
+            }
+        }
+
         &:hover {
             & button {
-                border-color: #8fd6a9;
-                font-weight: 500;
+                background-color: #53DFB5;
             }
         }
 
@@ -299,13 +304,15 @@ const PoolContent = styled.section`
             box-sizing: border-box;
             padding: 1rem 0 1rem;
             width: 100%;
-            background: none;
-            border: 1px solid #8b8c8f;
+            background-color: #26CF9C;
+            box-shadow: 0px 2px 6px 1px #DDDDDD;
             border-radius: 0.2rem;
             outline: none;
+            border: none;
             font-family: 'Inter', 'Sans Serif';
             font-size: .8125rem;
-            color: #8fd6a9;
+            color: #f2f2f2;
+            font-weight: 500;
         }
     }
 

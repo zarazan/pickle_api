@@ -81,10 +81,10 @@ const RowWrapper = styled.div`
 
     &[class~='active-user'] {
         font-weight: 700;
-        background-color: #e8edfd;
+        background-color: #ECF8FE;
 
         span.leaderboard-row__name, span.leaderboard-row__bankroll, span.leaderboard-row__wagers, span.leaderboard-row__telemetry {
-            color: #5277e4;
+            color: #3DB8F5;
         }
     }
 `;

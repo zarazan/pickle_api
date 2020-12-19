@@ -124,13 +124,15 @@ const TitleBar = styled.div`
     border-radius: 4px;
     margin-bottom: 8px;
 
-    background-color: #5277e4;
-    color: #f4f6fd;
+    background-color: white;
+    color: #f2f2f2;
+    border-bottom: 1px solid #f2f2f2;
 
     & span {
         font-family: 'Inter', 'Sans Serif';
         font-size: 12px;
-        font-weight: 500;
+        font-weight: 700;
+        color: #151415;
     }
 
     & span.bankroll, span.wagers {
