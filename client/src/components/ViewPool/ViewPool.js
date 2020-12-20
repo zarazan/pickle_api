@@ -140,7 +140,13 @@ const ViewPool = () => {
                                                     <span>Your bet slips are emtpy. Go to the pool schedule to place a bet</span>
                                                 </BetsNullState>
                                             : openBets.map((bet, i) => (
-                                                <OpenBetCard key={i} gameName={null} bet={bet} result={bet.result}/>
+                                                <OpenBetCard
+                                                    key={i} 
+                                                    gameName={`${bet.awayTeamName} at ${bet.homeTeamName}`} 
+                                                    gameDateTime={null}
+                                                    bet={bet} 
+                                                    result={bet.result}
+                                                />
                                             ))}
                                         </BetSlipWrapper>
                                     </div>
