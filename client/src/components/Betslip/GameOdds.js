@@ -60,7 +60,7 @@ const GameOdds = () => {
                                     <Bankroll className='user-bankroll'>
                                         <h3>{'YOUR BANKROLL'}</h3>
                                         <h2 className='user-bankroll'>{currencyFormatter.format(state.bank)}</h2>
-                                        <h4>{`${state.betCount} OPEN BETS`}</h4>
+                                        <h4>{`${state.betCount} BETS`}</h4>
                                     </Bankroll>
 
                                 </div>
@@ -258,7 +258,7 @@ const Bankroll = styled.div`
         margin: 0.7rem 0 0.3rem 0;
         font-family: 'Poppins', 'Sans Serif';
         font-size: 2.5rem;
-        color: #8fd6a9;
+        color: #53DFB5;
     }
 `;
 

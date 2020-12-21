@@ -192,8 +192,6 @@ const ViewPool = () => {
     function fetchAndSetBets(id) {
         pickleApi.getBets(id)
             .then(bets => {
-                // add bets to state
-                setOpenBets(bets);
                 // send dispatch
                 updateBetCount(poolId, bets.length);
                 // calculate potential payout
@@ -202,7 +200,11 @@ const ViewPool = () => {
                 // calculate total outlay
                 const openBets = bets.filter(bet => bet.result !== 'lost' && bet.result !== 'won' & bet.result !== 'won');
                 const outlay = openBets.reduce((acc, cur) => acc + parseFloat(cur.amount), 0.00);
+                // sort the bets by date
+                const sortedBets = bets.sort((a, b) => Date.parse(a.gameDateTime) - Date.parse(b.gameDateTime));
                 
+                // add bets to state
+                setOpenBets(sortedBets);
                 setPotentialPayout(payout);
                 setOutlay(outlay);
                 setState('finished');
