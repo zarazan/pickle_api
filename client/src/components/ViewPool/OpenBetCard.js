@@ -292,7 +292,7 @@ const BetSlipWager = styled.div`
         border: none;
         outline: none;
         border-radius: 4px;
-        box-shadow: 0px 2px 6px 1px #DDDDDD;
+        box-shadow: 0px 2px 6px 1px #F2F2F2;
         background-color: #FFFFFF;
 
         height: 100%;

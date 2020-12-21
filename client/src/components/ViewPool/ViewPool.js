@@ -130,7 +130,7 @@ const ViewPool = () => {
                                     </div>
                                     <div>
                                         <div className='open-bets-header'>
-                                            <h3>{'OPEN BETS'}</h3>
+                                            <h3>{'BETSLIPS'}</h3>
                                         </div>
                                         <BetSlipWrapper className='betslip-container'>
                                             {!openBets || openBets.length < 1
