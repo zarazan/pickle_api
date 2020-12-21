@@ -98,6 +98,126 @@ fixtures_attributes = [
         metric: '45.5'
       }
     ]
+  },
+  {
+    sport: 'americanfootball_nfl',
+    home_team_name: 'Seattle Seakhawks',
+    away_team_name: 'Washington Football Team',
+    start_time: (@now + 3.days),
+    odds: [
+      {
+        type: 'MoneyLineOdd',
+        ratio: '1.5',
+        team_name: 'Seattle Seahawks'
+      },
+      {
+        type: 'MoneyLineOdd',
+        ratio: '2.3',
+        team_name: 'Washington Football Team'
+      },
+      {
+        type: 'SpreadOdd',
+        metric: '-3.5',
+        ratio: '1.9',
+        team_name: 'Seattle Seahawks'
+      },
+      {
+        type: 'SpreadOdd',
+        metric: '3.5',
+        ratio: '1.9',
+        team_name: 'Washington Football Team'
+      },
+      {
+        type: 'OverOdd',
+        ratio: '1.9',
+        metric: '45'
+      },
+      {
+        type: 'UnderOdd',
+        ratio: '1.9',
+        metric: '45.5'
+      }
+    ]
+  },
+  {
+    sport: 'americanfootball_nfl',
+    home_team_name: 'New York Giants',
+    away_team_name: 'New England Patriots',
+    start_time: '2020-12-24T00:18:18.032Z',
+    odds: [
+      {
+        type: 'MoneyLineOdd',
+        ratio: '1.5',
+        team_name: 'New York Giants'
+      },
+      {
+        type: 'MoneyLineOdd',
+        ratio: '2.3',
+        team_name: 'New England Patriots'
+      },
+      {
+        type: 'SpreadOdd',
+        metric: '-3.5',
+        ratio: '1.9',
+        team_name: 'New York Giants'
+      },
+      {
+        type: 'SpreadOdd',
+        metric: '3.5',
+        ratio: '1.9',
+        team_name: 'New England Patriots'
+      },
+      {
+        type: 'OverOdd',
+        ratio: '1.9',
+        metric: '45'
+      },
+      {
+        type: 'UnderOdd',
+        ratio: '1.9',
+        metric: '45.5'
+      }
+    ]
+  },
+  {
+    sport: 'americanfootball_nfl',
+    home_team_name: 'New York Jets',
+    away_team_name: 'Houston Texans',
+    start_time: '2020-12-24T00:30:18.032Z',
+    odds: [
+      {
+        type: 'MoneyLineOdd',
+        ratio: '1.5',
+        team_name: 'New York Jets'
+      },
+      {
+        type: 'MoneyLineOdd',
+        ratio: '2.3',
+        team_name: 'Houston Texans'
+      },
+      {
+        type: 'SpreadOdd',
+        metric: '-3.5',
+        ratio: '1.9',
+        team_name: 'New York Jets'
+      },
+      {
+        type: 'SpreadOdd',
+        metric: '3.5',
+        ratio: '1.9',
+        team_name: 'Houston Texans'
+      },
+      {
+        type: 'OverOdd',
+        ratio: '1.9',
+        metric: '45'
+      },
+      {
+        type: 'UnderOdd',
+        ratio: '1.9',
+        metric: '45.5'
+      }
+    ]
   }
 ]
 LoadOddsService.new.load_fixtures(fixtures_attributes)
