@@ -292,12 +292,12 @@ const CalculatorButton = styled.button`
 
         border: none;
         border-radius: 0.4em;
-        background-color: #eaf3fd;
-        color: #5698d6;
+        background-color: #ECF8FE;
+        color: #3DB8F5;
         font-size: 0.8rem;
 
         &[class~='complete'] {
-            background: #34b25e;
+            background: #53DFB5;
             color: white;
         }
 
@@ -307,7 +307,7 @@ const CalculatorButton = styled.button`
         }
 
         &[class~='overdraft'] {
-            background: #e44242;
+            background: #f03b58;
             color: white;
         }
     }

@@ -18,7 +18,7 @@ const FullPageSpinner = ({ size, loading, optionalMessage }) => {
         className='page-spinner__spinner'
         size={size}
         loading={loading}
-        color={'#5dc382'}
+        color={'#53DFB5'}
       />
       <div
         style={{
