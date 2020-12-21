@@ -70,9 +70,9 @@ const OpenBets = ({ gameName, gameDateTime, bet }) => {
             </BetSlipHeader>
 
             <BetSlipContent className='content'>
-                <BetSlipGameInfo>
-                    <span>{gameName}</span>
-                    <span>{zuluToStringFormat(gameDateTime)}</span>
+                <BetSlipGameInfo className='content__header content-row'>
+                    <span className='content__game'>{gameName}</span>
+                    <span className='content__datetime'>{zuluToStringFormat(gameDateTime)}</span>
                 </BetSlipGameInfo>
 
                 <BetSlipDetails className='content__bet content-row'>
@@ -110,9 +110,19 @@ const OpenBets = ({ gameName, gameDateTime, bet }) => {
 
                 </BetSlipDetails>
 
-                <BetSlipWager className='content__game content-row'>
-                    <div className='betslip__bet-amount'>{`STAKE: ${currencyFormatter.format(bet.amount)}`}</div>
-                    <div className='betslip__bet-payout'>{`TO WIN: ${currencyFormatter.format(bet.payout)}`}</div>
+                <BetSlipWager className='content__money content-row'>
+                    <div className='betslip__bet-amount'>
+                        <span className='content__money-label'>STAKE</span>
+                        <span className='content__money-data'>{currencyFormatter.format(bet.amount)}</span>
+                    </div>
+                    <div className='betslip__bet-payout'>
+                        <span className='content__money-label'>TO WIN</span>
+                        <span className='content__money-data'>{currencyFormatter.format(bet.payout)}</span>
+                    </div>
+                    <div className='betslip__cash-out'>
+                        <span className='content__money-label'>CASH OUT</span>
+                        <button className='bet-cashout' disabled>{`$0.00`}</button>
+                    </div>
                 </BetSlipWager>
             </BetSlipContent>
 
@@ -180,32 +190,7 @@ const BetSlipContent = styled.div`
     box-sizing: border-box;
 
     & .content-row {
-        margin-bottom: 0.3rem;
-    }
-
-    & .content__bet {
-        display: flex;
-        justify-content: space-between;
-
-        & .betslip__bet-odds {
-            display: flex;
-            align-items: center;
-        }
-    }
-
-    & .content__game {
-        display: flex;
-        flex-flow: column nowrap;
-        box-sizing: border-box;
-        margin-top: 0.5rem;
-        padding: 0.5rem 0 0.5rem 0;
-
-        font-size: 0.7rem;
-        font-weight: 500;
-        
-        & .betslip__bet-amount {
-            margin-bottom: 0.25rem
-        }
+        margin-bottom: 16px;
     }
     
     & .betslip__bet-type {
@@ -218,13 +203,6 @@ const BetSlipContent = styled.div`
         }
     }
 `;
-
-// .game-date {
-//     display: flex;
-//     margin: 0.5rem 1rem 0.3rem 0;
-//     font-size: 0.7rem;
-//     color: #8b8c8f;
-// }
 
 const BetSlipHeaderStatus = styled.div`
     display: flex;
@@ -286,20 +264,71 @@ const BetTypeLabel = styled.div`
 `;
 
 const BetSlipWager = styled.div`
+    display: grid;
+    grid-template-columns: repeat(3, 33%);
+    grid-template-areas: 'stake payout cashout';
 
+    & > div {
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+    }
+
+    .content__money-label {
+        font-size: 11px;
+        color: #8C8C8C;
+        margin-bottom: 6px;
+    };
+
+    .content__money-data {
+        font-size: 13px;
+        color: #404040;
+        margin: 6px 0 6px 0;
+    };
+
+    button.bet-cashout {
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
+        border: none;
+        outline: none;
+        border-radius: 4px;
+        box-shadow: 0px 2px 6px 1px #F2F2F2;
+        background-color: #FFFFFF;
+
+        height: 100%;
+        width: 80%;
+        padding: 6px 8px;
+    }
 `;
 
 const BetSlipDetails = styled.div`
+    display: flex;
+    justify-content: space-between;
 
+    & .betslip__bet-type {
+        display: flex;
+        align-items: center;
+
+        & .betslip__team-name {
+            font-size: 1rem;
+            font-family: 'Poppins', 'Sans Serif';
+        }
+    }
 `;
 
 const BetSlipGameInfo = styled.div`
     display: flex;
     flex-flow: column nowrap;
-    margin-bottom: 16px;
-    font-size: 13px;
+    font-size: 11px;
     font-weight: 300;
     color: #aaaaaa;
+
+    & span.content__game {
+        color: #404040;
+        font-size: 13px;
+        font-weight: 700;
+        margin: 10px 0 3px 0;
+    }
 `;
 
 const FootballIcon = styled(Football)`
