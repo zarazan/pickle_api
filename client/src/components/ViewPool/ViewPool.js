@@ -335,6 +335,7 @@ const PoolContent = styled.section`
             border: none;
             outline: none;
             height: auto;
+            color: #53DFB5;
         }
     }
 `;

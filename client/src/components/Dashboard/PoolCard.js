@@ -18,8 +18,8 @@ const PoolCard = ({ displayPool, index, name, startDate, sports, privacy, partic
                     <CardHeader>
                         <CardName>{name}</CardName>
                         {privacy 
-                            ? <Private style={{ height: '1.25rem', width: '1.25rem' }}/> 
-                            : <Public style={{ height: '1.25rem', width: '1.25rem' }}/>}
+                            ? <Private style={{ height: '16px', width: '16px' }}/> 
+                            : <Public style={{ height: '16px', width: '16px' }}/>}
                     </CardHeader>
                     <RowBaseWrapper>
                         <Group style={{ height: '1rem', width: '1rem', fill: '#8f8e8e' }}/>
@@ -62,7 +62,7 @@ const CardWrapper = styled.div`
     box-sizing: border-box;
     border: 1px solid lightgrey;
     border-radius: 0.2rem;
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 3px 0px, rgba(60, 64, 67, 0.15) 0px 1px 2px 0px;
+    box-shadow: rgba(60,64,67,0.3) 0px 1px 2px 0px,rgba(60,64,67,0.15) 0px 2px 6px 2px;
 
     font-family: 'Inter', 'Sans Serif';
     

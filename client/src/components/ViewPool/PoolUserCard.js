@@ -91,7 +91,7 @@ const CardFooter = styled.div`
 
         & h2 {
             font-family: 'Poppins', 'Sans Serif';
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
             color: #242423;
             margin: 0.75rem 0 0.5rem 0;
