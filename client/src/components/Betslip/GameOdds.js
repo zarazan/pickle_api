@@ -145,7 +145,9 @@ const GameOdds = () => {
     function fetchFixtures(id) {
         pickleApi.getFixtures(id)
             .then(data => {
-                setFixtures(data);
+                // sort the fixtures by date
+                const sortedFixtures = data.sort((a, b) => Date.parse(a.startTime) - Date.parse(b.startTime));
+                setFixtures(sortedFixtures);
                 setState('finished');
             })
             .catch(error => {
