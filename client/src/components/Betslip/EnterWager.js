@@ -15,6 +15,7 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, curren
     const [payout, setPayout] = useState(0); // The payout in dollars for the current bet.
     const [showFullCalculator, setShowFullCalculator] = useState(false); // Bool to indicate whether to show the full calculator.
     
+    // A hash for formatting the bets for the user.
     const betHash = {
         'money_line': 'Money Line',
         'spread': 'Point Spread',
@@ -64,76 +65,61 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, curren
                 />
             </WagerItemList>
 
-            {/* <CalculatorSummary className='l-column-flex__item'>
-                <div className='c-wager-entry__summary l-grid__item'>
-                    <div className=''>
-                        <span>{currentBet.teamName} </span>
-                        <span>{formatBetMetric(betHash[currentBet.type], currentBet.metric)}</span>
-                    </div>
-                    <div className=''>{betHash[currentBet.type]}</div>
-                    <div className=''>{game}</div>
-                </div> 
+            <Calculator4Row className='l-grid l-column-flex__item'>
+                <CalculatorButton className='l-grid__item btn c-wager-entry__calculator-button' name='20' onClick={e => addNumber(e.target.name)}>+$20</CalculatorButton>
+                <CalculatorButton className='l-grid__item btn c-wager-entry__calculator-button' name='50' onClick={e => addNumber(e.target.name)}>+$50</CalculatorButton>
+                <CalculatorButton className='l-grid__item btn c-wager-entry__calculator-button' name='100' onClick={e => addNumber(e.target.name)}>+$100</CalculatorButton>
+                <CalculatorButton className='l-grid__item btn c-wager-entry__calculator-button' onClick={() => clearWager()}>Clear</CalculatorButton>
+            </Calculator4Row>
 
-                <div className='c-wagerform__economics l-grid__item'>
-                    <div className=''>
-                        {ratio > 0
-                            ? `+${ratio}`
-                            : ratio
-                        }
-                    </div>
-                    <div className='wager'>
-                        <span>$</span>
-                        <input disabled type='text' value={wager === '' ? 0 : `${parseFloat(wager).toFixed(2)}`} onChange={() => calculatePayout()}/>
-                    </div>
-                    <div className=''>{`Payout: ${currencyFormatter.format(payout)}`}</div>
-                </div>  
-            </CalculatorSummary>        */}
+            <div className='l-column-flex l-column-flex__item'>
+                <button onClick={() => toggleFullCalculator()}>{showFullCalculator ? 'Hide Full Calculator' : 'Show Full Calculator'}</button>
+            </div>
 
+            {showFullCalculator
+                ?
+                    <>
+                        <FullCalculator className='l-column-flex l-column-flex__item'>
+                            <Calculator3Row className='l-grid l-column-flex__item'>
+                                <CalculatorButton className='l-grid__item btn c-wager-entry__calculator-button' name='1' onClick={e => handleInput(e.target.name)}>1</CalculatorButton>
+                                <CalculatorButton className='l-grid__item btn c-wager-entry__calculator-button' name='2' onClick={e => handleInput(e.target.name)}>2</CalculatorButton>
+                                <CalculatorButton className='l-grid__item btn c-wager-entry__calculator-button' name='3' onClick={e => handleInput(e.target.name)}>3</CalculatorButton>
+                            </Calculator3Row>
+                            <Calculator3Row className='l-grid l-column-flex__item'>
+                                <CalculatorButton className='l-grid__item btn c-wager-entry__calculator-button' name='4' onClick={e => handleInput(e.target.name)}>4</CalculatorButton>
+                                <CalculatorButton className='l-grid__item btn c-wager-entry__calculator-button' name='5' onClick={e => handleInput(e.target.name)}>5</CalculatorButton>
+                                <CalculatorButton className='l-grid__item btn c-wager-entry__calculator-button' name='6' onClick={e => handleInput(e.target.name)}>6</CalculatorButton>
+                            </Calculator3Row>
+                            <Calculator3Row className='l-grid l-column-flex__item'>
+                                <CalculatorButton className='l-grid__item btn c-wager-entry__calculator-button' name='7' onClick={e => handleInput(e.target.name)}>7</CalculatorButton>
+                                <CalculatorButton className='l-grid__item btn c-wager-entry__calculator-button' name='8' onClick={e => handleInput(e.target.name)}>8</CalculatorButton>
+                                <CalculatorButton className='l-grid__item btn c-wager-entry__calculator-button' name='9' onClick={e => handleInput(e.target.name)}>9</CalculatorButton>
+                            </Calculator3Row>
+                            <Calculator3Row className='l-grid l-column-flex__item'>
+                                <CalculatorButton className='l-grid__item btn c-wager-entry__calculator-button' name='.' onClick={e => handleInput(e.target.name)}>.</CalculatorButton>
+                                <CalculatorButton className='l-grid__item btn c-wager-entry__calculator-button' name='0' onClick={e => handleInput(e.target.name)}>0</CalculatorButton>
+                            </Calculator3Row>
+                        </FullCalculator>
+                    </>
+                : null
+            }
 
-
-            <Calculator className='l-grid__item calculator'>
-                <CalculatorRow>
-                    <CalculatorButton className='btn calculator__button' name='1' onClick={e => addNumber(e.target.name)}>+$1</CalculatorButton>
-                    <CalculatorButton className='btn calculator__button' name='5' onClick={e => addNumber(e.target.name)}>+$5</CalculatorButton>
-                    <CalculatorButton className='btn calculator__button' name='20' onClick={e => addNumber(e.target.name)}>+$20</CalculatorButton>
-                </CalculatorRow>
-                <CalculatorRow>
-                    <CalculatorButton className='btn calculator__button' name='1' onClick={e => handleInput(e.target.name)}>1</CalculatorButton>
-                    <CalculatorButton className='btn calculator__button' name='2' onClick={e => handleInput(e.target.name)}>2</CalculatorButton>
-                    <CalculatorButton className='btn calculator__button' name='3' onClick={e => handleInput(e.target.name)}>3</CalculatorButton>
-                </CalculatorRow>
-                <CalculatorRow>
-                    <CalculatorButton className='btn calculator__button' name='4' onClick={e => handleInput(e.target.name)}>4</CalculatorButton>
-                    <CalculatorButton className='btn calculator__button' name='5' onClick={e => handleInput(e.target.name)}>5</CalculatorButton>
-                    <CalculatorButton className='btn calculator__button' name='6' onClick={e => handleInput(e.target.name)}>6</CalculatorButton>
-                </CalculatorRow>
-                <CalculatorRow>
-                    <CalculatorButton className='btn calculator__button' name='7' onClick={e => handleInput(e.target.name)}>7</CalculatorButton>
-                    <CalculatorButton className='btn calculator__button' name='8' onClick={e => handleInput(e.target.name)}>8</CalculatorButton>
-                    <CalculatorButton className='btn calculator__button' name='9' onClick={e => handleInput(e.target.name)}>9</CalculatorButton>
-                </CalculatorRow>
-                <CalculatorRow>
-                    <CalculatorButton className='btn calculator__button' name='.' onClick={e => handleInput(e.target.name)}>.</CalculatorButton>
-                    <CalculatorButton className='btn calculator__button' name='0' onClick={e => handleInput(e.target.name)}>0</CalculatorButton>
-                    <CalculatorButton className='btn calculator__button' onClick={() => clearWager()}>Clear</CalculatorButton>
-                </CalculatorRow>
-            </Calculator>     
-
-            <CalculatorFooter className='l-grid__item complete-cancel'>
+            <CalculatorFooter className='l-grid l-column-flex__item'>
                 <CalculatorButton
-                    className={`btn complete complete-cancel__button ${parseFloat(wager) > bank && 'overdraft'}`}
+                    className={`l-grid__item btn c-wager-entry__wager-button ${parseFloat(wager) > bank && 'overdraft'}`}
                     disabled={wager && wager !== '0' && parseFloat(wager) <= bank ? false : true}
                     onClick={() => placeBet(currentBet.id, parseFloat(wager))}
                 >
-                    {parseFloat(wager) <= bank ? `Enter Wager Amount` : `Insufficient Funds!`}
+                    {parseFloat(wager) <= bank ? `Enter Wager` : `Insufficient Funds!`}
                 </CalculatorButton>
                 <CalculatorButton 
-                    className='btn cancel complete-cancel__button'
+                    className='l-grid__item btn c-wager-entry__wager-button'
                     onClick={closeBetSlip}
                 >
                     Cancel Wager
                 </CalculatorButton>
             </CalculatorFooter>
+
         </EnterWagerWrapper>
     );
 
@@ -237,6 +223,10 @@ const EnterWagerWrapper = styled.div`
         color: orange;
     }
 
+    & div[class~='l-column-flex__item'] {
+        margin-bottom: 12px;
+    }
+
     & p.c-wager-entry__label {
         font-family: 'Inter', 'Sans Serif';
         font-size: 0.7em;
@@ -268,91 +258,36 @@ const WagerItemList = styled.div`
     }
 `;
 
-const CalculatorSummary = styled.div`
-    display: grid;
-    grid-template-columns: 66% 33%;
-    height: 100%;
-    margin-bottom: 2em;
-    
-    font-family: 'Inter', 'Sans Serif';
-    font-size: 0.7em;
-
-    .l-grid__item {
-        display: flex;
-        flex-flow: column nowrap;
-
-        & > div {
-            box-sizing: border-box;
-            margin-bottom: 0.2em;
-        }
-    }
-
-    .c-wagerform__economics {
-        align-items: flex-end;
-        font-family: 'Inter', 'Sans Serif';
-        font-size: 0.7rem;
-
-        & input {
-            box-sizing: border-box;
-            width: 100%;
-            text-align: right;
-            font-family: 'Inter', 'Sans Serif';
-            color: lightgrey;
-            background: white;
-            border: 1px solid lightgrey;
-            font-size: 0.7rem;
-        }
-
-        & .wager {
-            display: grid;
-            grid-template-columns: 2em 1fr;
-
-            & > span {
-                text-align: center;
-                border-top: 1px solid lightgrey;
-                border-left: 1px solid lightgrey;
-                border-bottom: 1px solid lightgrey;
-            }
-
-            & * {
-                display: flex;
-                justify-content: center;
-                align-content: center;
-                align-items: center;
-            }
-        }
-    }
-`;
-
-const Calculator = styled.div`
+const FullCalculator = styled.div`
     display: flex;
     flex-flow: column nowrap;
-`;
 
-const CalculatorRow = styled.div`
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-
-    &:first-of-type {
-        margin-bottom: 0.5em;
+    & div[class~='l-column-flex__item']:not(:last-of-type) {
+        margin-bottom: 4px;
     }
 `;
 
-const CalculatorFooter = styled.div`
-    display: grid;
-    grid-template-columns: 66% auto;
-    grid-column-gap: 0.5em;
-    margin-top: 1em;
-    box-sizing: border-box;
+const Calculator4Row = styled.div`
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 4px;
+    width: 100%;
+`;
+
+const Calculator3Row = styled.div`
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 4px;
+    width: 100%;
 `;
 
 const CalculatorButton = styled.button`
-    font-family: 'Inter', 'Sans Serif';
-    font-size: 1em;
-    padding: 0.5em 0 0.5em 0;
-    background: white;
-    border: 1px solid lightgrey;
     box-sizing: border-box;
+    padding: 0.5em 0 0.5em 0;
+
+    background: #F2F2F2;
+    border: none;
+    border-radius: 4px;
+    font-family: 'Inter', 'Sans Serif';
+    font-size: 14px;
     outline: none;
 
     &:active {
@@ -360,19 +295,11 @@ const CalculatorButton = styled.button`
         color: white;
     }
 
-    &.complete-cancel__button {
+    &.c-wager-entry__wager-button {
         padding: 1em 0 1em 0;
 
-        border: none;
-        border-radius: 0.4em;
         background-color: #ECF8FE;
         color: #3DB8F5;
-        font-size: 0.8rem;
-
-        &[class~='complete'] {
-            background: #53DFB5;
-            color: white;
-        }
 
         &:disabled {
             background: #eee;
@@ -384,4 +311,11 @@ const CalculatorButton = styled.button`
             color: white;
         }
     }
+`;
+
+const CalculatorFooter = styled.div`
+    grid-template-columns: 66% 33%;
+    column-gap: 4px;
+    box-sizing: border-box;
+    width: 100%;
 `;
