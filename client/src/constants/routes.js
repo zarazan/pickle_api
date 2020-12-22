@@ -26,6 +26,18 @@ const UNAUTH_ROUTES = [
 
 export { AUTH_ROUTES, UNAUTH_ROUTES };
 
+const NEW_ROUTES = [
+    { path: '/', key: 'ROOT', exact: true, component: Dashboard },
+    { path: '/create-pool', key: 'CREATE_POOL', exact: true, component: PoolCreate },
+    { path: '/pools/:poolId/schedule', key: 'GAME_ODDS', component: GameOdds },
+    { path: '/pools/:poolId/leaderboard', key: 'LEADERBOARD', component: Leaderboard },
+    { path: '/pools/:poolId', key: 'VIEW_POOL', component: ViewPool },
+    { path: '/admin/scores/:poolId', key: 'EDIT_SCORES', component: EditScores },
+    { path: '/sign-in', key: 'SIGN_IN', exact: true, component: SignIn },
+];
+
+export default NEW_ROUTES;
+
 function RouteWithSubRoutes(route) {
     return (
         <Route 
