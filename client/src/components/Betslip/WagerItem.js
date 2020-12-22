@@ -54,4 +54,8 @@ const WagerItemWrapper = styled.div`
 
         &.wager-item__ratio { text-align: center; }
     }
+
+    & .btn {
+        height: 100%;
+    }
 `;

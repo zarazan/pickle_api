@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 import { usePoolState } from '../../contexts/PoolContext';
-import { decToAmerican, calculatePayout, currencyFormatter } from '../../utilities/helpers';
+import { decToAmerican, calculatePayout, currencyFormatter, formatBetMetric } from '../../utilities/helpers';
 
 import WagerItem from './WagerItem';
 
@@ -54,31 +54,21 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, curren
                 </div>
             </WagerSummary>
 
-            <div className='l-column-flex l-column-flex__item'>
+            <WagerItemList className='l-column-flex l-column-flex__item'>
                 <WagerItem 
                     key={1}
-                    teamName={currentBet.teamName}
+                    teamName={currentBet.type === 'over' || currentBet.type === 'under' ? '' : currentBet.teamName}
                     betType={betHash[currentBet.type]}
-                    metric={currentBet.metric}
-                    ratio={currentBet.american}
+                    metric={formatBetMetric(currentBet.type, currentBet.metric)}
+                    ratio={currentBet.american > 0 ? `+${currentBet.american}` : currentBet.american}
                 />
-            </div>
+            </WagerItemList>
 
-            <CalculatorSummary className='l-column-flex__item'>
+            {/* <CalculatorSummary className='l-column-flex__item'>
                 <div className='c-wager-entry__summary l-grid__item'>
                     <div className=''>
                         <span>{currentBet.teamName} </span>
-                        <span>
-                            {currentBet.metric
-                                ? currentBet.type === 'over' || currentBet.type === 'under'
-                                    ? currentBet.type === 'over'
-                                        ? `Over ${currentBet.metric}`
-                                        : `Under ${currentBet.metric}`
-                                : currentBet.metric > 0 
-                                    ? `+${currentBet.metric}`
-                                    : currentBet.metric
-                            : ''}
-                        </span>
+                        <span>{formatBetMetric(betHash[currentBet.type], currentBet.metric)}</span>
                     </div>
                     <div className=''>{betHash[currentBet.type]}</div>
                     <div className=''>{game}</div>
@@ -97,7 +87,7 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, curren
                     </div>
                     <div className=''>{`Payout: ${currencyFormatter.format(payout)}`}</div>
                 </div>  
-            </CalculatorSummary>       
+            </CalculatorSummary>        */}
 
 
 
@@ -269,6 +259,12 @@ const WagerSummary = styled.div`
         & .l-grid__item {
             & p, h3 { text-align: center };
         }
+    }
+`;
+
+const WagerItemList = styled.div`
+    & > div {
+        margin-bottom: 8px;
     }
 `;
 
