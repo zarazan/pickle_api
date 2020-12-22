@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import pickleApi from '../../services/pickle_api';
 import { usePoolDispatch, usePoolState } from '../../contexts/PoolContext';
 import { currencyFormatter } from '../../utilities/helpers';
+import MOCK_FIXTURES from '../../constants/mockFixtures';
 
 import BetCard from './BetCard';
 import EnterWager from './EnterWager';
@@ -25,18 +26,24 @@ const GameOdds = () => {
     const [errorMessage, setErrorMessage] = useState(''); // used for displaying errors
 
     const [betCount, setBetCount] = useState(0); // counter for bets made
-    const [currentBet, setCurrentBet] = useState(null); // holds the current bet for sending bet info to enter wager
-    const [fixtures, setFixtures] = useState([]); // array of pool fixtures
+    const [currentBet, setCurrentBet] = useState([]); // holds the current bet for sending bet info to enter wager
+    const [fixtures, setFixtures] = useState([MOCK_FIXTURES]); // array of pool fixtures // TODO: default to empty array
     const [currentFixture, setCurrentFixture] = useState(null); // holds the current fixture for sending game info to enter wager
     const [toggleBetSlip, setToggleBetSlip] = useState(false); // used for toggling the bet slip entry form
 
+    // parlay bet state
+    const [betMode, setBetMode] = useState('SINGLE'); // defines the type of bet: single or accumulate
+
+    /** Scroll the window to the top of the page to avoid jarring the user. */
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
 
+    /** Fetch all fixtures for the pool and add them to state. */
     useEffect(() => {
-        setState('loading');
-        fetchFixtures(poolId);
+        setState('loading'); // TODO undo comment
+        // fetchFixtures(poolId); // TODO undo comment
+        setState('finished');
     }, []);
 
     return (
@@ -74,6 +81,8 @@ const GameOdds = () => {
                                             placeBet={placeBet}
                                             closeBetSlip={closeBetSlip}
                                             errors={errorMessage}
+                                            currentMode={betMode}
+                                            toggleBetMode={toggleBetMode}
                                         />
                                     :
                                         <>
@@ -97,8 +106,7 @@ const GameOdds = () => {
                                                 </div>
                                             </BetSlipTotals>
                                             <BetCardList className='game-odds-cardlist'>
-                                                {(fixtures || [])
-                                                    .map((fixture, index) => (
+                                                {fixtures.map((fixture, index) => (
                                                         <BetCard 
                                                             key={index}
                                                             fixtureId={fixture.id}
@@ -118,19 +126,25 @@ const GameOdds = () => {
                                             </BetCardList>
                                         </>
                                     }
-
                                 </div>
                             </GameOddsWrapper>
                 }
         </>
     );
 
+    /** toggleBetMode: Toggles the betMode and closes the enter wager display. */
+    function toggleBetMode() {
+        setToggleBetSlip(!toggleBetSlip); // close the bet slip wager form
+        setBetMode('ACCUMULATE'); // toggle the betMode state
+    };
+
     /** closeBetSlip: Toggle the bet slip display and clears the current fixture and bet from state. */
     function closeBetSlip() {
-        setToggleBetSlip(!toggleBetSlip);
-        setCurrentFixture(null);
-        setCurrentBet(null);
-    }
+        setToggleBetSlip(!toggleBetSlip); // close the bet slip wager form
+        setCurrentFixture(null); // clear the current fixture
+        setCurrentBet(null); // clear the current bet
+        setBetMode('SINGLE'); // reset the bet mode
+    };
 
     /** selectBet: Adds the selected fixture and bet to state and opens the bet slip wager form. */
     function selectBet(fixtureId, betId) {
@@ -139,7 +153,7 @@ const GameOdds = () => {
         const [ betObject ] = fixtureObject.odds.filter(odd => odd.id === betId);
         setCurrentBet(betObject);
         setToggleBetSlip(!toggleBetSlip);
-    }
+    };
 
     /** fetchFixtures: Fetches the fixtures for the pool and add them to state. */
     function fetchFixtures(id) {
@@ -155,7 +169,7 @@ const GameOdds = () => {
                 setErrorMessage(error.toString());
                 setState('error');
             });
-    }
+    };
 
     /** placeBet: Sends Pickle API request for placing a bet.**/
     function placeBet(betId, betAmount) {
@@ -178,7 +192,7 @@ const GameOdds = () => {
                 setErrorMessage(error.toString());
                 setState('error');
             });
-    }
+    };
 };
 
 export default GameOdds; 

@@ -3,22 +3,18 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 import { usePoolState } from '../../contexts/PoolContext';
-import { decToAmerican, calculatePayout } from '../../utilities/helpers';
+import { decToAmerican, calculatePayout, currencyFormatter } from '../../utilities/helpers';
 
-const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip }) => { 
-    const [wager, setWager] = useState('0');
-    const [payout, setPayout] = useState(0);
-    const [ratio, setRatio] = useState(null);
-    const [game, setGame] = useState('');
+import WagerItem from './WagerItem';
 
+const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, currentMode, toggleBetMode }) => { 
     const { bank } = usePoolState();
-
-    const formatter = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-        minimumFractionDigits: 2
-      });
-
+    const [game, setGame] = useState(''); // The name of the fixture (game) in the format {awayTeam} vs {homeTeam}.
+    const [ratio, setRatio] = useState(null); // The converted odd ratio.
+    const [wager, setWager] = useState('0'); // The wager in dollars for the current bet.
+    const [payout, setPayout] = useState(0); // The payout in dollars for the current bet.
+    const [showFullCalculator, setShowFullCalculator] = useState(false); // Bool to indicate whether to show the full calculator.
+    
     const betHash = {
         'money_line': 'Money Line',
         'spread': 'Point Spread',
@@ -26,26 +22,50 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip }) => {
         'under': 'Total Points',
     };
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
+    /** Scroll the window to the top of the page to avoid jarring the user. */
+    useEffect(() => window.scrollTo(0, 0), []);
 
-    useEffect(() => (
-        handlePayout()
-    ), [wager]);
+    /** Calculate the payout whenever the wager changes. */
+    useEffect(() => handlePayout(), [wager]);
 
-    useEffect(() => (
-        setRatio(decToAmerican(currentBet.ratio))
-    ), []);
+    /** Convert the ratio to american odds on component mount. */
+    useEffect(() => setRatio(decToAmerican(currentBet.ratio)), []);
 
-    useEffect(() => (
-        setGameName()
-    ), []);
+    /** Create the game name format for the wager entry form. */
+    useEffect(() => setGameName(), []);
 
     return (
-        <EnterWagerWrapper className='enter-wager-container'>   
-            <CalculatorSummary className='wager-row summary'>
-                <div className='enter-wager__bet-summary summary-item'>
+        <EnterWagerWrapper className='c-wager-entry l-column-flex'>
+
+            <WagerSummary className='l-column-flex l-column-flex__item'>
+                <div className='l-grid'>
+                    <div className='l-grid__item l-column-flex'>
+                        <p className='c-wager-entry__label'>{'Odds'}</p>
+                        <h3 className='c-wager-entry__text'>{ratio}</h3>
+                    </div>
+                    <div className='l-grid__item l-column-flex'>
+                        <p className='c-wager-entry__label'>{'Wager'}</p>
+                        <h3 className='c-wager-entry__text'>{currencyFormatter.format(wager)}</h3>
+                    </div>
+                    <div className='l-grid__item l-column-flex'>
+                        <p className='c-wager-entry__label'>{'Payout'}</p>
+                        <h3 className='c-wager-entry__text'>{currencyFormatter.format(payout)}</h3>
+                    </div>
+                </div>
+            </WagerSummary>
+
+            <div className='l-column-flex l-column-flex__item'>
+                <WagerItem 
+                    key={1}
+                    teamName={currentBet.teamName}
+                    betType={betHash[currentBet.type]}
+                    metric={currentBet.metric}
+                    ratio={currentBet.american}
+                />
+            </div>
+
+            <CalculatorSummary className='l-column-flex__item'>
+                <div className='c-wager-entry__summary l-grid__item'>
                     <div className=''>
                         <span>{currentBet.teamName} </span>
                         <span>
@@ -62,8 +82,9 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip }) => {
                     </div>
                     <div className=''>{betHash[currentBet.type]}</div>
                     <div className=''>{game}</div>
-                </div>    
-                <div className='enter-wager__bet-total summary-item'>
+                </div> 
+
+                <div className='c-wagerform__economics l-grid__item'>
                     <div className=''>
                         {ratio > 0
                             ? `+${ratio}`
@@ -74,10 +95,13 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip }) => {
                         <span>$</span>
                         <input disabled type='text' value={wager === '' ? 0 : `${parseFloat(wager).toFixed(2)}`} onChange={() => calculatePayout()}/>
                     </div>
-                    <div className=''>{`Payout: ${formatter.format(payout)}`}</div>
-                </div>    
-            </CalculatorSummary>            
-            <Calculator className='wager-row calculator'>
+                    <div className=''>{`Payout: ${currencyFormatter.format(payout)}`}</div>
+                </div>  
+            </CalculatorSummary>       
+
+
+
+            <Calculator className='l-grid__item calculator'>
                 <CalculatorRow>
                     <CalculatorButton className='btn calculator__button' name='1' onClick={e => addNumber(e.target.name)}>+$1</CalculatorButton>
                     <CalculatorButton className='btn calculator__button' name='5' onClick={e => addNumber(e.target.name)}>+$5</CalculatorButton>
@@ -103,8 +127,9 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip }) => {
                     <CalculatorButton className='btn calculator__button' name='0' onClick={e => handleInput(e.target.name)}>0</CalculatorButton>
                     <CalculatorButton className='btn calculator__button' onClick={() => clearWager()}>Clear</CalculatorButton>
                 </CalculatorRow>
-            </Calculator>            
-            <CalculatorFooter className='wager-row complete-cancel'>
+            </Calculator>     
+
+            <CalculatorFooter className='l-grid__item complete-cancel'>
                 <CalculatorButton
                     className={`btn complete complete-cancel__button ${parseFloat(wager) > bank && 'overdraft'}`}
                     disabled={wager && wager !== '0' && parseFloat(wager) <= bank ? false : true}
@@ -172,6 +197,11 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip }) => {
         setPayout(calculatePayout(parseFloat(wager), ratio))
     };
 
+    /** toggleFullCalculator: Toggles the full calculator display. */
+    function toggleFullCalculator() {
+        setShowFullCalculator(!showFullCalculator);
+    }
+
     /** clearWager: Resets the wager entry and payout state. */
     function clearWager() {
         setWager('0');
@@ -184,27 +214,74 @@ EnterWager.propTypes = {
     currentBet: PropTypes.object.isRequired, 
     placeBet: PropTypes.func.isRequired, 
     closeBetSlip: PropTypes.func.isRequired, 
+    currentMode: PropTypes.string.isRequired,
+    toggleBetMode: PropTypes.func.isRequired, 
 };
 
 export default EnterWager;
 
 const EnterWagerWrapper = styled.div`
-    display: grid;
-    grid-template-rows: 4rem min-content 4rem;
+    display: flex;
+    flex-flow: column nowrap;
+    box-sizing: border-box;
     height: 100%;
     width: 100%;
-    box-sizing: border-box;
+
+    & div.l-grid {
+        display: grid;
+    }
+
+    & div[class~='l-column-flex'] {
+        display: flex;
+        flex-flow: column nowrap;
+    }
+
+    & div[class~='l-row-flex'] {
+        display: flex;
+        flex-flow: row nowrap;
+    }
+
+    & h3.c-wager-entry__heading {
+        font-family: 'Inter', 'Sans Serif';
+        font-size: 0.7em;
+        color: orange;
+    }
+
+    & p.c-wager-entry__label {
+        font-family: 'Inter', 'Sans Serif';
+        font-size: 0.7em;
+        color: red;
+        margin: 0;
+    }
+
+    & h3.c-wager-entry__text {
+        font-family: 'Inter', 'Sans Serif';
+        font-size: 0.7em;
+        color: green;
+        margin: 0;
+    }
+`;
+
+const WagerSummary = styled.div`
+    div.l-grid {
+        grid-template-columns: repeat(3, 1fr);
+
+        & .l-grid__item {
+            & p, h3 { text-align: center };
+        }
+    }
 `;
 
 const CalculatorSummary = styled.div`
     display: grid;
     grid-template-columns: 66% 33%;
-    font-family: 'Inter', 'Sans Serif';
-    font-size: 0.7em;
     height: 100%;
     margin-bottom: 2em;
+    
+    font-family: 'Inter', 'Sans Serif';
+    font-size: 0.7em;
 
-    .summary-item {
+    .l-grid__item {
         display: flex;
         flex-flow: column nowrap;
 
@@ -214,7 +291,7 @@ const CalculatorSummary = styled.div`
         }
     }
 
-    .enter-wager__bet-total {
+    .c-wagerform__economics {
         align-items: flex-end;
         font-family: 'Inter', 'Sans Serif';
         font-size: 0.7rem;
