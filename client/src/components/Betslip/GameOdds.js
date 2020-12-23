@@ -35,8 +35,6 @@ const GameOdds = () => {
     const [betMode, setBetMode] = useState('SINGLE'); // defines the type of bet: single or accumulate
     const [betAccumulator, setBetAccumulator] = useState([]); // { fixture: ID, bet: ID }
 
-    const TEST_DATA = [ 1, 2, 5 ];
-
     /** Scroll the window to the top of the page to avoid jarring the user. */
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -164,7 +162,7 @@ const GameOdds = () => {
 
     /**
      * updateSelectedBets: Updates the selected bets in state.
-     * @param {string} betId
+     * @param {string} betId - The bet ID to add or remove out of the bet cache.
      */
     function updateSelectedBets(betId) {
         let currentBets = [...betAccumulator];
@@ -189,7 +187,10 @@ const GameOdds = () => {
     }
 
 
-    /** fetchFixtures: Fetches the fixtures for the pool and add them to state. */
+    /**
+     * fetchFixtures: Fetches the fixtures for the pool and add them to state.
+     * @param {string} id - The fixture ID to send in the API request.
+     */
     function fetchFixtures(id) {
         pickleApi.getFixtures(id)
             .then(data => {
@@ -205,7 +206,11 @@ const GameOdds = () => {
             });
     }
 
-    /** placeBet: Sends Pickle API request for placing a bet.**/
+    /**
+     * placeBet: Sends Pickle API request for placing a bet.
+     * @param {*} betId - The bet ID to send in the API request.
+     * @param {*} betAmount - The bet amount to send in the API request.
+     */
     function placeBet(betId, betAmount) {
         // create response body
         let resp = {};

@@ -8,7 +8,7 @@ import BetButton from '../../stories/BetButton';
 import BetButtonOverUnder from '../../stories/BetButtonOverUnder';
 import { ReactComponent as Lock } from '../../icons/padlock.svg';
 
-const BetCard = ({ fixture, fixtureId, locked, homeTeamName, homeTeamId, homeScore, awayTeamName, awayTeamId, awayScore, odds, gameDate, selectBet, status }) => {
+const BetCard = ({ fixture, odds, selectedBets, selectBet }) => {
     const baseOddsTemplate = { // Base object template for seeding home and away odds state
         'pointSpread': { 'betId': null, 'metric': null, 'ratio': null }, 
         'moneyLine': { 'betId': null, 'metric': null, 'ratio': null }, 
@@ -47,58 +47,74 @@ const BetCard = ({ fixture, fixtureId, locked, homeTeamName, homeTeamId, homeSco
                     :
                         <>
                             <TeamAndOddsRow className='l-grid l-column-flex__item'>
-                                <h4 className='l-grid-item c-bet-card__team-home'>{fixture.homeTeamName}</h4>
-                                <OddsContainer className='l-grid l-grid-item'>
-                                    <BetButton 
-                                        key={'homeSpread'}
-                                        className='btn c-bet-card__bet-button'
-                                        metric={homeOdds.pointSpread.metric}
-                                        ratio={decToAmerican(homeOdds.pointSpread.ratio)}
-                                        callback={() => selectBet(fixture.id, homeOdds.pointSpread.betId)}
-                                    />
-                                    <BetButtonOverUnder 
-                                        key={'homeTotal'}
-                                        className='btn c-bet-card__bet-button'
-                                        whichSpreadType={'over'}
-                                        metric={homeOdds.totalPoints.metric}
-                                        ratio={decToAmerican(homeOdds.totalPoints.ratio)}
-                                        callback={() => selectBet(fixture.id, homeOdds.totalPoints.betId)}
-                                    />
-                                    <BetButton 
-                                        key={'homeMoney'}
-                                        className='btn c-bet-card__bet-button'
-                                        metric={homeOdds.moneyLine.metric}
-                                        ratio={decToAmerican(homeOdds.moneyLine.ratio)}
-                                        callback={() => selectBet(fixture.id, homeOdds.moneyLine.betId)}
-                                    />
+                                <h4 className='l-grid__item c-bet-card__team-home'>{fixture.homeTeamName}</h4>
+                                <OddsContainer className='l-grid l-grid__item'>
+
+                                    <SelectableBet className={`l-row-flex l-grid__item${selectedBets.indexOf(homeOdds.pointSpread.betId) > -1 ? '--selected' : ''}`}>
+                                        <BetButton 
+                                            key={'homeSpread'}
+                                            className='btn c-bet-card__bet-button'
+                                            metric={homeOdds.pointSpread.metric}
+                                            ratio={decToAmerican(homeOdds.pointSpread.ratio)}
+                                            callback={() => selectBet(fixture.id, homeOdds.pointSpread.betId)}
+                                        />
+                                    </SelectableBet>
+                                    <SelectableBet className={`l-row-flex l-grid__item${selectedBets.indexOf(homeOdds.totalPoints.betId) > -1 ? '--selected' : ''}`}>
+                                        <BetButtonOverUnder 
+                                            key={'homeTotal'}
+                                            className='btn c-bet-card__bet-button'
+                                            whichSpreadType={'over'}
+                                            metric={homeOdds.totalPoints.metric}
+                                            ratio={decToAmerican(homeOdds.totalPoints.ratio)}
+                                            callback={() => selectBet(fixture.id, homeOdds.totalPoints.betId)}
+                                        />
+                                    </SelectableBet>
+                                    <SelectableBet className={`l-row-flex l-grid__item${selectedBets.indexOf(homeOdds.moneyLine.betId) > -1 ? '--selected' : ''}`}>
+                                        <BetButton 
+                                            key={'homeMoney'}
+                                            className='btn c-bet-card__bet-button'
+                                            metric={homeOdds.moneyLine.metric}
+                                            ratio={decToAmerican(homeOdds.moneyLine.ratio)}
+                                            callback={() => selectBet(fixture.id, homeOdds.moneyLine.betId)}
+                                        />
+                                    </SelectableBet>
+
                                 </OddsContainer>
                             </TeamAndOddsRow>
 
                             <TeamAndOddsRow className='l-grid l-column-flex__item'>
-                                <h4 className='l-grid-item c-bet-card__team-home'>{fixture.awayTeamName}</h4>
-                                <OddsContainer className='l-grid l-grid-item'>
-                                    <BetButton 
-                                        key={'awaySpread'}
-                                        className='btn c-bet-card__bet-button'
-                                        metric={awayOdds.pointSpread.metric}
-                                        ratio={decToAmerican(awayOdds.pointSpread.ratio)}
-                                        callback={() => selectBet(fixture.id, awayOdds.pointSpread.betId)}
-                                    />
-                                    <BetButtonOverUnder 
-                                        key={'awayTotal'}
-                                        className='btn c-bet-card__bet-button'
-                                        whichSpreadType={'under'}
-                                        metric={awayOdds.totalPoints.metric}
-                                        ratio={decToAmerican(awayOdds.totalPoints.ratio)}
-                                        callback={() => selectBet(fixture.id, awayOdds.totalPoints.betId)}
-                                    />
-                                    <BetButton 
-                                        key={'awayMoney'}
-                                        className='btn c-bet-card__bet-button'
-                                        metric={awayOdds.moneyLine.metric}
-                                        ratio={decToAmerican(awayOdds.moneyLine.ratio)}
-                                        callback={() => selectBet(fixture.id, awayOdds.moneyLine.betId)}
-                                    />
+                                <h4 className='l-grid__item c-bet-card__team-home'>{fixture.awayTeamName}</h4>
+                                <OddsContainer className='l-grid l-grid__item'>
+
+                                    <SelectableBet className={`l-row-flex l-grid__item${selectedBets.indexOf(awayOdds.pointSpread.betId) > -1 ? '--selected' : ''}`}>
+                                        <BetButton 
+                                            key={'awaySpread'}
+                                            className='btn c-bet-card__bet-button'
+                                            metric={awayOdds.pointSpread.metric}
+                                            ratio={decToAmerican(awayOdds.pointSpread.ratio)}
+                                            callback={() => selectBet(fixture.id, awayOdds.pointSpread.betId)}
+                                        />
+                                    </SelectableBet>
+                                    <SelectableBet className={`l-row-flex l-grid__item${selectedBets.indexOf(awayOdds.totalPoints.betId) > -1 ? '--selected' : ''}`}>
+                                        <BetButtonOverUnder 
+                                            key={'awayTotal'}
+                                            className='btn c-bet-card__bet-button'
+                                            whichSpreadType={'under'}
+                                            metric={awayOdds.totalPoints.metric}
+                                            ratio={decToAmerican(awayOdds.totalPoints.ratio)}
+                                            callback={() => selectBet(fixture.id, awayOdds.totalPoints.betId)}
+                                        />
+                                    </SelectableBet>
+                                    <SelectableBet className={`l-row-flex l-grid__item${selectedBets.indexOf(awayOdds.moneyLine.betId) > -1 ? '--selected' : ''}`}>
+                                        <BetButton 
+                                            key={'awayMoney'}
+                                            className='btn c-bet-card__bet-button'
+                                            metric={awayOdds.moneyLine.metric}
+                                            ratio={decToAmerican(awayOdds.moneyLine.ratio)}
+                                            callback={() => selectBet(fixture.id, awayOdds.moneyLine.betId)}
+                                        />
+                                    </SelectableBet>
+
                                 </OddsContainer>
                             </TeamAndOddsRow>
                         </>
@@ -108,9 +124,9 @@ const BetCard = ({ fixture, fixtureId, locked, homeTeamName, homeTeamId, homeSco
 
     /**
      * createSeedData: Filters the fixture data and returns the neccessary shape for local bet state.
-     * @param {Object} oddsData - The entire odds data object for a particular fixture.
-     * @param {*} teamType - Designation of the team; either home or away.
-     * @param {*} teamId - The ID for the team.
+     * @param {object} oddsData - The entire odds data object for a particular fixture.
+     * @param {string} teamType - Designation of the team; either home or away.
+     * @param {string} teamId - The ID for the team.
      */
     function createSeedData(oddsData, teamType, teamId) {
         let newState = {};
@@ -261,4 +277,20 @@ const TeamAndOddsRow = styled.div`
 const OddsContainer = styled.div`
     grid-template-columns: repeat(3, 1fr);
     grid-column-gap: 0.2em;
+`;
+
+const SelectableBet = styled.div`
+    &.l-grid__item--selected {
+
+        & div.c-bet-card__bet-button {
+            &  > button {
+                background: orange;
+            }
+        }
+    }
+
+    & .c-bet-card__bet-button {
+        height: 100%;
+        width: 100%;
+    }
 `;
