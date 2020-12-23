@@ -8,6 +8,7 @@ import { decToAmerican, calculatePayout, currencyFormatter, formatBetMetric } fr
 import WagerItem from './WagerItem';
 import { ReactComponent as Show } from '../../icons/show.svg';
 import { ReactComponent as Hide } from '../../icons/hide.svg';
+import { ReactComponent as Plus } from '../../icons/plus.svg';
 
 const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, currentMode, toggleBetMode }) => { 
     const { bank } = usePoolState();
@@ -56,6 +57,16 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, curren
                     </div>
                 </div>
             </WagerSummary>
+
+            <div className='l-row-flex l-column-flex__item'>
+                <CalculatorButton
+                    className='l-row-flex__item btn c-wager-entry__add-more-button'
+                    onClick={() => toggleBetMode()}
+                >
+                    <Plus />
+                    <p>Add More Bets</p>
+                </CalculatorButton>
+            </div>
 
             <WagerItemList className='l-column-flex l-column-flex__item'>
                 <WagerItem 
@@ -297,7 +308,7 @@ const Calculator3Row = styled.div`
 
 const CalculatorButton = styled.button`
     box-sizing: border-box;
-    padding: 0.5em 0 0.5em 0;
+    padding: 10px 0 10px 0;
 
     background: #FFFFFF;
     border: none;
@@ -321,6 +332,29 @@ const CalculatorButton = styled.button`
             margin-right: 12px;
             height: 12px;
             width: 12px;
+        }
+    }
+
+    &.c-wager-entry__add-more-button {
+        display: flex;
+        align-items: center;
+        align-self: flex-end;
+
+        padding: 6px;
+        
+        font-size: 10px;
+        color: #53DFB5;
+        box-shadow: none;
+
+        & p {
+            margin: 0;
+        }
+
+        & svg {
+            height: 12px;
+            width: 12px;
+            margin-right: 12px;
+            fill: #53DFB5;
         }
     }
 
