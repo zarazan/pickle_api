@@ -6,6 +6,8 @@ import { usePoolState } from '../../contexts/PoolContext';
 import { decToAmerican, calculatePayout, currencyFormatter, formatBetMetric } from '../../utilities/helpers';
 
 import WagerItem from './WagerItem';
+import { ReactComponent as Show } from '../../icons/show.svg';
+import { ReactComponent as Hide } from '../../icons/hide.svg';
 
 const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, currentMode, toggleBetMode }) => { 
     const { bank } = usePoolState();
@@ -41,15 +43,15 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, curren
             <WagerSummary className='l-column-flex l-column-flex__item'>
                 <div className='l-grid'>
                     <div className='l-grid__item l-column-flex'>
-                        <p className='c-wager-entry__label'>{'Odds'}</p>
+                        <p className='c-wager-entry__label'>{'ODDS'}</p>
                         <h3 className='c-wager-entry__text'>{ratio}</h3>
                     </div>
                     <div className='l-grid__item l-column-flex'>
-                        <p className='c-wager-entry__label'>{'Wager'}</p>
+                        <p className='c-wager-entry__label'>{'WAGER'}</p>
                         <h3 className='c-wager-entry__text'>{currencyFormatter.format(wager)}</h3>
                     </div>
                     <div className='l-grid__item l-column-flex'>
-                        <p className='c-wager-entry__label'>{'Payout'}</p>
+                        <p className='c-wager-entry__label'>{'PAYOUT'}</p>
                         <h3 className='c-wager-entry__text'>{currencyFormatter.format(payout)}</h3>
                     </div>
                 </div>
@@ -73,7 +75,13 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, curren
             </Calculator4Row>
 
             <div className='l-column-flex l-column-flex__item'>
-                <button onClick={() => toggleFullCalculator()}>{showFullCalculator ? 'Hide Full Calculator' : 'Show Full Calculator'}</button>
+                <CalculatorButton
+                    className='l-column-flex__item btn c-wager-entry__show-hide-button'
+                    onClick={() => toggleFullCalculator()}
+                >
+                    {showFullCalculator ? <Hide /> : <Show />}
+                    {showFullCalculator ? 'Hide Full Calculator' : 'Show Full Calculator'}
+                </CalculatorButton>
             </div>
 
             {showFullCalculator
@@ -227,24 +235,32 @@ const EnterWagerWrapper = styled.div`
         margin-bottom: 12px;
     }
 
+    & > div[class~='l-column-flex__item']:first-of-type {
+        margin-top: 16px;
+    }
+
     & p.c-wager-entry__label {
         font-family: 'Inter', 'Sans Serif';
-        font-size: 0.7em;
-        color: red;
+        font-size: 12px;
+        font-weight: 400;
+        letter-spacing: .0625rem;
+        color: #8b8c8f;
         margin: 0;
     }
 
     & h3.c-wager-entry__text {
         font-family: 'Inter', 'Sans Serif';
-        font-size: 0.7em;
-        color: green;
-        margin: 0;
+        font-size: 20px;
+        font-weight: 700;
+        color: black;
+        margin: 6px 0 0 0;
     }
 `;
 
 const WagerSummary = styled.div`
     div.l-grid {
         grid-template-columns: repeat(3, 1fr);
+        column-gap: 16px;
 
         & .l-grid__item {
             & p, h3 { text-align: center };
@@ -283,9 +299,10 @@ const CalculatorButton = styled.button`
     box-sizing: border-box;
     padding: 0.5em 0 0.5em 0;
 
-    background: #F2F2F2;
+    background: #FFFFFF;
     border: none;
     border-radius: 4px;
+    box-shadow: 0px 1px 2px 1px #DDD;
     font-family: 'Inter', 'Sans Serif';
     font-size: 14px;
     outline: none;
@@ -293,6 +310,18 @@ const CalculatorButton = styled.button`
     &:active {
         background: #8fd6a9;
         color: white;
+    }
+
+    &.c-wager-entry__show-hide-button {
+        display: flex;
+        justify-content: center;
+        font-size: 10px;
+
+        & svg {
+            margin-right: 12px;
+            height: 12px;
+            width: 12px;
+        }
     }
 
     &.c-wager-entry__wager-button {

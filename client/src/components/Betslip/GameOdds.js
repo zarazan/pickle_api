@@ -200,7 +200,7 @@ export default GameOdds;
 const GameOddsWrapper = styled.section`
     display: grid;
     grid-template-rows: min-content 1fr;
-    grid-row-gap: 1rem;
+    row-gap: 12px;
     box-sizing: border-box;
 
     height: 100%;
@@ -250,7 +250,7 @@ const Bankroll = styled.div`
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    margin: 1.5rem 0 1rem 0;
+    margin-top: 1.5rem;
 
     & h4 {
         margin: 0;
@@ -269,9 +269,9 @@ const Bankroll = styled.div`
     }
 
     & h2 {
-        margin: 0.7rem 0 0.3rem 0;
+        margin: 6px 0 6px 0;
         font-family: 'Poppins', 'Sans Serif';
-        font-size: 2.5rem;
+        font-size: 24pxrem;
         color: #53DFB5;
     }
 `;
