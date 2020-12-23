@@ -72,8 +72,8 @@ const ToggleButton = styled.button`
     font-family: 'Poppins', 'Sans Serif';
     font-size: 0.7rem;
 
-    background-color: #f2f2f2;
-    color: black;
+    background-color: #FFFFFF;
+    box-shadow: 0px 1px 2px 1px #DDD;
     border-radius: 0.2em;
     outline: none;
     border: none;

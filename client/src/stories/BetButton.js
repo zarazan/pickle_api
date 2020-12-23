@@ -6,7 +6,7 @@ const BetButton = ({ className, metric, ratio, callback }) => {
     const [selected, setSelected] = useState(false);
 
     return (
-        <Odd className={`${className} ${selected ? 'selected' : ''}`}>
+        <Odd className={`${className} ${selected ? '--selected' : ''}`}>
             <ToggleButton
                 onClick={toggleSelected}
             >
@@ -67,7 +67,8 @@ const ToggleButton = styled.button`
     font-family: 'Poppins', 'Sans Serif';
     font-size: 0.7rem;
 
-    background-color: #f2f2f2;
+    background-color: #FFFFFF;
+    box-shadow: 0px 1px 2px 1px #DDD;
     color: black;
     border-radius: 0.2em;
     outline: none;

@@ -174,9 +174,8 @@ const BetCardWrapper = styled.div`
     box-sizing: border-box;
     flex-flow: column nowrap;
     width: 100%;
-    padding: 6px;
+    padding: 9px;
 
-    background-color: white;
     border-radius: 0.2em;
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 3px 0px, rgba(60, 64, 67, 0.15) 0px 1px 2px 0px;
 
@@ -199,6 +198,10 @@ const BetCardWrapper = styled.div`
         flex-flow: row nowrap;
     }
 
+    & div[class~='l-column-flex__item']:first-of-type {
+        border-bottom: 1px solid #F2F2F2;
+    }
+
     & div[class~='l-column-flex__item']:not(:last-of-type) {
         margin-bottom: 8px;
     }
@@ -213,6 +216,10 @@ const BetCardWrapper = styled.div`
         font-size: 12px;
         font-weight: 300;
         margin: 0 0 6px 0;
+
+        &.c-bet-card__game-date {
+            color: #8b8c8f;
+        }
     }
 `;
 
