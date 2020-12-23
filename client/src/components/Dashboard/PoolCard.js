@@ -10,7 +10,7 @@ import { ReactComponent as Timer } from '../../icons/timer.svg';
 import { ReactComponent as Private } from '../../icons/padlock-filled.svg';
 import { ReactComponent as Public } from '../../icons/unlock-filled.svg';
 
-const PoolCard = ({ displayPool, index, name, startDate, sports, privacy, participants }) => {
+const PoolCard = ({ displayPool, index, name, startDate, endDate, sports, privacy, participants }) => {
     return (
         <CardWrapper className='pool-card'>
             <button className='pool-card__selector' onClick={() => displayPool(index)}>
@@ -31,7 +31,7 @@ const PoolCard = ({ displayPool, index, name, startDate, sports, privacy, partic
                     </RowBaseWrapper>
                     <RowBaseWrapper>
                         <Timer style={{ height: '.9rem', width: '.9rem', fill: '#8f8e8e' }}/>
-                        <span>{`${zuluToStringFormat(startDate)} deadline`}</span>
+                        <span>{`${zuluToStringFormat(startDate)} - ${zuluToStringFormat(endDate)}`}</span>
                     </RowBaseWrapper>
                 </CardContents>
             </button>

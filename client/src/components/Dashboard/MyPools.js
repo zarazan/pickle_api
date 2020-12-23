@@ -45,6 +45,7 @@ const MyPools = ({ displayPool }) => {
                                         amount={pool.bankroll}
                                         privacy={pool.private}
                                         startDate={pool.startDate}
+                                        endDate={pool.endDate}
                                         sports={pool.sports.length}
                                         participants={pool.userCount}
                                         displayPool={displayPool}
