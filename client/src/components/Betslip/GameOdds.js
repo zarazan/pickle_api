@@ -74,57 +74,73 @@ const GameOdds = () => {
                                 </div>
                                 <div className='game-odds-main'>
                                     {toggleBetSlip 
-                                    ?
-                                        <EnterWager
-                                            className='enter-wager-form'
-                                            currentBet={currentBet}
-                                            currentFixture={currentFixture}
-                                            placeBet={placeBet}
-                                            closeBetSlip={closeBetSlip}
-                                            errors={errorMessage}
-                                            currentMode={betMode}
-                                            toggleBetMode={toggleBetMode}
-                                        />
-                                    :
-                                        <>
-                                            <BetSlipTotals className='game-odds-totals'>
-                                                <div className='totals__bankroll'></div>
-                                                <div className='totals__headers'>
-                                                    <div className='headers__game header-label'>
-                                                        <h4>{'GAME'}</h4>
+                                        ?
+                                            <EnterWager
+                                                className='enter-wager-form'
+                                                currentBets={betAccumulator}
+                                                currentFixture={currentFixture}
+                                                placeBet={placeBet}
+                                                closeBetSlip={closeBetSlip}
+                                                errors={errorMessage}
+                                                currentMode={betMode}
+                                                toggleBetMode={toggleBetMode}
+                                                updateBetAccumulatorCache={updateBetAccumulatorCache}
+                                            />
+                                        :
+                                            <>
+                                                <BetSlipTotals className='game-odds-totals'>
+                                                    <div className='totals__bankroll'></div>
+                                                    <div className='totals__headers'>
+                                                        <div className='headers__game header-label'>
+                                                            <h4>{'GAME'}</h4>
+                                                        </div>
+                                                        <div className='headers__odd-labels'>
+                                                            <div className='headers__spread header-label'>
+                                                                <h4>{'POINT'}</h4><h4>{'SPREAD'}</h4>
+                                                            </div>
+                                                            <div className='headers__points header-label'>
+                                                                <h4>{'TOTAL'}</h4><h4>{'POINTS'}</h4>
+                                                            </div>
+                                                            <div className='headers__moneyline header-label'>
+                                                                <h4>{'MONEY'}</h4><h4>{'LINE'}</h4>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div className='headers__odd-labels'>
-                                                        <div className='headers__spread header-label'>
-                                                            <h4>{'POINT'}</h4><h4>{'SPREAD'}</h4>
-                                                        </div>
-                                                        <div className='headers__points header-label'>
-                                                            <h4>{'TOTAL'}</h4><h4>{'POINTS'}</h4>
-                                                        </div>
-                                                        <div className='headers__moneyline header-label'>
-                                                            <h4>{'MONEY'}</h4><h4>{'LINE'}</h4>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </BetSlipTotals>
-                                            <BetCardList className='game-odds-cardlist'>
-                                                {fixtures.map((fixture, index) => (
-                                                        <BetCard 
-                                                            key={index}
-                                                            fixture={fixture}
-                                                            odds={fixture.odds}
-                                                            selectedBets={betAccumulator}
-                                                            selectBet={selectBet}
-                                                        /> 
-                                                ))}
-                                            </BetCardList>
-                                        </>
-                                    }
+                                                </BetSlipTotals>
+                                                {betMode === 'ACCUMULATE'
+                                                    ?
+                                                        <>
+                                                            <AccumulatorBanner className='l-row-flex'>
+                                                                <h3 className='c-game-odds__accumulator-title'>{`${betAccumulator.length} Bet Slip`}</h3>
+                                                                <button onClick={() => handleAccumulatorViewBetSlip()}>View Bet Slip</button>
+                                                            </AccumulatorBanner>
+                                                        </>
+                                                    : null
+                                                }
+                                                <BetCardList className='game-odds-cardlist'>
+                                                    {fixtures.map((fixture, index) => (
+                                                            <BetCard 
+                                                                key={index}
+                                                                fixture={fixture}
+                                                                odds={fixture.odds}
+                                                                selectedBets={betAccumulator}
+                                                                selectBet={selectBet}
+                                                            /> 
+                                                    ))}
+                                                </BetCardList>
+                                            </>
+                                        }
                                 </div>
-                                <p>{betAccumulator.join('')}</p>
                             </GameOddsWrapper>
                 }
         </>
     );
+
+    /** handleAccumulatorViewBetSlip:  */
+    function handleAccumulatorViewBetSlip() {
+        // Show the beslip with all added bets
+        setToggleBetSlip(true); // Open the bet slip wager form.
+    }
 
     /** toggleBetMode: Toggles the betMode and closes the enter wager display. */
     function toggleBetMode() {
@@ -136,7 +152,6 @@ const GameOdds = () => {
     function closeBetSlip() {
         setToggleBetSlip(!toggleBetSlip); // close the bet slip wager form
         setCurrentFixture(null); // clear the current fixture
-        setCurrentBet(null); // clear the current bet
         setBetAccumulator([]);
         setBetMode('SINGLE'); // reset the bet mode
     };
@@ -152,40 +167,41 @@ const GameOdds = () => {
         setCurrentFixture(fixtureObject);
         // Get the bet object that was selected by the user and set it in state.
         const [ betObject ] = fixtureObject.odds.filter(odd => odd.id === betId);
-        // Set the current bet to pass through as props to the EnterWager component.
-        setCurrentBet(betObject);
-        
-        // Cache the selected bet
-        updateSelectedBets(betId);
-        setToggleBetSlip(!toggleBetSlip);
+
+        // Set the current bets to pass through as props to the EnterWager component.
+        updateBetAccumulatorCache(betObject);
+        // Don't toggle the Enter Wager form if we're in accumulating mode
+        if (betMode === 'SINGLE') {
+            setToggleBetSlip(!toggleBetSlip);
+        }
     }
 
     /**
-     * updateSelectedBets: Updates the selected bets in state.
-     * @param {string} betId - The bet ID to add or remove out of the bet cache.
+     * updateCurrentBetObjectCache: Updates the selected bet objects in state.
+     * @param {object} betObject - A bet object.
      */
-    function updateSelectedBets(betId) {
-        let currentBets = [...betAccumulator];
+    function updateBetAccumulatorCache(betObject) {
+        let oldBets = [...betAccumulator];
         let newBets;
 
+        // Find the index of the object if it exists
+        let indexToRemove = oldBets.findIndex(b => b.id === betObject.id);
         // Check to see if the id is already in the array; remove it if so; add it otherwise
-        if (currentBets.indexOf(betId) > -1) {
-            const indexToRemove = currentBets.indexOf(betId);
-
+        if (indexToRemove > -1) {
+            // Item is found at the first position
             if(indexToRemove === 0) {
-                newBets = currentBets.slice(1);
+                newBets = oldBets.slice(1);
+            // Item is found at some position other than the first
             } else {
-                // Remove the existing element
-                currentBets.splice(indexToRemove, 1);
-                newBets = currentBets;
+                oldBets.splice(indexToRemove, 1);
+                newBets = oldBets;
             }
             // State update
             setBetAccumulator([...newBets]); 
         } else {
-            setBetAccumulator([...betAccumulator, betId]);
+            setBetAccumulator([...betAccumulator, betObject]);
         }
     }
-
 
     /**
      * fetchFixtures: Fetches the fixtures for the pool and add them to state.
@@ -223,11 +239,10 @@ const GameOdds = () => {
                 setBetCount(betCount + 1);
                 placeWager(data.amount);
                 
-                setCurrentFixture(null); // Clear the current fixture
-                setCurrentBet(null); // Clear the current bet
-                setBetMode('SINGLE'); // Reset the bet mode
-                setBetAccumulator([]); // Reset the bet cache
-                setToggleBetSlip(false);
+                setCurrentFixture(null); // Clear the current fixture.
+                setBetMode('SINGLE'); // Reset the bet mode.
+                setBetAccumulator([]); // Reset the bet cache.
+                setToggleBetSlip(false); // Reset the enter wager form.
                 setState('finished');
             })
             .catch(error => {
@@ -248,6 +263,20 @@ const GameOddsWrapper = styled.section`
 
     height: 100%;
     margin: 1em 1em 0 1em;
+
+    & div.l-grid {
+        display: grid;
+    }
+
+    & div[class~='l-column-flex'] {
+        display: flex;
+        flex-flow: column nowrap;
+    }
+
+    & div[class~='l-row-flex'] {
+        display: flex;
+        flex-flow: row nowrap;
+    }
 
     & > div {
         display: flex;
@@ -367,5 +396,22 @@ const BetSlipTotals = styled.div`
                 align-items: center;
             }
         }
+    }
+`;
+
+const AccumulatorBanner = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #49DEB2;
+    color: white;
+    border-radius: 5px;
+    margin: 12px 0 12px 0;
+
+    & > h3 {
+        font-family: 'Inter', 'Sans Serif';
+        margin: 0;
+        font-size: 16px;
+        margin-right: 12px;
     }
 `;

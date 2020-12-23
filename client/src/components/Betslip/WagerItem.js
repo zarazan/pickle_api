@@ -2,18 +2,30 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components';
 
+import { formatBetMetric } from '../../utilities/helpers';
+
 import { ReactComponent as Cancel } from '../../icons/cancel.svg';
 
 function WagerItem(props) {
+    // A hash for formatting the bets for the user.
+    const betHash = {
+        'money_line': 'Money Line',
+        'spread': 'Point Spread',
+        'over': 'Total Points',
+        'under': 'Total Points',
+    };
+
     return (
         <WagerItemWrapper className='c-wager-item l-grid'>
             <div className='l-grid__item'>
-                <p className='c-wager-item__team-name-metric'>{`${props.teamName}  ${props.metric}`}</p>
-                <p className='c-wager-item__bet-type'>{`${props.betType} @ ${props.ratio}`}</p>
-                <p className='c-wager-item__game-name'>{props.gameName}</p>
+                <p className='c-wager-item__team-name-metric'>
+                    {`${props.bet.type === 'over' || props.bet.type === 'under' ? '' : props.bet.teamName} ${formatBetMetric(props.bet.type, props.bet.metric)}`}
+                </p>
+                <p className='c-wager-item__bet-type'>{`${betHash[props.bet.type]} @ ${props.bet.american}`}</p>
+                <p className='c-wager-item__game-name'>{props.bet.gameName}</p>
             </div>
             <div className='l-grid__item'>
-                <button className='btn c-wager-item__delete'>
+                <button className='btn c-wager-item__delete' onClick={() => props.handleBetRemoval(props.bet)}>
                     <Cancel />
                 </button>
             </div>
@@ -23,11 +35,8 @@ function WagerItem(props) {
 
 WagerItem.propTypes = {
     props: PropTypes.objectOf({
-        gameName: PropTypes.string,
-        teamName: PropTypes.string.isRequired,
-        betType: PropTypes.string.isRequired,
-        metric: PropTypes.string.isRequired,
-        ratio: PropTypes.string.isRequired,
+        bet: PropTypes.object.isRequired,
+        handleBetRemoval: PropTypes.func.isRequired,
     }),
 }
 

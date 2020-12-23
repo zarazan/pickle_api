@@ -10,20 +10,13 @@ import { ReactComponent as Show } from '../../icons/show.svg';
 import { ReactComponent as Hide } from '../../icons/hide.svg';
 import { ReactComponent as Plus } from '../../icons/plus.svg';
 
-const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, currentMode, toggleBetMode }) => { 
+const EnterWager = ({ currentFixture, currentBets, placeBet, closeBetSlip, currentMode, toggleBetMode, updateBetAccumulatorCache }) => { 
     const { bank } = usePoolState();
     const [game, setGame] = useState(''); // The name of the fixture (game) in the format {awayTeam} vs {homeTeam}.
+    const [odd, setOdd] = useState('');
     const [wager, setWager] = useState('0'); // The wager in dollars for the current bet.
     const [payout, setPayout] = useState(0); // The payout in dollars for the current bet.
     const [showFullCalculator, setShowFullCalculator] = useState(false); // Bool to indicate whether to show the full calculator.
-    
-    // A hash for formatting the bets for the user.
-    const betHash = {
-        'money_line': 'Money Line',
-        'spread': 'Point Spread',
-        'over': 'Total Points',
-        'under': 'Total Points',
-    };
 
     /** Scroll the window to the top of the page to avoid jarring the user. */
     useEffect(() => window.scrollTo(0, 0), []);
@@ -34,6 +27,9 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, curren
     /** Create the game name format for the wager entry form. */
     useEffect(() => setGameName(), []);
 
+    /** Use the single bet odd or create a cumulative if parlay or teaser. */
+    useEffect(() => handleOddCalculation(), [])
+
     return (
         <EnterWagerWrapper className='c-wager-entry l-column-flex'>
 
@@ -41,7 +37,7 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, curren
                 <div className='l-grid'>
                     <div className='l-grid__item l-column-flex'>
                         <p className='c-wager-entry__label'>{'ODDS'}</p>
-                        <h3 className='c-wager-entry__text'>{currentBet.american}</h3>
+                        <h3 className='c-wager-entry__text'>{odd}</h3>
                     </div>
                     <div className='l-grid__item l-column-flex'>
                         <p className='c-wager-entry__label'>{'WAGER'}</p>
@@ -65,13 +61,13 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, curren
             </div>
 
             <WagerItemList className='l-column-flex l-column-flex__item'>
-                <WagerItem 
-                    key={1}
-                    teamName={currentBet.type === 'over' || currentBet.type === 'under' ? '' : currentBet.teamName}
-                    betType={betHash[currentBet.type]}
-                    metric={formatBetMetric(currentBet.type, currentBet.metric)}
-                    ratio={currentBet.american > 0 ? `+${currentBet.american}` : currentBet.american}
-                />
+                {currentBets.map((bet, index) => (
+                    <WagerItem 
+                        key={index}
+                        bet={bet}
+                        handleBetRemoval={handleBetRemoval}
+                    />
+                 ))}
             </WagerItemList>
 
             <Calculator4Row className='l-grid l-column-flex__item'>
@@ -123,7 +119,7 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, curren
                 <WagerButton
                     className={`l-grid__item btn c-wager-entry__wager-button ${parseFloat(wager) > bank && 'overdraft'}`}
                     disabled={wager && wager !== '0' && parseFloat(wager) <= bank ? false : true}
-                    onClick={() => placeBet(currentBet.id, parseFloat(wager))}
+                    onClick={() => placeBet(currentBets.id, parseFloat(wager))}
                 >
                     {parseFloat(wager) <= bank ? `Enter Wager` : `Insufficient Funds!`}
                 </WagerButton>
@@ -141,7 +137,17 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, curren
     /** setGameName: Sets the name of the game for display. */
     function setGameName() {
         setGame(`${currentFixture.awayTeamName} vs. ${currentFixture.homeTeamName}`);
-    };
+    }
+
+    /** handlePayout: Handle payout based on the odds and entered wager. */
+    function handlePayout(){
+        setPayout(calculatePayout(parseFloat(wager), odd))
+    }
+
+    /** handleOddCalculation: Calculates a cumulative odd if more than 1 exists. */
+    function handleOddCalculation() {
+        setOdd(-250);
+    }
 
     /** handleInput: Appends a number on the wager entry. */
     function handleInput(value) {
@@ -173,7 +179,7 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, curren
                 setWager(currentWager);
             }
         }
-    };
+    }
 
     /** addNumber: Adds a number to the wager entry. */
     function addNumber(amount) {
@@ -181,32 +187,33 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, curren
         let currentAmount = parseFloat(amount);
         currentWager += currentAmount;
         setWager(currentWager.toString());
-    };
-
-    /** handlePayout: Handle payout based on the odds and entered wager. */
-    function handlePayout(){
-        setPayout(calculatePayout(parseFloat(wager), currentBet.american))
-    };
-
+    }
+    
     /** toggleFullCalculator: Toggles the full calculator display. */
     function toggleFullCalculator() {
         setShowFullCalculator(!showFullCalculator);
+    }
+
+    /** handleBetRemoval: Removes a bet from the selected bet cache. */
+    function handleBetRemoval(betObj) {
+        updateBetAccumulatorCache(betObj);
     }
 
     /** clearWager: Resets the wager entry and payout state. */
     function clearWager() {
         setWager('0');
         setPayout(0);
-    };
+    }
 };
 
 EnterWager.propTypes = {
     currentFixture: PropTypes.object.isRequired, 
-    currentBet: PropTypes.object.isRequired, 
+    currentBet: PropTypes.array.isRequired, 
     placeBet: PropTypes.func.isRequired, 
     closeBetSlip: PropTypes.func.isRequired, 
     currentMode: PropTypes.string.isRequired,
     toggleBetMode: PropTypes.func.isRequired, 
+    updateBetAccumulatorCache: PropTypes.func.isRequired, 
 };
 
 export default EnterWager;

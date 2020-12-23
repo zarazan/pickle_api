@@ -52,12 +52,6 @@ const Odd = styled.div`
     justify-content: center;
     align-items: center;
     padding: 0;
-
-    &.selected > button {
-        border: 2px solid #eaf3fd;
-        background-color: #2e8dfe;
-        color: white;
-    }
 `;
 
 const ToggleButton = styled.button`
@@ -67,7 +61,6 @@ const ToggleButton = styled.button`
     font-family: 'Poppins', 'Sans Serif';
     font-size: 0.7rem;
 
-    background-color: #FFFFFF;
     box-shadow: 0px 1px 2px 1px #DDD;
     color: black;
     border-radius: 0.2em;
