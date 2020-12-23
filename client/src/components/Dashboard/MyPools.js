@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import pickleApi from '../../services/pickle_api';
 
-import FullPageSpinner from '../FullPageSpinner';
+import FullPageSpinner from '../App/FullPageSpinner';
 import PoolCard from './PoolCard';
 
 const MyPools = ({ displayPool }) => {
@@ -45,6 +45,7 @@ const MyPools = ({ displayPool }) => {
                                         amount={pool.bankroll}
                                         privacy={pool.private}
                                         startDate={pool.startDate}
+                                        endDate={pool.endDate}
                                         sports={pool.sports.length}
                                         participants={pool.userCount}
                                         displayPool={displayPool}

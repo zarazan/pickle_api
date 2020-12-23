@@ -62,14 +62,16 @@ const WinnerCardWrapper = styled.div`
     & .winner-card__bankroll {
         margin: 0.7rem 0 0.2rem 0;
         font-family: 'Poppins', 'Sans Serif';
-        font-size: 1.25rem;
+        font-size: 16px;
         color: #202122;
+        text-align: center;
     }
 
     & .winner-card__name {
         font-family: 'Poppins', 'Sans Serif';
-        font-size: 0.7rem;
+        font-size: 12px;
         color: #202122;
         font-weight: 300;
+        text-align: center;
     }
 `;

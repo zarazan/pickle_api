@@ -10,7 +10,7 @@ import { ReactComponent as Timer } from '../../icons/timer.svg';
 import { ReactComponent as Private } from '../../icons/padlock-filled.svg';
 import { ReactComponent as Public } from '../../icons/unlock-filled.svg';
 
-const PoolCard = ({ displayPool, index, name, startDate, sports, privacy, participants }) => {
+const PoolCard = ({ displayPool, index, name, startDate, endDate, sports, privacy, participants }) => {
     return (
         <CardWrapper className='pool-card'>
             <button className='pool-card__selector' onClick={() => displayPool(index)}>
@@ -18,8 +18,8 @@ const PoolCard = ({ displayPool, index, name, startDate, sports, privacy, partic
                     <CardHeader>
                         <CardName>{name}</CardName>
                         {privacy 
-                            ? <Private style={{ height: '1.25rem', width: '1.25rem' }}/> 
-                            : <Public style={{ height: '1.25rem', width: '1.25rem' }}/>}
+                            ? <Private style={{ height: '16px', width: '16px' }}/> 
+                            : <Public style={{ height: '16px', width: '16px' }}/>}
                     </CardHeader>
                     <RowBaseWrapper>
                         <Group style={{ height: '1rem', width: '1rem', fill: '#8f8e8e' }}/>
@@ -31,7 +31,7 @@ const PoolCard = ({ displayPool, index, name, startDate, sports, privacy, partic
                     </RowBaseWrapper>
                     <RowBaseWrapper>
                         <Timer style={{ height: '.9rem', width: '.9rem', fill: '#8f8e8e' }}/>
-                        <span>{`${zuluToStringFormat(startDate)} deadline`}</span>
+                        <span>{`${zuluToStringFormat(startDate)} - ${zuluToStringFormat(endDate)}`}</span>
                     </RowBaseWrapper>
                 </CardContents>
             </button>
@@ -40,12 +40,19 @@ const PoolCard = ({ displayPool, index, name, startDate, sports, privacy, partic
 };
 
 PoolCard.propTypes = {
-    displayPool: PropTypes.func,
+    displayPool: PropTypes.func.isRequired,
     name: PropTypes.string.isRequired,
     privacy: PropTypes.bool,
     startDate: PropTypes.string,
-    sports: PropTypes.arrayOf(PropTypes.string),
-    participants: PropTypes.arrayOf(PropTypes.string),
+    sports: PropTypes.number,
+    participants: PropTypes.number,
+};
+
+PoolCard.defaultProps = {
+    privacy: 'private',
+    startDate: '2020-12-13T00:00:00.000Z',
+    sports: 1,
+    participants: 1,
 };
 
 export default PoolCard;
@@ -55,7 +62,7 @@ const CardWrapper = styled.div`
     box-sizing: border-box;
     border: 1px solid lightgrey;
     border-radius: 0.2rem;
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 3px 0px, rgba(60, 64, 67, 0.15) 0px 1px 2px 0px;
+    box-shadow: rgba(60,64,67,0.3) 0px 1px 2px 0px,rgba(60,64,67,0.15) 0px 2px 6px 2px;
 
     font-family: 'Inter', 'Sans Serif';
     

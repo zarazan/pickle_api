@@ -1,4 +1,4 @@
-@pool.fixtures.preload(:home_team, :away_team, :odds).map do |fixture|
+@pool.fixtures.order('start_time asc').preload(:home_team, :away_team, :odds).map do |fixture|
   fixture.as_json.merge({
     homeTeamName: fixture.home_team.name,
     awayTeamName: fixture.away_team.name,

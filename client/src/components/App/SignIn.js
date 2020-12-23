@@ -1,12 +1,12 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 
-import { UserContext } from '../contexts/UserContext';
+import { UserContext } from '../../contexts/UserContext';
 import { useHistory } from 'react-router-dom';
-import pickleApi from '../services/pickle_api';
-import useAuthHandler from '../hooks/AuthHandler';
+import pickleApi from '../../services/pickle_api';
+import useAuthHandler from '../../hooks/AuthHandler';
 
-import { ReactComponent as Logo } from '../icons/pickle.svg';
+import { ReactComponent as Logo } from '../../icons/pickle.svg';
 
 const SignIn = () => {
   const history = useHistory();

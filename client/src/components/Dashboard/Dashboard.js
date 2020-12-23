@@ -148,11 +148,25 @@ const CreatePoolButton = styled.button`
     box-sizing: border-box;
     padding: 1rem 0 1rem;
     width: 100%;
-    background: none;
-    border: 1px solid #8b8c8f;
+    background-color: #26CF9C;
+    box-shadow: 0px 2px 6px 1px #DDDDDD;
     border-radius: 0.2rem;
     outline: none;
+    border: none;
     font-family: 'Inter', 'Sans Serif';
     font-size: .8125rem;
-    color: #8fd6a9;
+    color: #f2f2f2;
+    font-weight: 500;
+
+    &:active {
+        & button {
+            background-color: #23BE8F;
+        }
+    }
+
+    &:hover {
+        & button {
+            background-color: #53DFB5;
+        }
+    }
 `;
