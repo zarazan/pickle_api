@@ -26,14 +26,16 @@ const GameOdds = () => {
     const [errorMessage, setErrorMessage] = useState(''); // used for displaying errors
 
     const [betCount, setBetCount] = useState(0); // counter for bets made
-    const [currentBet, setCurrentBet] = useState([]); // holds the current bet for sending bet info to enter wager
     const [fixtures, setFixtures] = useState([MOCK_FIXTURES]); // array of pool fixtures // TODO: default to empty array
     const [currentFixture, setCurrentFixture] = useState(null); // holds the current fixture for sending game info to enter wager
     const [toggleBetSlip, setToggleBetSlip] = useState(false); // used for toggling the bet slip entry form
-
+    
     // parlay bet state
+    const [currentBet, setCurrentBet] = useState([]); // holds the current bet for sending bet info to enter wager
     const [betMode, setBetMode] = useState('SINGLE'); // defines the type of bet: single or accumulate
     const [betAccumulator, setBetAccumulator] = useState([]); // { fixture: ID, bet: ID }
+
+    const TEST_DATA = [ 1, 2, 5 ];
 
     /** Scroll the window to the top of the page to avoid jarring the user. */
     useEffect(() => {
@@ -112,6 +114,7 @@ const GameOdds = () => {
                                                             key={index}
                                                             fixture={fixture}
                                                             odds={fixture.odds}
+                                                            selectedBets={betAccumulator}
                                                             selectBet={selectBet}
                                                         /> 
                                                 ))}
@@ -119,6 +122,7 @@ const GameOdds = () => {
                                         </>
                                     }
                                 </div>
+                                <p>{betAccumulator.join('')}</p>
                             </GameOddsWrapper>
                 }
         </>
@@ -135,6 +139,7 @@ const GameOdds = () => {
         setToggleBetSlip(!toggleBetSlip); // close the bet slip wager form
         setCurrentFixture(null); // clear the current fixture
         setCurrentBet(null); // clear the current bet
+        setBetAccumulator([]);
         setBetMode('SINGLE'); // reset the bet mode
     };
 
@@ -151,9 +156,38 @@ const GameOdds = () => {
         const [ betObject ] = fixtureObject.odds.filter(odd => odd.id === betId);
         // Set the current bet to pass through as props to the EnterWager component.
         setCurrentBet(betObject);
-        console.log(betObject.type);
+        
+        // Cache the selected bet
+        updateSelectedBets(betId);
         setToggleBetSlip(!toggleBetSlip);
-    };
+    }
+
+    /**
+     * updateSelectedBets: Updates the selected bets in state.
+     * @param {string} betId
+     */
+    function updateSelectedBets(betId) {
+        let currentBets = [...betAccumulator];
+        let newBets;
+
+        // Check to see if the id is already in the array; remove it if so; add it otherwise
+        if (currentBets.indexOf(betId) > -1) {
+            const indexToRemove = currentBets.indexOf(betId);
+
+            if(indexToRemove === 0) {
+                newBets = currentBets.slice(1);
+            } else {
+                // Remove the existing element
+                currentBets.splice(indexToRemove, 1);
+                newBets = currentBets;
+            }
+            // State update
+            setBetAccumulator([...newBets]); 
+        } else {
+            setBetAccumulator([...betAccumulator, betId]);
+        }
+    }
+
 
     /** fetchFixtures: Fetches the fixtures for the pool and add them to state. */
     function fetchFixtures(id) {
@@ -169,7 +203,7 @@ const GameOdds = () => {
                 setErrorMessage(error.toString());
                 setState('error');
             });
-    };
+    }
 
     /** placeBet: Sends Pickle API request for placing a bet.**/
     function placeBet(betId, betAmount) {
@@ -184,6 +218,10 @@ const GameOdds = () => {
                 setBetCount(betCount + 1);
                 placeWager(data.amount);
                 
+                setCurrentFixture(null); // Clear the current fixture
+                setCurrentBet(null); // Clear the current bet
+                setBetMode('SINGLE'); // Reset the bet mode
+                setBetAccumulator([]); // Reset the bet cache
                 setToggleBetSlip(false);
                 setState('finished');
             })
@@ -192,7 +230,7 @@ const GameOdds = () => {
                 setErrorMessage(error.toString());
                 setState('error');
             });
-    };
+    }
 };
 
 export default GameOdds; 
