@@ -125,8 +125,8 @@ const EnterWager = ({ currentFixture, currentBets, placeBet, closeBetSlip, toggl
             <CalculatorFooter className='l-grid l-column-flex__item'>
                 <WagerButton
                     className={`l-grid__item btn c-wager-entry__wager-button ${parseFloat(wager) > bank && 'overdraft'}`}
-                    disabled={wager && wager !== '0' && parseFloat(wager) <= bank ? false : true}
-                    onClick={() => placeBet(currentBets.id, parseFloat(wager))}
+                    // disabled={wager && wager !== '0' && parseFloat(wager) <= bank ? false : true}
+                    onClick={() => postBet()}
                 >
                     {parseFloat(wager) <= bank ? `Enter Wager` : `Insufficient Funds!`}
                 </WagerButton>
@@ -140,6 +140,15 @@ const EnterWager = ({ currentFixture, currentBets, placeBet, closeBetSlip, toggl
 
         </EnterWagerWrapper>
     );
+
+    /** postBet: Posts a bet. */
+    function postBet() {
+        // Gather the current bets and create an array of ids
+        const bets = [ ...currentBets ];
+        let betIds = bets.map(betObject => betObject.id);
+        // Send request to parent
+        placeBet(betIds, parseInt(wager));
+    }
 
     /** setGameName: Sets the name of the game for display. */
     function setGameName() {

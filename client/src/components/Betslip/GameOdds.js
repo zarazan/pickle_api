@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
 
 import pickleApi from '../../services/pickle_api';
 import { usePoolDispatch, usePoolState } from '../../contexts/PoolContext';
@@ -221,32 +220,33 @@ const GameOdds = () => {
 
     /**
      * placeBet: Sends Pickle API request for placing a bet.
-     * @param {*} betId - The bet ID to send in the API request.
-     * @param {*} betAmount - The bet amount to send in the API request.
+     * @param {array} betIds - The bet ID to send in the API request.
+     * @param {number} betAmount - The bet amount to send in the API request.
      */
-    function placeBet(betId, betAmount) {
+    function placeBet(betIds, betAmount) {
         // create response body
         let resp = {};
         resp.pool_id = poolId;
-        resp.odd_id = betId;
+        resp.odd_id = betIds;
         resp.amount = betAmount;
 
-        pickleApi.createBet(resp)
-            .then(data => {
-                setBetCount(betCount + 1);
-                placeWager(data.amount);
+        // TODO: uncomment to post data
+        // pickleApi.createBet(resp)
+        //     .then(data => {
+        //         setBetCount(betCount + 1);
+        //         placeWager(data.amount);
                 
-                setCurrentFixture(null); // Clear the current fixture.
-                setBetMode('SINGLE'); // Reset the bet mode.
-                setBetAccumulator([]); // Reset the bet cache.
-                setToggleBetSlip(false); // Reset the enter wager form.
-                setState('finished');
-            })
-            .catch(error => {
-                history.push('/sign-in');
-                setErrorMessage(error.toString());
-                setState('error');
-            });
+        //         setCurrentFixture(null); // Clear the current fixture.
+        //         setBetMode('SINGLE'); // Reset the bet mode.
+        //         setBetAccumulator([]); // Reset the bet cache.
+        //         setToggleBetSlip(false); // Reset the enter wager form.
+        //         setState('finished');
+        //     })
+        //     .catch(error => {
+        //         history.push('/sign-in');
+        //         setErrorMessage(error.toString());
+        //         setState('error');
+        //     });
     }
 };
 
