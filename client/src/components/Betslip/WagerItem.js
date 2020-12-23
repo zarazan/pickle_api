@@ -69,12 +69,10 @@ const WagerItemWrapper = styled.div`
     }
 
     & .btn[class~='c-wager-item__delete'] {
-        height: 70%;
-        width: 70%;
+        height: 100%;
+        width: 100%;
         border: none;
         background: none;
-        box-shadow: 0px 1px 2px 1px #DDD;
-        border-radius: 4px;
         outline: none;
 
         & svg {

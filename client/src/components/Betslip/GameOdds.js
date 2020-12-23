@@ -36,9 +36,7 @@ const GameOdds = () => {
     const [betAccumulator, setBetAccumulator] = useState([]); // { fixture: ID, bet: ID }
 
     /** Scroll the window to the top of the page to avoid jarring the user. */
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
+    useEffect(() => window.scrollTo(0, 0), []);
 
     /** Fetch all fixtures for the pool and add them to state. */
     useEffect(() => {
@@ -46,6 +44,9 @@ const GameOdds = () => {
         // fetchFixtures(poolId); // TODO: undo comment
         setState('finished'); // TODO: remove
     }, []);
+
+    // /** Check if the bet cache reaches 0 so we know to toggle the bet slip off. */
+    // useEffect(() => closeBetSlip() ,[betAccumulator])
 
     return (
         <>
@@ -82,7 +83,6 @@ const GameOdds = () => {
                                                 placeBet={placeBet}
                                                 closeBetSlip={closeBetSlip}
                                                 errors={errorMessage}
-                                                currentMode={betMode}
                                                 toggleBetMode={toggleBetMode}
                                                 updateBetAccumulatorCache={updateBetAccumulatorCache}
                                             />
@@ -112,7 +112,7 @@ const GameOdds = () => {
                                                         <>
                                                             <AccumulatorBanner className='l-row-flex'>
                                                                 <h3 className='c-game-odds__accumulator-title'>{`${betAccumulator.length} Bet Slip`}</h3>
-                                                                <button onClick={() => handleAccumulatorViewBetSlip()}>View Bet Slip</button>
+                                                                <button className='c-game-odds__accumulator-view-betslip' onClick={() => handleAccumulatorViewBetSlip()}>View Bet Slip</button>
                                                             </AccumulatorBanner>
                                                         </>
                                                     : null
@@ -150,10 +150,10 @@ const GameOdds = () => {
 
     /** closeBetSlip: Toggle the bet slip display and clears the current fixture and bet from state. */
     function closeBetSlip() {
-        setToggleBetSlip(!toggleBetSlip); // close the bet slip wager form
-        setCurrentFixture(null); // clear the current fixture
-        setBetAccumulator([]);
-        setBetMode('SINGLE'); // reset the bet mode
+        setToggleBetSlip(!toggleBetSlip); // Close the bet slip wager form.
+        setCurrentFixture(null); // Reset the current fixture.
+        setBetAccumulator([]); // Reset the bet accumulator.
+        setBetMode('SINGLE'); // Reset the bet mode.
     };
 
     /** 
@@ -404,14 +404,21 @@ const AccumulatorBanner = styled.div`
     justify-content: center;
     align-items: center;
     background: #49DEB2;
-    color: white;
+    color: #404040;
+
     border-radius: 5px;
     margin: 12px 0 12px 0;
 
-    & > h3 {
+    & > .c-game-odds__accumulator-title' {
         font-family: 'Inter', 'Sans Serif';
         margin: 0;
         font-size: 16px;
         margin-right: 12px;
+    }
+
+    & > .c-game-odds__accumulator-view-betslip {
+        background: none;
+        outline: none;
+        border: 1px solid #404040;
     }
 `;

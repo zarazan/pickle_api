@@ -3,16 +3,17 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 import { usePoolState } from '../../contexts/PoolContext';
-import { decToAmerican, calculatePayout, currencyFormatter, formatBetMetric } from '../../utilities/helpers';
+import { calculatePayout, currencyFormatter } from '../../utilities/helpers';
 
 import WagerItem from './WagerItem';
 import { ReactComponent as Show } from '../../icons/show.svg';
 import { ReactComponent as Hide } from '../../icons/hide.svg';
 import { ReactComponent as Plus } from '../../icons/plus.svg';
 
-const EnterWager = ({ currentFixture, currentBets, placeBet, closeBetSlip, currentMode, toggleBetMode, updateBetAccumulatorCache }) => { 
+const EnterWager = ({ currentFixture, currentBets, placeBet, closeBetSlip, toggleBetMode, updateBetAccumulatorCache }) => { 
     const { bank } = usePoolState();
     const [game, setGame] = useState(''); // The name of the fixture (game) in the format {awayTeam} vs {homeTeam}.
+    const [betCount, setBetCount] = useState(0); // The number of bets currently in the form.
     const [odd, setOdd] = useState('');
     const [wager, setWager] = useState('0'); // The wager in dollars for the current bet.
     const [payout, setPayout] = useState(0); // The payout in dollars for the current bet.
@@ -28,7 +29,13 @@ const EnterWager = ({ currentFixture, currentBets, placeBet, closeBetSlip, curre
     useEffect(() => setGameName(), []);
 
     /** Use the single bet odd or create a cumulative if parlay or teaser. */
-    useEffect(() => handleOddCalculation(), [])
+    useEffect(() => handleOddCalculation(), []);
+
+    /** Set the bet count. */
+    useEffect(() => setBetCount(currentBets.length) ,[]);
+
+    // /** Check if the bet cache reaches 0 so we know to toggle the bet slip off. */
+    // useEffect(() => checkForEmptyBets(), []);
 
     return (
         <EnterWagerWrapper className='c-wager-entry l-column-flex'>
@@ -134,6 +141,13 @@ const EnterWager = ({ currentFixture, currentBets, placeBet, closeBetSlip, curre
         </EnterWagerWrapper>
     );
 
+    /** checkForEmptyBets: Checks if the bets have reached zero and closes the enter wager form if so. */
+    function checkForEmptyBets() {
+        if (betCount < 1) {
+            closeBetSlip();
+        }
+    }
+
     /** setGameName: Sets the name of the game for display. */
     function setGameName() {
         setGame(`${currentFixture.awayTeamName} vs. ${currentFixture.homeTeamName}`);
@@ -196,7 +210,12 @@ const EnterWager = ({ currentFixture, currentBets, placeBet, closeBetSlip, curre
 
     /** handleBetRemoval: Removes a bet from the selected bet cache. */
     function handleBetRemoval(betObj) {
+        setBetCount(betCount - 1);
         updateBetAccumulatorCache(betObj);
+        
+        if (betCount - 1 === 0) {
+            closeBetSlip();
+        }
     }
 
     /** clearWager: Resets the wager entry and payout state. */
@@ -211,7 +230,6 @@ EnterWager.propTypes = {
     currentBet: PropTypes.array.isRequired, 
     placeBet: PropTypes.func.isRequired, 
     closeBetSlip: PropTypes.func.isRequired, 
-    currentMode: PropTypes.string.isRequired,
     toggleBetMode: PropTypes.func.isRequired, 
     updateBetAccumulatorCache: PropTypes.func.isRequired, 
 };
