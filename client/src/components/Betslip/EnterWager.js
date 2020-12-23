@@ -13,7 +13,6 @@ import { ReactComponent as Plus } from '../../icons/plus.svg';
 const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, currentMode, toggleBetMode }) => { 
     const { bank } = usePoolState();
     const [game, setGame] = useState(''); // The name of the fixture (game) in the format {awayTeam} vs {homeTeam}.
-    const [ratio, setRatio] = useState(null); // The converted odd ratio.
     const [wager, setWager] = useState('0'); // The wager in dollars for the current bet.
     const [payout, setPayout] = useState(0); // The payout in dollars for the current bet.
     const [showFullCalculator, setShowFullCalculator] = useState(false); // Bool to indicate whether to show the full calculator.
@@ -32,9 +31,6 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, curren
     /** Calculate the payout whenever the wager changes. */
     useEffect(() => handlePayout(), [wager]);
 
-    /** Convert the ratio to american odds on component mount. */
-    useEffect(() => setRatio(decToAmerican(currentBet.ratio)), []);
-
     /** Create the game name format for the wager entry form. */
     useEffect(() => setGameName(), []);
 
@@ -45,7 +41,7 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, curren
                 <div className='l-grid'>
                     <div className='l-grid__item l-column-flex'>
                         <p className='c-wager-entry__label'>{'ODDS'}</p>
-                        <h3 className='c-wager-entry__text'>{ratio}</h3>
+                        <h3 className='c-wager-entry__text'>{currentBet.american}</h3>
                     </div>
                     <div className='l-grid__item l-column-flex'>
                         <p className='c-wager-entry__label'>{'WAGER'}</p>
@@ -59,13 +55,13 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, curren
             </WagerSummary>
 
             <div className='l-row-flex l-column-flex__item'>
-                <CalculatorButton
+                <WagerButton
                     className='l-row-flex__item btn c-wager-entry__add-more-button'
                     onClick={() => toggleBetMode()}
                 >
                     <Plus />
                     <p>Add More Bets</p>
-                </CalculatorButton>
+                </WagerButton>
             </div>
 
             <WagerItemList className='l-column-flex l-column-flex__item'>
@@ -79,20 +75,20 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, curren
             </WagerItemList>
 
             <Calculator4Row className='l-grid l-column-flex__item'>
-                <CalculatorButton className='l-grid__item btn c-wager-entry__calculator-button' name='20' onClick={e => addNumber(e.target.name)}>+$20</CalculatorButton>
-                <CalculatorButton className='l-grid__item btn c-wager-entry__calculator-button' name='50' onClick={e => addNumber(e.target.name)}>+$50</CalculatorButton>
-                <CalculatorButton className='l-grid__item btn c-wager-entry__calculator-button' name='100' onClick={e => addNumber(e.target.name)}>+$100</CalculatorButton>
-                <CalculatorButton className='l-grid__item btn c-wager-entry__calculator-button' onClick={() => clearWager()}>Clear</CalculatorButton>
+                <WagerButton className='l-grid__item btn c-wager-entry__calculator-button' name='20' onClick={e => addNumber(e.target.name)}>+$20</WagerButton>
+                <WagerButton className='l-grid__item btn c-wager-entry__calculator-button' name='50' onClick={e => addNumber(e.target.name)}>+$50</WagerButton>
+                <WagerButton className='l-grid__item btn c-wager-entry__calculator-button' name='100' onClick={e => addNumber(e.target.name)}>+$100</WagerButton>
+                <WagerButton className='l-grid__item btn c-wager-entry__calculator-button' onClick={() => clearWager()}>Clear</WagerButton>
             </Calculator4Row>
 
             <div className='l-column-flex l-column-flex__item'>
-                <CalculatorButton
+                <WagerButton
                     className='l-column-flex__item btn c-wager-entry__show-hide-button'
                     onClick={() => toggleFullCalculator()}
                 >
                     {showFullCalculator ? <Hide /> : <Show />}
                     {showFullCalculator ? 'Hide Full Calculator' : 'Show Full Calculator'}
-                </CalculatorButton>
+                </WagerButton>
             </div>
 
             {showFullCalculator
@@ -100,23 +96,23 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, curren
                     <>
                         <FullCalculator className='l-column-flex l-column-flex__item'>
                             <Calculator3Row className='l-grid l-column-flex__item'>
-                                <CalculatorButton className='l-grid__item btn c-wager-entry__calculator-button' name='1' onClick={e => handleInput(e.target.name)}>1</CalculatorButton>
-                                <CalculatorButton className='l-grid__item btn c-wager-entry__calculator-button' name='2' onClick={e => handleInput(e.target.name)}>2</CalculatorButton>
-                                <CalculatorButton className='l-grid__item btn c-wager-entry__calculator-button' name='3' onClick={e => handleInput(e.target.name)}>3</CalculatorButton>
+                                <WagerButton className='l-grid__item btn c-wager-entry__calculator-button' name='1' onClick={e => handleInput(e.target.name)}>1</WagerButton>
+                                <WagerButton className='l-grid__item btn c-wager-entry__calculator-button' name='2' onClick={e => handleInput(e.target.name)}>2</WagerButton>
+                                <WagerButton className='l-grid__item btn c-wager-entry__calculator-button' name='3' onClick={e => handleInput(e.target.name)}>3</WagerButton>
                             </Calculator3Row>
                             <Calculator3Row className='l-grid l-column-flex__item'>
-                                <CalculatorButton className='l-grid__item btn c-wager-entry__calculator-button' name='4' onClick={e => handleInput(e.target.name)}>4</CalculatorButton>
-                                <CalculatorButton className='l-grid__item btn c-wager-entry__calculator-button' name='5' onClick={e => handleInput(e.target.name)}>5</CalculatorButton>
-                                <CalculatorButton className='l-grid__item btn c-wager-entry__calculator-button' name='6' onClick={e => handleInput(e.target.name)}>6</CalculatorButton>
+                                <WagerButton className='l-grid__item btn c-wager-entry__calculator-button' name='4' onClick={e => handleInput(e.target.name)}>4</WagerButton>
+                                <WagerButton className='l-grid__item btn c-wager-entry__calculator-button' name='5' onClick={e => handleInput(e.target.name)}>5</WagerButton>
+                                <WagerButton className='l-grid__item btn c-wager-entry__calculator-button' name='6' onClick={e => handleInput(e.target.name)}>6</WagerButton>
                             </Calculator3Row>
                             <Calculator3Row className='l-grid l-column-flex__item'>
-                                <CalculatorButton className='l-grid__item btn c-wager-entry__calculator-button' name='7' onClick={e => handleInput(e.target.name)}>7</CalculatorButton>
-                                <CalculatorButton className='l-grid__item btn c-wager-entry__calculator-button' name='8' onClick={e => handleInput(e.target.name)}>8</CalculatorButton>
-                                <CalculatorButton className='l-grid__item btn c-wager-entry__calculator-button' name='9' onClick={e => handleInput(e.target.name)}>9</CalculatorButton>
+                                <WagerButton className='l-grid__item btn c-wager-entry__calculator-button' name='7' onClick={e => handleInput(e.target.name)}>7</WagerButton>
+                                <WagerButton className='l-grid__item btn c-wager-entry__calculator-button' name='8' onClick={e => handleInput(e.target.name)}>8</WagerButton>
+                                <WagerButton className='l-grid__item btn c-wager-entry__calculator-button' name='9' onClick={e => handleInput(e.target.name)}>9</WagerButton>
                             </Calculator3Row>
                             <Calculator3Row className='l-grid l-column-flex__item'>
-                                <CalculatorButton className='l-grid__item btn c-wager-entry__calculator-button' name='.' onClick={e => handleInput(e.target.name)}>.</CalculatorButton>
-                                <CalculatorButton className='l-grid__item btn c-wager-entry__calculator-button' name='0' onClick={e => handleInput(e.target.name)}>0</CalculatorButton>
+                                <WagerButton className='l-grid__item btn c-wager-entry__calculator-button' name='.' onClick={e => handleInput(e.target.name)}>.</WagerButton>
+                                <WagerButton className='l-grid__item btn c-wager-entry__calculator-button' name='0' onClick={e => handleInput(e.target.name)}>0</WagerButton>
                             </Calculator3Row>
                         </FullCalculator>
                     </>
@@ -124,19 +120,19 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, curren
             }
 
             <CalculatorFooter className='l-grid l-column-flex__item'>
-                <CalculatorButton
+                <WagerButton
                     className={`l-grid__item btn c-wager-entry__wager-button ${parseFloat(wager) > bank && 'overdraft'}`}
                     disabled={wager && wager !== '0' && parseFloat(wager) <= bank ? false : true}
                     onClick={() => placeBet(currentBet.id, parseFloat(wager))}
                 >
                     {parseFloat(wager) <= bank ? `Enter Wager` : `Insufficient Funds!`}
-                </CalculatorButton>
-                <CalculatorButton 
+                </WagerButton>
+                <WagerButton 
                     className='l-grid__item btn c-wager-entry__wager-button'
                     onClick={closeBetSlip}
                 >
                     Cancel Wager
-                </CalculatorButton>
+                </WagerButton>
             </CalculatorFooter>
 
         </EnterWagerWrapper>
@@ -189,7 +185,7 @@ const EnterWager = ({ currentFixture, currentBet, placeBet, closeBetSlip, curren
 
     /** handlePayout: Handle payout based on the odds and entered wager. */
     function handlePayout(){
-        setPayout(calculatePayout(parseFloat(wager), ratio))
+        setPayout(calculatePayout(parseFloat(wager), currentBet.american))
     };
 
     /** toggleFullCalculator: Toggles the full calculator display. */
@@ -306,7 +302,7 @@ const Calculator3Row = styled.div`
     width: 100%;
 `;
 
-const CalculatorButton = styled.button`
+const WagerButton = styled.button`
     box-sizing: border-box;
     padding: 10px 0 10px 0;
 

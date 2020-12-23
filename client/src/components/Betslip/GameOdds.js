@@ -42,9 +42,9 @@ const GameOdds = () => {
 
     /** Fetch all fixtures for the pool and add them to state. */
     useEffect(() => {
-        setState('loading'); // TODO undo comment
-        // fetchFixtures(poolId); // TODO undo comment
-        setState('finished');
+        setState('loading'); // TODO: undo comment
+        // fetchFixtures(poolId); // TODO: undo comment
+        setState('finished'); // TODO: remove
     }, []);
 
     return (
@@ -110,18 +110,9 @@ const GameOdds = () => {
                                                 {fixtures.map((fixture, index) => (
                                                         <BetCard 
                                                             key={index}
-                                                            fixtureId={fixture.id}
-                                                            locked={fixture.locked}
-                                                            homeTeamName={fixture.homeTeamName}
-                                                            homeTeamId={fixture.homeTeamId}
-                                                            homeScore={fixture.homeScore}
-                                                            awayTeamName={fixture.awayTeamName}
-                                                            awayTeamId={fixture.awayTeamId}
-                                                            awayScore={fixture.awayScore}
+                                                            fixture={fixture}
                                                             odds={fixture.odds}
-                                                            gameDate={fixture.startTime}
                                                             selectBet={selectBet}
-                                                            status={fixture.status}
                                                         /> 
                                                 ))}
                                             </BetCardList>
@@ -147,12 +138,20 @@ const GameOdds = () => {
         setBetMode('SINGLE'); // reset the bet mode
     };
 
-    /** selectBet: Adds the selected fixture and bet to state and opens the bet slip wager form. */
+    /** 
+     * selectBet: Adds the selected fixture and bet to state and opens the bet slip wager form. 
+     * @param {string} fixtureId - The ID for the selected fixture.
+     * @param {string} betId - The ID for the selected bet.
+     * */
     function selectBet(fixtureId, betId) {
+        // Get the fixture object that was selected by the user and set it in state.
         const [ fixtureObject ] = fixtures.filter(fixture => fixture.id === fixtureId);
         setCurrentFixture(fixtureObject);
+        // Get the bet object that was selected by the user and set it in state.
         const [ betObject ] = fixtureObject.odds.filter(odd => odd.id === betId);
+        // Set the current bet to pass through as props to the EnterWager component.
         setCurrentBet(betObject);
+        console.log(betObject.type);
         setToggleBetSlip(!toggleBetSlip);
     };
 
