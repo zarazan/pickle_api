@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 import { usePoolState } from '../../contexts/PoolContext';
-import { calculatePayout, currencyFormatter } from '../../utilities/helpers';
+import { calculatePayout, currencyFormatter, decToAmerican } from '../../utilities/helpers';
 
 import WagerItem from './WagerItem';
 import { ReactComponent as Show } from '../../icons/show.svg';
@@ -14,7 +14,7 @@ const EnterWager = ({ currentFixture, currentBets, placeBet, closeBetSlip, toggl
     const { bank } = usePoolState();
     const [game, setGame] = useState(''); // The name of the fixture (game) in the format {awayTeam} vs {homeTeam}.
     const [betCount, setBetCount] = useState(0); // The number of bets currently in the form.
-    const [odd, setOdd] = useState('');
+    const [odd, setOdd] = useState(0.00);
     const [wager, setWager] = useState('0'); // The wager in dollars for the current bet.
     const [payout, setPayout] = useState(0); // The payout in dollars for the current bet.
     const [showFullCalculator, setShowFullCalculator] = useState(false); // Bool to indicate whether to show the full calculator.
@@ -34,8 +34,8 @@ const EnterWager = ({ currentFixture, currentBets, placeBet, closeBetSlip, toggl
     /** Set the bet count. */
     useEffect(() => setBetCount(currentBets.length) ,[]);
 
-    // /** Check if the bet cache reaches 0 so we know to toggle the bet slip off. */
-    // useEffect(() => checkForEmptyBets(), []);
+    /** Calculate the aggregate odd. */
+    useEffect(() => handleOddCalculation(), [betCount]);
 
     return (
         <EnterWagerWrapper className='c-wager-entry l-column-flex'>
@@ -44,7 +44,7 @@ const EnterWager = ({ currentFixture, currentBets, placeBet, closeBetSlip, toggl
                 <div className='l-grid'>
                     <div className='l-grid__item l-column-flex'>
                         <p className='c-wager-entry__label'>{'ODDS'}</p>
-                        <h3 className='c-wager-entry__text'>{odd}</h3>
+                        <h3 className='c-wager-entry__text'>{parseInt(odd, 10) > 0 ? `+${odd}` : odd }</h3>
                     </div>
                     <div className='l-grid__item l-column-flex'>
                         <p className='c-wager-entry__label'>{'WAGER'}</p>
@@ -141,13 +141,6 @@ const EnterWager = ({ currentFixture, currentBets, placeBet, closeBetSlip, toggl
         </EnterWagerWrapper>
     );
 
-    /** checkForEmptyBets: Checks if the bets have reached zero and closes the enter wager form if so. */
-    function checkForEmptyBets() {
-        if (betCount < 1) {
-            closeBetSlip();
-        }
-    }
-
     /** setGameName: Sets the name of the game for display. */
     function setGameName() {
         setGame(`${currentFixture.awayTeamName} vs. ${currentFixture.homeTeamName}`);
@@ -155,12 +148,15 @@ const EnterWager = ({ currentFixture, currentBets, placeBet, closeBetSlip, toggl
 
     /** handlePayout: Handle payout based on the odds and entered wager. */
     function handlePayout(){
-        setPayout(calculatePayout(parseFloat(wager), odd))
+        setPayout(calculatePayout(parseFloat(wager), odd));
     }
 
     /** handleOddCalculation: Calculates a cumulative odd if more than 1 exists. */
     function handleOddCalculation() {
-        setOdd(-250);
+        // Gather the current bets
+        const bets = [ ...currentBets ];
+        // Create the aggregate odd
+        setOdd(decToAmerican(parseFloat(bets.reduce((acc, cur) => acc * parseFloat(cur.ratio), 1.00).toPrecision(4))));
     }
 
     /** handleInput: Appends a number on the wager entry. */
@@ -212,7 +208,7 @@ const EnterWager = ({ currentFixture, currentBets, placeBet, closeBetSlip, toggl
     function handleBetRemoval(betObj) {
         setBetCount(betCount - 1);
         updateBetAccumulatorCache(betObj);
-        
+
         if (betCount - 1 === 0) {
             closeBetSlip();
         }

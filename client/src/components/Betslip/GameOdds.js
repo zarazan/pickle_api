@@ -45,9 +45,6 @@ const GameOdds = () => {
         setState('finished'); // TODO: remove
     }, []);
 
-    // /** Check if the bet cache reaches 0 so we know to toggle the bet slip off. */
-    // useEffect(() => closeBetSlip() ,[betAccumulator])
-
     return (
         <>
             {componentState === 'error' 
