@@ -33,6 +33,7 @@ const GameOdds = () => {
 
     // parlay bet state
     const [betMode, setBetMode] = useState('SINGLE'); // defines the type of bet: single or accumulate
+    const [betAccumulator, setBetAccumulator] = useState([]); // { fixture: ID, bet: ID }
 
     /** Scroll the window to the top of the page to avoid jarring the user. */
     useEffect(() => {
