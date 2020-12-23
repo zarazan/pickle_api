@@ -2,18 +2,18 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const BetButtonOverUnder = ({ className, which, metric, ratio, callback }) => {
+const BetButtonOverUnder = ({ className, whichSpreadType, metric, ratio, callback }) => {
     const [selected, setSelected] = useState(false);
 
     return (
-        <Odd className={`${className} ${selected ? 'selected' : ''}`}>
+        <Odd className={`${className} ${selected ? '--selected' : ''}`}>
             <ToggleButton
                 onClick={toggleSelected}
             >
                 <div>
                     <span>
                         {metric 
-                        ? which === 'over'
+                        ? whichSpreadType === 'over'
                             ? `O ${metric}`
                             : `U ${metric}`
                         : ''}
@@ -39,11 +39,16 @@ const BetButtonOverUnder = ({ className, which, metric, ratio, callback }) => {
 };
 
 BetButtonOverUnder.propTypes = {
-    className: PropTypes.string,
+    className: PropTypes.string.isRequired,
+    whichSpreadType: PropTypes.string.isRequired,
     metric: PropTypes.string,
     ratio: PropTypes.string.isRequired,
     callback: PropTypes.func.isRequired,
-};
+}
+
+BetButtonOverUnder.defaultProps = {
+    metric: '',
+}
 
 export default BetButtonOverUnder;
 
