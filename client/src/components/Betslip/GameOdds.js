@@ -25,7 +25,7 @@ const GameOdds = () => {
     const [errorMessage, setErrorMessage] = useState(''); // used for displaying errors
 
     const [betCount, setBetCount] = useState(0); // counter for bets made
-    const [fixtures, setFixtures] = useState([MOCK_FIXTURES]); // array of pool fixtures // TODO: default to empty array
+    const [fixtures, setFixtures] = useState([]); // array of pool fixtures
     const [currentFixture, setCurrentFixture] = useState(null); // holds the current fixture for sending game info to enter wager
     const [toggleBetSlip, setToggleBetSlip] = useState(false); // used for toggling the bet slip entry form
     
@@ -39,9 +39,9 @@ const GameOdds = () => {
 
     /** Fetch all fixtures for the pool and add them to state. */
     useEffect(() => {
-        setState('loading'); // TODO: undo comment
-        // fetchFixtures(poolId); // TODO: undo comment
-        setState('finished'); // TODO: remove
+        setState('loading');
+        fetchFixtures(poolId);
+
     }, []);
 
     return (

@@ -42,7 +42,7 @@ const BetCard = ({ fixture, odds, selectedBets, selectBet }) => {
                     ?
                         <LockedMessage className='l-row-flex l-column-flex__item'>
                             <Lock className='c-bet-card__locked-icon'/>
-                            <h3 className='c-bet-card__locked-message'>{'Game Locked'}</h3>
+                            <h4 className='c-bet-card__locked-message'>{'Game Locked'}</h4>
                         </LockedMessage>
                     :
                         <>
@@ -59,7 +59,6 @@ const BetCard = ({ fixture, odds, selectedBets, selectBet }) => {
                                             callback={() => selectBet(fixture.id, homeOdds.pointSpread.betId)}
                                         />
                                     </SelectableBet>
-                                    {/* <SelectableBet className={`l-row-flex l-grid__item${selectedBets.indexOf(homeOdds.totalPoints.betId) > -1 ? '--selected' : ''}`}> */}
                                     <SelectableBet className={`l-row-flex l-grid__item${selectedBets.findIndex(b => b.id === homeOdds.totalPoints.betId) > -1 ? '--selected' : ''}`}>
                                         <BetButtonOverUnder 
                                             key={'homeTotal'}
@@ -70,7 +69,6 @@ const BetCard = ({ fixture, odds, selectedBets, selectBet }) => {
                                             callback={() => selectBet(fixture.id, homeOdds.totalPoints.betId)}
                                         />
                                     </SelectableBet>
-                                    {/* <SelectableBet className={`l-row-flex l-grid__item${selectedBets.indexOf(homeOdds.moneyLine.betId) > -1 ? '--selected' : ''}`}> */}
                                     <SelectableBet className={`l-row-flex l-grid__item${selectedBets.findIndex(b => b.id === homeOdds.moneyLine.betId) > -1 ? '--selected' : ''}`}>
                                         <BetButton 
                                             key={'homeMoney'}
@@ -88,7 +86,6 @@ const BetCard = ({ fixture, odds, selectedBets, selectBet }) => {
                                 <h4 className='l-grid__item c-bet-card__team-home'>{fixture.awayTeamName}</h4>
                                 <OddsContainer className='l-grid l-grid__item'>
 
-                                    {/* <SelectableBet className={`l-row-flex l-grid__item${selectedBets.indexOf(awayOdds.pointSpread.betId) > -1 ? '--selected' : ''}`}> */}
                                     <SelectableBet className={`l-row-flex l-grid__item${selectedBets.findIndex(b => b.id === awayOdds.pointSpread.betId) > -1 ? '--selected' : ''}`}>
                                         <BetButton 
                                             key={'awaySpread'}
@@ -98,7 +95,6 @@ const BetCard = ({ fixture, odds, selectedBets, selectBet }) => {
                                             callback={() => selectBet(fixture.id, awayOdds.pointSpread.betId)}
                                         />
                                     </SelectableBet>
-                                    {/* <SelectableBet className={`l-row-flex l-grid__item${selectedBets.indexOf(awayOdds.totalPoints.betId) > -1 ? '--selected' : ''}`}> */}
                                     <SelectableBet className={`l-row-flex l-grid__item${selectedBets.findIndex(b => b.id === awayOdds.totalPoints.betId) > -1 ? '--selected' : ''}`}>
                                         <BetButtonOverUnder 
                                             key={'awayTotal'}
@@ -109,7 +105,6 @@ const BetCard = ({ fixture, odds, selectedBets, selectBet }) => {
                                             callback={() => selectBet(fixture.id, awayOdds.totalPoints.betId)}
                                         />
                                     </SelectableBet>
-                                    {/* <SelectableBet className={`l-row-flex l-grid__item${selectedBets.indexOf(awayOdds.moneyLine.betId) > -1 ? '--selected' : ''}`}> */}
                                     <SelectableBet className={`l-row-flex l-grid__item${selectedBets.findIndex(b => b.id === awayOdds.moneyLine.betId) > -1 ? '--selected' : ''}`}>
                                         <BetButton 
                                             key={'awayMoney'}
@@ -238,13 +233,12 @@ const FinalScore = styled.div`
 `;
 
 const LockedMessage = styled.div`
-    justify-content: center;
     align-items: center;
 
     & svg {
-        height: 1.25rem;
-        width: 1.25rem;
-        margin: 0 12px;
+        height: 16px;
+        width: 16px;
+        margin: 0 12px 0 0;
         fill: #BFBFBF;
     }
 
