@@ -84,6 +84,23 @@ const GameOdds = () => {
                                             />
                                         :
                                             <>
+                                                {betMode === 'ACCUMULATE'
+                                                    ?
+                                                        <>
+                                                            <AccumulatorBanner className='l-row-flex'>
+                                                                <button 
+                                                                    className='c-game-odds__accumulator-view-betslip' 
+                                                                    onClick={() => handleAccumulatorViewBetSlip()}
+                                                                >
+                                                                    <p className='c-game-odds__accumulator-text'>View Bet Slip</p>
+                                                                    <div className='l-row-flex'>
+                                                                        <p className='c-game-odds__accumulator-text'>{`${betAccumulator.length}`}</p>
+                                                                    </div>
+                                                                </button>
+                                                            </AccumulatorBanner>
+                                                        </>
+                                                    : null
+                                                }
                                                 <BetSlipTotals className='game-odds-totals'>
                                                     <div className='totals__bankroll'></div>
                                                     <div className='totals__headers'>
@@ -103,16 +120,7 @@ const GameOdds = () => {
                                                         </div>
                                                     </div>
                                                 </BetSlipTotals>
-                                                {betMode === 'ACCUMULATE'
-                                                    ?
-                                                        <>
-                                                            <AccumulatorBanner className='l-row-flex'>
-                                                                <h3 className='c-game-odds__accumulator-title'>{`${betAccumulator.length} Bet Slip`}</h3>
-                                                                <button className='c-game-odds__accumulator-view-betslip' onClick={() => handleAccumulatorViewBetSlip()}>View Bet Slip</button>
-                                                            </AccumulatorBanner>
-                                                        </>
-                                                    : null
-                                                }
+                                                
                                                 <BetCardList className='game-odds-cardlist'>
                                                     {fixtures.map((fixture, index) => (
                                                             <BetCard 
@@ -400,22 +408,37 @@ const AccumulatorBanner = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #49DEB2;
-    color: #404040;
+    margin: 12px 0 0 0;
 
-    border-radius: 5px;
-    margin: 12px 0 12px 0;
-
-    & > .c-game-odds__accumulator-title' {
-        font-family: 'Inter', 'Sans Serif';
-        margin: 0;
-        font-size: 16px;
-        margin-right: 12px;
-    }
-
-    & > .c-game-odds__accumulator-view-betslip {
+    & > button.c-game-odds__accumulator-view-betslip {
+        display: flex;
+        align-items: center;
         background: none;
+        border: none;
         outline: none;
-        border: 1px solid #404040;
+        padding: 6px;
+        border-radius: 5px;
+        box-shadow: 0px 1px 2px 1px #DDD;
+
+        & > div {
+            justify-content: center;
+            align-items: center;
+            background: #53DFB5;
+            color: white;
+            border-radius: 3px;
+            height: 18px;
+            width: 18px;
+            margin-left: 12px;
+            font-family: 'Inter', 'Sans Serif';
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        & > .c-game-odds__accumulator-text {
+            font-family: 'Inter', 'Sans Serif';
+            margin: 0;
+            font-size: 13px;
+            color: #53DFB5;
+        }
     }
 `;

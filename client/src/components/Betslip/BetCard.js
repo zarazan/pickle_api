@@ -205,6 +205,7 @@ const BetCardWrapper = styled.div`
     }
 
     & div[class~='l-column-flex__item']:first-of-type {
+        padding-bottom:8px;
         border-bottom: 1px solid #F2F2F2;
     }
 
@@ -221,7 +222,7 @@ const BetCardWrapper = styled.div`
     & h4 {
         font-size: 12px;
         font-weight: 300;
-        margin: 0 0 6px 0;
+        margin: 0;
 
         &.c-bet-card__game-date {
             color: #8b8c8f;
@@ -256,7 +257,6 @@ const LockedMessage = styled.div`
 const TeamAndOddsRow = styled.div`
     grid-template-columns: 45% 1fr;
     grid-template-rows: 3em;
-    row-gap: 3px;
 
     & :first-child {
         display: flex;
@@ -266,7 +266,7 @@ const TeamAndOddsRow = styled.div`
 
 const OddsContainer = styled.div`
     grid-template-columns: repeat(3, 1fr);
-    grid-column-gap: 0.2em;
+    grid-column-gap: 6px;
 `;
 
 const SelectableBet = styled.div`

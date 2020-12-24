@@ -57,15 +57,15 @@ const EnterWager = ({ currentFixture, currentBets, placeBet, closeBetSlip, toggl
                 </div>
             </WagerSummary>
 
-            <div className='l-row-flex l-column-flex__item'>
+            <AddMoreBetsBanner className='l-row-flex l-column-flex__item'>
                 <WagerButton
                     className='l-row-flex__item btn c-wager-entry__add-more-button'
                     onClick={() => toggleBetMode()}
                 >
-                    <Plus />
                     <p>Add More Bets</p>
+                    <Plus />
                 </WagerButton>
-            </div>
+            </AddMoreBetsBanner>
 
             <WagerItemList className='l-column-flex l-column-flex__item'>
                 {currentBets.map((bet, index) => (
@@ -332,6 +332,10 @@ const Calculator3Row = styled.div`
     width: 100%;
 `;
 
+const AddMoreBetsBanner = styled.div`
+    justify-content: flex-end;
+`;
+
 const WagerButton = styled.button`
     box-sizing: border-box;
     padding: 10px 0 10px 0;
@@ -364,22 +368,20 @@ const WagerButton = styled.button`
     &.c-wager-entry__add-more-button {
         display: flex;
         align-items: center;
-        align-self: flex-end;
-
         padding: 6px;
         
-        font-size: 10px;
+        font-size: 13px;
         color: #53DFB5;
-        box-shadow: none;
+        box-shadow: 0px 1px 2px 1px #DDD;
 
         & p {
             margin: 0;
         }
 
         & svg {
-            height: 12px;
-            width: 12px;
-            margin-right: 12px;
+            height: 18px;
+            width: 18px;
+            margin-left: 12px;
             fill: #53DFB5;
         }
     }
