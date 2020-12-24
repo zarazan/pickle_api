@@ -4,10 +4,14 @@ const UserContext = React.createContext([{}, () => {}]);
 
 const UserProvider = (props) => {
 
-  const [user, setUser] = useState({});
+  const [loginInfo, setLoginInfo] = useState({
+    user: {},
+    isLoading: true,
+    isLoggedIn: false,
+  });
 
   return (
-    <UserContext.Provider value={[user, setUser]}>
+    <UserContext.Provider value={[loginInfo, setLoginInfo]}>
       {props.children}
     </UserContext.Provider>
   )

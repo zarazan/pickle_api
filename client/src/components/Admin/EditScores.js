@@ -7,8 +7,7 @@ import useAuthHandler from '../../hooks/AuthHandler';
 const EditScores = props => {
 
     let { poolId } = useParams();
-    const [user, setUser] = useContext(UserContext);
-    const isLoadingUser = useAuthHandler(user, setUser);
+    const [{user}] = useContext(UserContext);
     const [buttonText, setButtonText] = useState('Loading...');
 
     const [fixtures, dispatch] = useReducer((fixtures, action) => {
@@ -29,11 +28,10 @@ const EditScores = props => {
     }, []);
 
     useEffect(() => {
-        if(isLoadingUser) { return; }
         pickleApi.getAdminFixtures(poolId)
             .then(handleResponse)
             .catch(console.log)
-    }, [isLoadingUser]);
+    }, []);
 
     function handleResponse(fixtures) {
         dispatch({type: 'load', fixtures: fixtures});

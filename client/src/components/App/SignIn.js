@@ -15,8 +15,8 @@ const SignIn = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const [user, setUser] = useContext(UserContext);
-  const isLoadingUser = useAuthHandler(user, setUser);
+  const [loginInfo, setLoginInfo] = useContext(UserContext);
+
   const invalidInputs = !userEmail || !userPassword;
 
   return (
@@ -64,20 +64,21 @@ const SignIn = () => {
 
 	/** handleLogin: sets component state and loggs the user in. */
 	function handleLogin(e) {
-	e.preventDefault();
-	setIsLoading(true);
-	setErrorMessage('');
-	pickleApi.signIn(userEmail, userPassword)
-		.then(data => {
-			setIsLoading(false);
-			setUser(data);
-			// add heap identity
-			window.heap.identify(data.email);
-			history.push('/');
-		})
-		.catch(error => {
-			setErrorMessage(error.toString());
-		});
+		e.preventDefault();
+		setErrorMessage('');
+		pickleApi.signIn(userEmail, userPassword)
+			.then(data => {
+				setLoginInfo({
+          user: data,
+          isLoading: false,
+          isLoggedIn: true,
+        });
+				window.heap.identify(data.email);
+				history.push('/');
+			})
+			.catch(error => {
+				setErrorMessage(error.toString());
+			});
 	};
 };
 

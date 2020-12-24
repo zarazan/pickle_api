@@ -10,7 +10,7 @@ import StatCardLite from './StatCardLite';
 import { ReactComponent as Stats } from '../../icons/stats.svg';
 
 const Dashboard = () => {
-    const [ user ] = useContext(UserContext);
+    const [{user}] = useContext(UserContext);
     const [userStats, setUserStats] = useState([]);
     const history = useHistory();
 

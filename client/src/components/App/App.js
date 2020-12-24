@@ -1,18 +1,21 @@
 import React, { useContext } from 'react';
 import { ThemeProvider } from 'styled-components';
-// import { darkTheme, lightTheme } from '../co'
 
+import useAuthHandler from '../../hooks/AuthHandler';
 import { UserContext } from '../../contexts/UserContext'
 
 import { AuthenticatedApp } from './AuthenticatedApp';
 import { UnAuthenticatedApp } from './UnAuthenticatedApp';
 
 const App = () => {
-    const [user] = useContext(UserContext);
+
+    const [loginInfo, setLoginInfo] = useContext(UserContext);
+    useAuthHandler(loginInfo, setLoginInfo)
+
     return (
         <>
             <div className='app' style={{ height: '100vh', width: '100vw', boxSizing: 'border-box' }}>
-                {user && user.name ? <AuthenticatedApp /> : <UnAuthenticatedApp /> }
+                {loginInfo.isLoggedIn ? <AuthenticatedApp /> : <UnAuthenticatedApp /> }
             </div>
         </>
     );

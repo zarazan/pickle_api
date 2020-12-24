@@ -12,7 +12,8 @@ import { ReactComponent as Menu } from '../../icons/menu.svg';
 
 export const AuthenticatedApp = () => {
     const history = useHistory();
-    const [user, setUser] = useContext(UserContext);
+    const [loginInfo, setLoginInfo] = useContext(UserContext);
+    const user = loginInfo.user;
     const [sidebar, setSidebar] = useState(false);
 
     return (
@@ -37,7 +38,11 @@ export const AuthenticatedApp = () => {
 
     /** handleSignout: signs out the current user. */
     function handleSignOut() {
-        setUser({});
+        setLoginInfo({
+          user: {},
+          isLoading: false,
+          isLoggedIn: false,
+        })
         pickleApi.signOut();
         // add heap identity
 		window.heap.resetIdentity();
