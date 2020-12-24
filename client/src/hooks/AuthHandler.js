@@ -1,37 +1,43 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import pickleApi from '../services/pickle_api';
 import { useHistory } from 'react-router-dom';
 
-function useAuthHandler(user, setUser) {
+function useAuthHandler(loginInfo, setLoginInfo) {
   const history = useHistory();
-  const [isLoading, setIsLoading] = useState(true);
+
+  function redirectToSignIn() {
+    setLoginInfo({
+      user: {},
+      isLoading: false,
+      isLoggedIn: false,
+    });
+    history.push('/sign-in');
+  }
 
   function loadUser() {
     pickleApi.getAuth()
       .then(data => {
-        setUser(data);
-        setIsLoading(false);
+        setLoginInfo({
+          user: data,
+          isLoading: false,
+          isLoggedIn: true,
+        });
+        window.heap.identify(data.email);
       }).catch(error => {
-        history.push('/sign-in');
+        redirectToSignIn();
       })
   }
 
   function loadUserOrRedirect() {
-    console.log('loading or redirecting user');
-    if(Object.keys(user).length !== 0) {
-      setIsLoading(false);
-      return;
-    }
+    if(loginInfo.isLoggedIn) { return }
     if(pickleApi.hasSessionInfo()) {
       loadUser();
     } else {
-      history.push('/sign-in');
+      redirectToSignIn();
     }
   }
 
   useEffect(() => loadUserOrRedirect(), []);
-
-  return isLoading;
 }
 
 export default useAuthHandler;

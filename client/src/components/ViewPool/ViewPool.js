@@ -16,7 +16,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 
 const ViewPool = () => {
-    const [ user ] = useContext(UserContext);
+    const [{user}] = useContext(UserContext);
     const [myInfo, setMyInfo] = useState({ userName: '', bank: 10, bankrollPlusActiveBets: 0, rank: 0 });
     const dispatch = usePoolDispatch();
     const setBankroll = (pool, bank) => dispatch({ type: 'SEED_POOL', poolId: pool, bank: bank });
