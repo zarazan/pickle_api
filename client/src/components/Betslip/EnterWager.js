@@ -43,15 +43,15 @@ const EnterWager = ({ currentFixture, currentBets, placeBet, closeBetSlip, toggl
             <WagerSummary className='l-column-flex l-column-flex__item'>
                 <div className='l-grid'>
                     <div className='l-grid__item l-column-flex'>
-                        <p className='c-wager-entry__label'>{'ODDS'}</p>
+                        <h4 className='c-wager-entry__label'>{'Odds'}</h4>
                         <h3 className='c-wager-entry__text'>{parseInt(odd, 10) > 0 ? `+${odd}` : odd }</h3>
                     </div>
                     <div className='l-grid__item l-column-flex'>
-                        <p className='c-wager-entry__label'>{'WAGER'}</p>
+                        <h4 className='c-wager-entry__label'>{'Wager'}</h4>
                         <h3 className='c-wager-entry__text'>{currencyFormatter.format(wager)}</h3>
                     </div>
                     <div className='l-grid__item l-column-flex'>
-                        <p className='c-wager-entry__label'>{'PAYOUT'}</p>
+                        <h4 className='c-wager-entry__label'>{'Payout'}</h4>
                         <h3 className='c-wager-entry__text'>{currencyFormatter.format(payout)}</h3>
                     </div>
                 </div>
@@ -125,7 +125,7 @@ const EnterWager = ({ currentFixture, currentBets, placeBet, closeBetSlip, toggl
             <CalculatorFooter className='l-grid l-column-flex__item'>
                 <WagerButton
                     className={`l-grid__item btn c-wager-entry__wager-button ${parseFloat(wager) > bank && 'overdraft'}`}
-                    // disabled={wager && wager !== '0' && parseFloat(wager) <= bank ? false : true}
+                    disabled={wager && wager !== '0' && parseFloat(wager) <= bank ? false : true}
                     onClick={() => postBet()}
                 >
                     {parseFloat(wager) <= bank ? `Enter Wager` : `Insufficient Funds!`}
@@ -168,7 +168,10 @@ const EnterWager = ({ currentFixture, currentBets, placeBet, closeBetSlip, toggl
         setOdd(decToAmerican(parseFloat(bets.reduce((acc, cur) => acc * parseFloat(cur.ratio), 1.00).toPrecision(4))));
     }
 
-    /** handleInput: Appends a number on the wager entry. */
+    /**
+     * handleInput: Appends a number on the wager entry.
+     * @param {string} value - The numerical value to add to the wager.
+     */
     function handleInput(value) {
         let currentWager = wager;
 
@@ -200,7 +203,10 @@ const EnterWager = ({ currentFixture, currentBets, placeBet, closeBetSlip, toggl
         }
     }
 
-    /** addNumber: Adds a number to the wager entry. */
+    /**
+     * addNumber: Adds a number to the wager entry.
+     * @param {integer} amount 
+     */
     function addNumber(amount) {
         let currentWager = parseFloat(wager);
         let currentAmount = parseFloat(amount);
@@ -213,7 +219,10 @@ const EnterWager = ({ currentFixture, currentBets, placeBet, closeBetSlip, toggl
         setShowFullCalculator(!showFullCalculator);
     }
 
-    /** handleBetRemoval: Removes a bet from the selected bet cache. */
+    /**
+     * handleBetRemoval: Removes a bet from the selected bet cache.
+     * @param {*} betObj 
+     */
     function handleBetRemoval(betObj) {
         setBetCount(betCount - 1);
         updateBetAccumulatorCache(betObj);
@@ -232,7 +241,7 @@ const EnterWager = ({ currentFixture, currentBets, placeBet, closeBetSlip, toggl
 
 EnterWager.propTypes = {
     currentFixture: PropTypes.object.isRequired, 
-    currentBet: PropTypes.array.isRequired, 
+    currentBets: PropTypes.array.isRequired, 
     placeBet: PropTypes.func.isRequired, 
     closeBetSlip: PropTypes.func.isRequired, 
     toggleBetMode: PropTypes.func.isRequired, 
@@ -269,11 +278,11 @@ const EnterWagerWrapper = styled.div`
     }
 
     & div[class~='l-column-flex__item'] {
-        margin-bottom: 12px;
+        margin-bottom: 16px;
     }
 
     & > div[class~='l-column-flex__item']:first-of-type {
-        margin-top: 16px;
+        margin-top: 12px;
     }
 
     & p.c-wager-entry__label {
@@ -300,14 +309,27 @@ const WagerSummary = styled.div`
         column-gap: 16px;
 
         & .l-grid__item {
-            & p, h3 { text-align: center };
+            & h3, h4 { text-align: center };
+        }
+
+        & h4 {
+            color: #a4b0bb;
         }
     }
 `;
 
 const WagerItemList = styled.div`
     & > div {
-        margin-bottom: 8px;
+        border-top: 1px solid #F2F2F2;
+        border-bottom: 1px solid #F2F2F2;
+    }
+
+    & > div:first-of-type {
+        border-bottom: none;
+    }
+
+    & > div:last-of-type {
+        border-top: none;
     }
 `;
 
@@ -333,7 +355,11 @@ const Calculator3Row = styled.div`
 `;
 
 const AddMoreBetsBanner = styled.div`
-    justify-content: flex-end;
+    justify-content: center;
+
+    & > button {
+        margin: 3px 0 6px 0;
+    }
 `;
 
 const WagerButton = styled.button`
@@ -372,7 +398,7 @@ const WagerButton = styled.button`
         
         font-size: 13px;
         color: #53DFB5;
-        box-shadow: 0px 1px 2px 1px #DDD;
+        box-shadow: 0px 1px 2px 1px #C5E9DE;
 
         & p {
             margin: 0;

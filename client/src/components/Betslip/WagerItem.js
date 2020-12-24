@@ -51,7 +51,6 @@ const WagerItemWrapper = styled.div`
     grid-template-columns: 1fr 50px;
 
     padding: 12px 6px;
-    border-top: 1px solid #F2F2F2;
 
     &:not(:last-of-type) {
         border-bottom: 1px solid #F2F2F2;

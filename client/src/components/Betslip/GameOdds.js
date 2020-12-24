@@ -51,29 +51,33 @@ const GameOdds = () => {
                 : componentState === 'loading'
                     ? <FullPageSpinner loading={true} optionalMessage={'Loading Odds'}/>
                     : componentState === 'finished' &&
-                            <GameOddsWrapper className='game-odds-container'>
-                                <div className='game-odds-info'>
-                                    <Header className='game-odds-header'>
+
+                            <GameOddsWrapper className='c-game-odds l-grid'>
+                                <div className='l-grid__item'>
+
+                                    <GameOddsHeader className='l-grid'>
                                         <button 
-                                            className='game-odds__back-nav' 
+                                            className='btn c-game-odds__back-button l-grid__item' 
                                             onClick={() =>history.push(`/pools/${poolId}`)}
                                         >
                                             <FontAwesomeIcon icon={faArrowLeft} size='lg' />
                                         </button>
-                                        <Title className='game-odds__title'>{'SCHEDULE & ODDS'}</Title>
-                                    </Header>
-                                    <Bankroll className='user-bankroll'>
-                                        <h3>{'YOUR BANKROLL'}</h3>
-                                        <h2 className='user-bankroll'>{currencyFormatter.format(state.bank)}</h2>
-                                        <h4>{`${state.betCount} BETS`}</h4>
-                                    </Bankroll>
+                                        <h3 className='c-game-odds__title l-grid__item'>{'SCHEDULE & ODDS'}</h3>
+                                    </GameOddsHeader>
+
+                                    <GameOddsUserInformation className='l-column-flex'>
+                                        <h4 className='c-game-odds__label'>{'Bankroll'}</h4>
+                                        <h2 className='c-game-odds__text'>{currencyFormatter.format(state.bank)}</h2>
+                                        {/* <h4>{`${state.betCount} BETS`}</h4> */}
+                                    </GameOddsUserInformation>
 
                                 </div>
-                                <div className='game-odds-main'>
+
+                                <div className='l-column-flex'>
                                     {toggleBetSlip 
                                         ?
                                             <EnterWager
-                                                className='enter-wager-form'
+                                                className='enter-wager-form l-column-flex__item'
                                                 currentBets={betAccumulator}
                                                 currentFixture={currentFixture}
                                                 placeBet={placeBet}
@@ -87,7 +91,7 @@ const GameOdds = () => {
                                                 {betMode === 'ACCUMULATE'
                                                     ?
                                                         <>
-                                                            <AccumulatorBanner className='l-row-flex'>
+                                                            <AccumulatorBanner className='l-row-flex l-column-flex__item'>
                                                                 <button 
                                                                     className='c-game-odds__accumulator-view-betslip' 
                                                                     onClick={() => handleAccumulatorViewBetSlip()}
@@ -101,27 +105,16 @@ const GameOdds = () => {
                                                         </>
                                                     : null
                                                 }
-                                                <BetSlipTotals className='game-odds-totals'>
-                                                    <div className='totals__bankroll'></div>
-                                                    <div className='totals__headers'>
-                                                        <div className='headers__game header-label'>
-                                                            <h4>{'GAME'}</h4>
-                                                        </div>
-                                                        <div className='headers__odd-labels'>
-                                                            <div className='headers__spread header-label'>
-                                                                <h4>{'POINT'}</h4><h4>{'SPREAD'}</h4>
-                                                            </div>
-                                                            <div className='headers__points header-label'>
-                                                                <h4>{'TOTAL'}</h4><h4>{'POINTS'}</h4>
-                                                            </div>
-                                                            <div className='headers__moneyline header-label'>
-                                                                <h4>{'MONEY'}</h4><h4>{'LINE'}</h4>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </BetSlipTotals>
+                                                <GameOddsColumnHeaders className='l-grid l-column-flex__item'>
+                                                    <h4 className='c-game-odds__column-heading l-grid__item'>{`Game \n Summary`}</h4>
+                                                    <ColumnRow className='l-grid'>
+                                                        <h4 className='c-game-odds__column-heading l-grid__item'>{`Point \n Spread`}</h4>
+                                                        <h4 className='c-game-odds__column-heading l-grid__item'>{`Total \n Points`}</h4>
+                                                        <h4 className='c-game-odds__column-heading l-grid__item'>{`Money \n Line`}</h4>
+                                                    </ColumnRow>
+                                                </GameOddsColumnHeaders>
                                                 
-                                                <BetCardList className='game-odds-cardlist'>
+                                                <BetCardList className='game-odds-cardlist l-column-flex__item'>
                                                     {fixtures.map((fixture, index) => (
                                                             <BetCard 
                                                                 key={index}
@@ -265,11 +258,10 @@ const GameOddsWrapper = styled.section`
     grid-template-rows: min-content 1fr;
     row-gap: 12px;
     box-sizing: border-box;
-
     height: 100%;
     margin: 1em 1em 0 1em;
 
-    & div.l-grid {
+    & div.l-grid, header.l-grid {
         display: grid;
     }
 
@@ -287,120 +279,95 @@ const GameOddsWrapper = styled.section`
         display: flex;
         flex-flow: column nowrap;
     }
+
+    & h4 {
+        font-family: 'Inter', 'Sans Serif';
+        font-size: 12px;
+        font-weight: 400;
+        margin: 0;
+        letter-spacing: .0625em;
+    }
 `;
 
-const BetCardList = styled.div`
-    padding: 0 0.1em 0 0.1rem;
-`;
-
-const Header = styled.header`
-    display: grid;
-    grid-template-columns: 10% 1fr 10%;
+const GameOddsHeader = styled.header`
+    grid-template-columns: 20px 1fr 20px;
     grid-template-areas:
         'left title right';
-    height: 1.75rem;
 
-    & button.game-odds__back-nav {
+    & button.c-game-odds__back-button {
         grid-area: left;
         background: none;
         border: none;
         outline: none;
+
+        & svg {
+            height: 16px;
+            width: 16px;
+        }
+    }
+
+    & h3.c-game-odds__title {
+        grid-area: title;
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        align-items: center;
+        
+        margin: 0;
+
+        font-family: 'Poppins', 'Sans Serif';
+        font-size: .8125rem;
+        letter-spacing: .0625em;
+        color: #8b8c8f;
     }
 `;
 
-const Title = styled.h3`
-    grid-area: title;
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-    
-    margin: 0;
-
-    font-family: 'Poppins', 'Sans Serif';
-    font-size: .8125rem;
-    letter-spacing: .0625em;
-    color: #8b8c8f;
-`;
-
-const Bankroll = styled.div`
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
-    margin-top: 1.5rem;
+const GameOddsUserInformation = styled.div`
+    margin: 24px 6px 0 6px;
 
     & h4 {
-        margin: 0;
-        font-family: 'Inter', 'Sans Serif';
-        font-size: .7rem;
-        font-weight: 300;
-        color: black;
-    }
-
-    & h3 {
-        margin: 0;
-        font-size: .8125rem;
-        font-family: 'Inter', 'Sans Serif';
-        letter-spacing: 0.6125;
-        color: #8b8c8f;
+        color: #a4b0bb;
     }
 
     & h2 {
-        margin: 6px 0 6px 0;
+        margin: 0;
         font-family: 'Poppins', 'Sans Serif';
-        font-size: 24pxrem;
+        font-size: 24px;
         color: #53DFB5;
     }
 `;
 
-const BetSlipTotals = styled.div`
-    display: flex;
-    flex-flow: column nowrap;
-    margin: 1rem 0 1rem 0;
+const GameOddsColumnHeaders = styled.div`
+    grid-template-columns: 45% 1fr;
+    margin: 0 0 1rem 0;
+
+    & h4:first-of-type {
+        margin-left: 6px;
+    }
+
+    & h4:not(:first-of-type) {
+        text-align: center;
+    }
+
+    & h4 {
+        color: #a4b0bb;
+        font-size: 12px;
+    }
+`;
+
+const ColumnRow = styled.div`
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 6px;
 
     font-family: 'Inter', 'Sans Serif';
 
-    & .totals__bankroll {
+    & > .l-grid__item {
         display: flex;
-        justify-content: flex-end;
-        padding-right: 1rem;
+        justify-content: center;
     }
 
-    & .totals__headers {
-        display: grid;
-        grid-template-columns: 45% 1fr;
-
-        & .headers__game {
-            display: flex;
-            flex-flow: row nowrap;
-            align-items: center;
-            align-content: center;
-            padding-left: 1rem;
-        }
-
-        & .header-label {
-            & > h4 {
-                margin: 0;
-                font-size: .7rem;
-                font-weight: 400;
-                letter-spacing: .0625em;
-                color: #8b8c8f;
-            }
-        }
-
-        & .headers__odd-labels {
-            display: grid;
-            flex-flow: column nowrap;
-            box-sizing: border-box;
-            grid-template-columns: repeat(3, 1fr);
-            grid-column-gap: 0.2em;
-
-            & .headers__spread, .headers__points, .headers__moneyline {
-                display: flex;
-                flex-flow: column nowrap;
-                align-items: center;
-            }
-        }
+    & > h4 {
+        align-text: center;
     }
 `;
 
@@ -408,7 +375,7 @@ const AccumulatorBanner = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 12px 0 0 0;
+    margin: 0 0 16px 0;
 
     & > button.c-game-odds__accumulator-view-betslip {
         display: flex;
@@ -418,7 +385,7 @@ const AccumulatorBanner = styled.div`
         outline: none;
         padding: 6px;
         border-radius: 5px;
-        box-shadow: 0px 1px 2px 1px #DDD;
+        box-shadow: 0px 1px 2px 1px #C5E9DE;
 
         & > div {
             justify-content: center;
@@ -441,4 +408,8 @@ const AccumulatorBanner = styled.div`
             color: #53DFB5;
         }
     }
+`;
+
+const BetCardList = styled.div`
+    padding: 0 0.1em 0 0.1rem;
 `;
