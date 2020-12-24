@@ -65,6 +65,11 @@ const SignIn = () => {
 	/** handleLogin: sets component state and loggs the user in. */
 	function handleLogin(e) {
 		e.preventDefault();
+		setLoginInfo({
+			user: {},
+			isLoading: true,
+			isLoggedIn: false,
+		});
 		setErrorMessage('');
 		pickleApi.signIn(userEmail, userPassword)
 			.then(data => {
@@ -78,6 +83,11 @@ const SignIn = () => {
 			})
 			.catch(error => {
 				setErrorMessage(error.toString());
+				setLoginInfo({
+          user: {},
+          isLoading: false,
+          isLoggedIn: false,
+        });
 			});
 	};
 };

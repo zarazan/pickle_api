@@ -5,6 +5,15 @@ import { useHistory } from 'react-router-dom';
 function useAuthHandler(loginInfo, setLoginInfo) {
   const history = useHistory();
 
+  function redirectToSignIn() {
+    setLoginInfo({
+      user: {},
+      isLoading: false,
+      isLoggedIn: false,
+    });
+    history.push('/sign-in');
+  }
+
   function loadUser() {
     pickleApi.getAuth()
       .then(data => {
@@ -15,7 +24,7 @@ function useAuthHandler(loginInfo, setLoginInfo) {
         });
         window.heap.identify(data.email);
       }).catch(error => {
-        history.push('/sign-in');
+        redirectToSignIn();
       })
   }
 
@@ -24,7 +33,7 @@ function useAuthHandler(loginInfo, setLoginInfo) {
     if(pickleApi.hasSessionInfo()) {
       loadUser();
     } else {
-      history.push('/sign-in');
+      redirectToSignIn();
     }
   }
 
