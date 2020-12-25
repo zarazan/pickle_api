@@ -29,10 +29,6 @@ const PoolCard = ({ displayPool, index, name, startDate, endDate, sports, privac
                         <Sport style={{ height: '.9rem', width: '.9rem', fill: '#8f8e8e' }}/>
                         <span>{sports > 1 ? `${sports} sports` : `1 sport`} </span>
                     </RowBaseWrapper>
-                    <RowBaseWrapper>
-                        <Timer style={{ height: '.9rem', width: '.9rem', fill: '#8f8e8e' }}/>
-                        <span>{`${zuluToStringFormat(startDate)} - ${zuluToStringFormat(endDate)}`}</span>
-                    </RowBaseWrapper>
                 </CardContents>
             </button>
         </CardWrapper>
@@ -78,7 +74,7 @@ const CardWrapper = styled.div`
 const CardContents= styled.div`
     display: grid;
     grid-template-columns: auto;
-    grid-template-rows: 1.5em repeat(3, 1.25em);
+    grid-template-rows: 1.5em repeat(2, 1.25em);
     grid-template-areas:
         'header'
         'row1'

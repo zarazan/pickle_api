@@ -190,7 +190,6 @@ const ViewPool = () => {
             .then(bets => {
                 // Send dispatch to update the number of bets.
                 updateBetCount(poolId, bets.length);
-                console.log(bets);
                 // Calculate potential payout and current outlay for the current user.
                 const incompleteBets = bets.filter(bet => bet.result !== 'lost' && bet.result !== 'draw' && bet.result !== 'won');
                 const payout = incompleteBets.reduce((acc, cur) => acc + parseFloat(cur.payout), 0.00);
