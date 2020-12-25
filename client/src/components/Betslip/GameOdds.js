@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
 
 import pickleApi from '../../services/pickle_api';
 import { usePoolDispatch, usePoolState } from '../../contexts/PoolContext';
+import { UserContext } from '../../contexts/UserContext';
 import { currencyFormatter } from '../../utilities/helpers';
 
 import BetCard from './BetCard';
@@ -15,28 +15,37 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 const GameOdds = () => {
-    const { poolId } = useParams(); // pool id from url
+    const { poolId } = useParams(); // Pool id from url.
     const history = useHistory();
-    const dispatch = usePoolDispatch();
+    const dispatch = usePoolDispatch(); 
     const state = usePoolState();
+    const setBankroll = (poolId, bankroll) => dispatch( {type: 'SET_BANKROLL', poolId: poolId, bank: bankroll });
     const placeWager = (amount) => dispatch({ type: 'PLACE_WAGER', wager: amount });
 
-    const [componentState, setState] = useState('idle'); // used for component state tracking
-    const [errorMessage, setErrorMessage] = useState(''); // used for displaying errors
+    const [loginInfo] = useContext(UserContext); // The user object for the current user.
 
-    const [betCount, setBetCount] = useState(0); // counter for bets made
-    const [currentBet, setCurrentBet] = useState(null); // holds the current bet for sending bet info to enter wager
-    const [fixtures, setFixtures] = useState([]); // array of pool fixtures
-    const [currentFixture, setCurrentFixture] = useState(null); // holds the current fixture for sending game info to enter wager
-    const [toggleBetSlip, setToggleBetSlip] = useState(false); // used for toggling the bet slip entry form
+    const [componentState, setState] = useState('idle'); // Current tracked state of the component.
+    const [errorMessage, setErrorMessage] = useState(''); // Current errors from data requests.
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
+    const [betCount, setBetCount] = useState(0); // Counter for bets made.
+    const [currentBet, setCurrentBet] = useState(null); // The current bet for sending bet info to enter wager.
+    const [fixtures, setFixtures] = useState([]); // The current array of pool fixtures.
+    const [currentFixture, setCurrentFixture] = useState(null); // The current fixture for sending game info to enter wager.
+    const [toggleBetSlip, setToggleBetSlip] = useState(false); // Toggle bool for displaying the bet slip entry form.
 
+    /** Scroll the window to the top of the page to avoid jarring the user. */
+    useEffect(() => window.scrollTo(0, 0), []);
+
+    /** Fetch and load the pool fixtures. */
     useEffect(() => {
         setState('loading');
         fetchFixtures(poolId);
+    }, []);
+
+    /** Initialize the users's bankroll in case they refresh the page. */
+    useEffect(() => {
+        setState('loading');
+        fetchCurrentUser(poolId);
     }, []);
 
     return (
@@ -125,14 +134,11 @@ const GameOdds = () => {
         </>
     );
 
-    /** closeBetSlip: Toggle the bet slip display and clears the current fixture and bet from state. */
-    function closeBetSlip() {
-        setToggleBetSlip(!toggleBetSlip);
-        setCurrentFixture(null);
-        setCurrentBet(null);
-    }
-
-    /** selectBet: Adds the selected fixture and bet to state and opens the bet slip wager form. */
+    /**
+     * selectBet: Adds the selected fixture and bet to state and opens the bet slip wager form.
+     * @param {string} fixtureId - The ID for the given fixture.
+     * @param {*} betId - The ID for the given bet.
+     */
     function selectBet(fixtureId, betId) {
         const [ fixtureObject ] = fixtures.filter(fixture => fixture.id === fixtureId);
         setCurrentFixture(fixtureObject);
@@ -141,11 +147,35 @@ const GameOdds = () => {
         setToggleBetSlip(!toggleBetSlip);
     }
 
-    /** fetchFixtures: Fetches the fixtures for the pool and add them to state. */
-    function fetchFixtures(id) {
-        pickleApi.getFixtures(id)
+    /**
+     * fetchCurrentUser: Fetches the entries for the pool and filters for the current user.
+     * @param {id} poolId - The id for the current pool. 
+     */
+    function fetchCurrentUser(poolId) {
+        pickleApi.getEntries(poolId)
+            .then(entries => {
+                // Get the entry for the current user by their id.
+                const [ currentUser ] = entries.filter(entry => entry.userId === loginInfo.user.id);
+                // Send dispatch to update pool context state with the current user's bankroll.
+                setBankroll(poolId, currentUser.bank);
+                setState('finished');
+        })
+        .catch(error => {
+            console.log(error.toString());
+            history.push('/sign-in');
+            setErrorMessage(error.toString());
+            setState('error');
+        });
+    }
+
+    /**
+     * fetchFixtures: Fetches the fixtures for the pool and add them to state.
+     * @param {string} poolId - The id of the current pool.
+     */
+    function fetchFixtures(poolId) {
+        pickleApi.getFixtures(poolId)
             .then(data => {
-                // sort the fixtures by date
+                // Sort the fixtures by date ascending and set them to state.
                 const sortedFixtures = data.sort((a, b) => Date.parse(a.startTime) - Date.parse(b.startTime));
                 setFixtures(sortedFixtures);
                 setState('finished');
@@ -157,9 +187,13 @@ const GameOdds = () => {
             });
     }
 
-    /** placeBet: Sends Pickle API request for placing a bet.**/
+    /**
+     * placeBet: Sends Pickle API request for placing a bet.
+     * @param {string} betId  - The id of the bet being placed.
+     * @param {string} betAmount - The amount of the bet being placed.
+     */
     function placeBet(betId, betAmount) {
-        // create response body
+        // Create response body.
         let resp = {};
         resp.pool_id = poolId;
         resp.odd_id = betId;
@@ -167,9 +201,11 @@ const GameOdds = () => {
 
         pickleApi.createBet(resp)
             .then(data => {
+                // Update the bet count.
                 setBetCount(betCount + 1);
+                // Send the place wager dispatch to update the pool state.
                 placeWager(data.amount);
-                
+                // Toggle the betslip off.
                 setToggleBetSlip(false);
                 setState('finished');
             })
@@ -178,6 +214,13 @@ const GameOdds = () => {
                 setErrorMessage(error.toString());
                 setState('error');
             });
+    }
+
+    /** closeBetSlip: Toggle the bet slip display and clears the current fixture and bet from state. */
+    function closeBetSlip() {
+        setToggleBetSlip(!toggleBetSlip); // Toggle the betslip off.
+        setCurrentFixture(null); // Reset the current fixture.
+        setCurrentBet(null); // Reset the current bet.
     }
 };
 
