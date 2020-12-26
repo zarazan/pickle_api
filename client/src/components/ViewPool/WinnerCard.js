@@ -7,7 +7,7 @@ import { currencyFormatter } from '../../utilities/helpers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle, faCrown } from '@fortawesome/free-solid-svg-icons';
 
-const WinnerCard = ({ rank, avatar, name, bankroll }) => {
+const WinnerCard = ({ isUser, rank, avatar, name, bankroll }) => {
     const [isLeader, setIsLeader] = useState(false);
 
     useEffect(() => (
@@ -15,14 +15,15 @@ const WinnerCard = ({ rank, avatar, name, bankroll }) => {
     ), [rank]);
 
     return (
-        <WinnerCardWrapper className={`winner-card-${rank}`}>
+        <WinnerCardWrapper className={`winner-card-${rank} ${isUser ? 'active-user' : ''}`}>
             <div className='winner-card__rank'>{isLeader ? <FontAwesomeIcon icon={faCrown} size='2x' /> : rank}</div>
             <div className='winner-card__avatar'>{!avatar ? <FontAwesomeIcon icon={faUserCircle} size={isLeader ? '3x' : '2x'} /> : avatar}</div>
             <h3 className='winner-card__bankroll'>{currencyFormatter.format(bankroll)}</h3>
-            <h4 className='winner-card__name'>{name}</h4>
+            <h4 className='winner-card__name'>{isUser ? 'You' : name}</h4>
         </WinnerCardWrapper>
-    );
+    )
 
+    /** determineIfLeader: Indicates if the component corresponds to the 1st place user. */
     function determineIfLeader(number) {
         if(number === 1) {
             setIsLeader(true);
@@ -31,11 +32,17 @@ const WinnerCard = ({ rank, avatar, name, bankroll }) => {
 };
 
 WinnerCard.propTypes = {
-    rank: PropTypes.number,
+    isUser: PropTypes.bool,
+    rank: PropTypes.number.isRequired,
     avatar: PropTypes.object,
     bankroll: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
-};
+}
+
+WinnerCard.defaultProps = {
+    isUser: false,
+    avatar: null,
+}
 
 export default WinnerCard;
 
@@ -73,5 +80,14 @@ const WinnerCardWrapper = styled.div`
         color: #202122;
         font-weight: 300;
         text-align: center;
+    }
+
+    &[class~='active-user'] {
+        font-weight: 700;
+        background-color: #ECF8FE;
+
+        h4.winner-card__name {
+            color: #3DB8F5;
+        }
     }
 `;
