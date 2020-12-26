@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { ThemeProvider } from 'styled-components';
 
 import useAuthHandler from '../../hooks/AuthHandler';
 import { UserContext } from '../../contexts/UserContext'
@@ -9,7 +8,6 @@ import { UnAuthenticatedApp } from './UnAuthenticatedApp';
 import FullPageSpinner from '../App/FullPageSpinner';
 
 const App = () => {
-
     const [loginInfo, setLoginInfo] = useContext(UserContext);
     useAuthHandler(loginInfo, setLoginInfo)
 

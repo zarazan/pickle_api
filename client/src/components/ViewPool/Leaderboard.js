@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -10,10 +10,12 @@ import WinnerCard from './WinnerCard';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { UserContext } from '../../contexts/UserContext';
 
 const Leaderboard = () => {
     const { poolId } = useParams(); // pool id from url
     const history = useHistory();
+    const [loginInfo] = useContext(UserContext);
 
     const [componentState, setComponentState] = useState('idle');
     const [errorMessage, setErrorMessage] = useState(''); // used for displaying errors
@@ -45,6 +47,7 @@ const Leaderboard = () => {
                                     {entries.slice(0, 3).map((result, index) => (
                                         <WinnerCard 
                                             key={index}
+                                            isUser={result.userId === loginInfo.user.id}
                                             rank={index + 1}
                                             avatar={result.image}
                                             name={result.userName}
@@ -63,6 +66,7 @@ const Leaderboard = () => {
                                         <RowResult 
                                             key={index}
                                             rank={index + 4}
+                                            isUser={result.userId === loginInfo.user.id}
                                             avatar={result.image}
                                             name={result.userName}
                                             bankroll={result.bankrollPlusActiveBets}
