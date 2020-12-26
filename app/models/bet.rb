@@ -5,9 +5,11 @@ class Bet < ApplicationRecord
   validates :amount, presence: true
 
   belongs_to :user
-  belongs_to :odd
   belongs_to :pool
   belongs_to :entry
+
+  has_many :bet_odds
+  has_many :odds, through: :bet_odds
 
   def payout
     amount * odd.ratio

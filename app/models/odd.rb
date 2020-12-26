@@ -9,7 +9,9 @@ class Odd < ApplicationRecord
 
   belongs_to :fixture
   belongs_to :team, optional: -> { !team_is_required }
-  has_many :bets
+
+  has_many :bet_odds
+  has_many :bets, through: :bet_odds
 
   validates :ratio, presence: true
 
