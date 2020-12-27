@@ -84,52 +84,52 @@ const OpenBets = ({ bet }) => {
                             <h4 className='c-betslip__game-datetime'>{zuluToStringFormat(fix.startTime)}</h4>
                         </BetSlipGameInfo>
 
-                        {fix.bets.map((sub, index) => (
+                        {fix.odds.map((odd, index) => (
                             
                             <div className='l-column-flex l-column-flex__item'>
     
                                 <OddDetail className='odd-detail l-row-flex l-column-flex__item'>
                                     <div className='l-row-flex l-row-flex__item'>
                                         <Dot className={`c-betslip__odd-status
-                                            ${!sub.result || sub.result === ''
+                                            ${!odd.result || odd.result === ''
                                                 ? '--open'
-                                                : sub.result === 'in-progress'
+                                                : odd.result === 'in-progress'
                                                     ? '--in-progress' 
-                                                    : sub.result === 'won'
+                                                    : odd.result === 'won'
                                                         ? '--win' 
-                                                        : sub.result === 'lost'
+                                                        : odd.result === 'lost'
                                                             ? '--loss'
                                                             : '--draw'
                                             }`}
                                         />
-                                        {sub.odd.type === 'money_line'
+                                        {odd.type === 'money_line'
                                             ? <BetTypeLabel className='l-row-flex l-row-flex__item'>{'M/L'}</BetTypeLabel>
-                                            : sub.odd.type === 'spread'
+                                            : odd.type === 'spread'
                                                 ? <BetTypeLabel className='l-row-flex l-row-flex__item'>{'P/S'}</BetTypeLabel>
                                                 : <BetTypeLabel className='l-row-flex l-row-flex__item'>{'T/P'}</BetTypeLabel>
                                         }
                                         <span className='betslip__team-name'>
-                                            {sub.odd.type === 'over'
-                                                ? `Over ${sub.odd.metric}`
-                                                : sub.odd.type === 'under'
-                                                    ? `Under ${sub.odd.metric}`
-                                                    : sub.odd.teamName
+                                            {odd.type === 'over'
+                                                ? `Over ${odd.metric}`
+                                                : odd.type === 'under'
+                                                    ? `Under ${odd.metric}`
+                                                    : odd.teamName
                                             }
                                         </span>
                                     </div>
     
                                     <div className='l-row-flex l-row-flex__item'>
                                         <span className='odds betslip__metric-ratio'>
-                                            {sub.odd.type === 'over' || sub.odd.type === 'under'
+                                            {odd.type === 'over' || odd.type === 'under'
                                                 ? ''
-                                                : sub.odd.metric
-                                                    ? sub.odd.metric > 0
-                                                        ? `+${sub.odd.metric}` 
-                                                        : sub.odd.metric
+                                                : odd.metric
+                                                    ? odd.metric > 0
+                                                        ? `+${odd.metric}` 
+                                                        : odd.metric
                                                     : ' '
                                             }
                                             {' '}
-                                            {sub.odd.american > 0 ? `(+${sub.odd.american})` : `(${sub.odd.american})`}
+                                            {odd.american > 0 ? `(+${odd.american})` : `(${odd.american})`}
                                         </span>
                                     </div>
                                 </OddDetail>

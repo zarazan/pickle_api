@@ -254,7 +254,7 @@ const GameOdds = () => {
         // create response body
         let resp = {};
         resp.pool_id = poolId;
-        resp.odd_id = betIds;
+        betIds.length > 1 ? resp.odd_ids = betIds : resp.odd_id = betIds;
         resp.amount = betAmount;
 
         pickleApi.createBet(resp)
