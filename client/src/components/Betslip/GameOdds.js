@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import pickleApi from '../../services/pickle_api';
 import { usePoolDispatch, usePoolState } from '../../contexts/PoolContext';
+import { UserContext } from '../../contexts/UserContext';
 import { currencyFormatter } from '../../utilities/helpers';
 
 import BetCard from './BetCard';
@@ -14,31 +15,39 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 const GameOdds = () => {
-    const { poolId } = useParams(); // pool id from url
+    const { poolId } = useParams(); // Pool id from url.
     const history = useHistory();
-    const dispatch = usePoolDispatch();
+    const dispatch = usePoolDispatch(); 
     const state = usePoolState();
+    const setBankroll = (poolId, bankroll) => dispatch( {type: 'SET_BANKROLL', poolId: poolId, bank: bankroll });
     const placeWager = (amount) => dispatch({ type: 'PLACE_WAGER', wager: amount });
 
-    const [componentState, setState] = useState('idle'); // used for component state tracking
-    const [errorMessage, setErrorMessage] = useState(''); // used for displaying errors
+    const [loginInfo] = useContext(UserContext); // The user object for the current user.
 
-    const [betCount, setBetCount] = useState(0); // counter for bets made
-    const [fixtures, setFixtures] = useState([]); // array of pool fixtures
-    const [currentFixture, setCurrentFixture] = useState(null); // holds the current fixture for sending game info to enter wager
-    const [toggleBetSlip, setToggleBetSlip] = useState(false); // used for toggling the bet slip entry form
-    
-    // parlay bet state
-    const [betMode, setBetMode] = useState('SINGLE'); // defines the type of bet: single or accumulate
-    const [betAccumulator, setBetAccumulator] = useState([]); // { fixture: ID, bet: ID }
+    const [componentState, setState] = useState('idle'); // Current tracked state of the component.
+    const [errorMessage, setErrorMessage] = useState(''); // Current errors from data requests.
+
+    const [betCount, setBetCount] = useState(0); // Counter for bets made.
+    const [betMode, setBetMode] = useState('SINGLE');
+    const [betAccumulator, setBetAccumulator] = useState([]);
+    const [currentBet, setCurrentBet] = useState(null); // The current bet for sending bet info to enter wager.
+    const [fixtures, setFixtures] = useState([]); // The current array of pool fixtures.
+    const [currentFixture, setCurrentFixture] = useState(null); // The current fixture for sending game info to enter wager.
+    const [toggleBetSlip, setToggleBetSlip] = useState(false); // Toggle bool for displaying the bet slip entry form.
 
     /** Scroll the window to the top of the page to avoid jarring the user. */
     useEffect(() => window.scrollTo(0, 0), []);
 
-    /** Fetch all fixtures for the pool and add them to state. */
+    /** Fetch and load the pool fixtures. */
     useEffect(() => {
-        setState('LOADING');
+        setState('loading');
         fetchFixtures(poolId);
+    }, []);
+
+    /** Initialize the users's bankroll in case they refresh the page. */
+    useEffect(() => {
+        setState('loading');
+        fetchCurrentUser(poolId);
     }, []);
 
     return (
@@ -195,15 +204,36 @@ const GameOdds = () => {
             setBetAccumulator([...betAccumulator, betObject]);
         }
     }
+        
+    /*
+     * fetchCurrentUser: Fetches the entries for the pool and filters for the current user.
+     * @param {id} poolId - The id for the current pool. 
+     */
+    function fetchCurrentUser(poolId) {
+        pickleApi.getEntries(poolId)
+            .then(entries => {
+                // Get the entry for the current user by their id.
+                const [ currentUser ] = entries.filter(entry => entry.userId === loginInfo.user.id);
+                // Send dispatch to update pool context state with the current user's bankroll.
+                setBankroll(poolId, currentUser.bank);
+                setState('finished');
+        })
+        .catch(error => {
+            console.log(error.toString());
+            history.push('/sign-in');
+            setErrorMessage(error.toString());
+            setState('error');
+        });
+    }
 
     /**
      * fetchFixtures: Fetches the fixtures for the pool and add them to state.
-     * @param {string} id - The fixture ID to send in the API request.
+     * @param {string} poolId - The id of the current pool.
      */
-    function fetchFixtures(id) {
-        pickleApi.getFixtures(id)
+    function fetchFixtures(poolId) {
+        pickleApi.getFixtures(poolId)
             .then(data => {
-                // sort the fixtures by date
+                // Sort the fixtures by date ascending and set them to state.
                 const sortedFixtures = data.sort((a, b) => Date.parse(a.startTime) - Date.parse(b.startTime));
                 setFixtures(sortedFixtures);
                 setState('FINISHED');
@@ -229,7 +259,9 @@ const GameOdds = () => {
 
         pickleApi.createBet(resp)
             .then(data => {
+                // Update the bet count.
                 setBetCount(betCount + 1);
+                // Send the place wager dispatch to update the pool state.
                 placeWager(data.amount);
                 
                 setCurrentFixture(null); // Clear the current fixture.
@@ -243,6 +275,15 @@ const GameOdds = () => {
                 setErrorMessage(error.toString());
                 setState('ERROR');
             });
+    }
+
+    /** closeBetSlip: Toggle the bet slip display and clears the current fixture and bet from state. */
+    function closeBetSlip() {
+        setToggleBetSlip(!toggleBetSlip); // Toggle the betslip off.
+        setCurrentFixture(null); // Reset the current fixture.
+        setBetMode('SINGLE'); // Reset the bet mode.
+        setBetAccumulator([]); // Reset the bet cache.
+        setCurrentBet(null); // Reset the current bet.
     }
 };
 

@@ -18,7 +18,7 @@ import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 
 const ViewPool = () => {
     const [{user}] = useContext(UserContext);
-    const [myInfo, setMyInfo] = useState({ userName: '', bank: 10, bankrollPlusActiveBets: 0, rank: 0 });
+    const [myInfo, setMyInfo] = useState({ userName: '', bank: 0, bankrollPlusActiveBets: 0, rank: 0 });
     const dispatch = usePoolDispatch();
     const setBankroll = (pool, bank) => dispatch({ type: 'SEED_POOL', poolId: pool, bank: bank });
     const updateBetCount = (pool, count) => dispatch({ type: 'UPDATE_BET_COUNT', poolId: pool, bets: count});
@@ -38,10 +38,6 @@ const ViewPool = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
-    }, []);
-
-    useEffect(() => {
-        fetchPoolInfo(poolId);
     }, []);
 
     useEffect(() => {
@@ -111,6 +107,7 @@ const ViewPool = () => {
                                                     <div className='pool-user-placement'>
                                                         <RowResult 
                                                             rank={myInfo.position + 1}
+                                                            isUser={true}
                                                             avatar={null}
                                                             name={myInfo.userName}
                                                             bankroll={myInfo.bankrollPlusActiveBets}
@@ -155,26 +152,23 @@ const ViewPool = () => {
         </ViewPoolWrapper>  
     );
 
-    /** fetchPoolInfo: Fetches the pool index data and adds it to state. */
-    function fetchPoolInfo(id) {
-        
-    }
-
-    /** fetchAndSetEntries: Fetches the entries for the pool and adds them to state. */
+    /**
+     * fetchAndSetEntries: Fetches the entries for the pool and adds them to state.
+     * @param {id} id - The ID for the current pool. 
+     */
     function fetchAndSetEntries(id) {
         pickleApi.getEntries(id)
             .then(entries => {
-                // add entries to state
-                const firstEntry = entries[0];
-                if(firstEntry) setPoolName(firstEntry.poolName);
-                // get the entry for the current user
-                // TODO: change this to an ID in the future
-                const [ info ] = entries.filter(entry => entry.userName === user.name);
+                // Get the entry for the current user by their ID.
+                const [ currentUser ] = entries.filter(entry => entry.userId === user.id);
                 const topEntries = entries.filter(entry => entry.position < 3);
-                // send dispatch
-                setBankroll(poolId, info.bank);
-                // add info to state
-                setMyInfo(info);
+                // Send dispatch to update pool context state with the current user's bankroll.
+                setBankroll(poolId, currentUser.bank);
+                // Set the pool name.
+                if(currentUser) setPoolName(currentUser.poolName);
+                // Add current user's info to my info state.
+                setMyInfo(currentUser);
+                // Add the top 3 entries to the winner's circle state.
                 setWinnersCircle(topEntries);
                 setState('finished');
         })
@@ -186,24 +180,29 @@ const ViewPool = () => {
         });
     }
 
-    /** fetchAndSetBets: Fetches the user open bets for the pool and adds them to state. */
+    /**
+     * fetchAndSetBets: Fetches the user open bets for the pool and adds them to state.
+     * @param {id} id  - The ID for the current pool.
+     */
     function fetchAndSetBets(id) {
         pickleApi.getBets(id)
             .then(bets => {
-                // send dispatch
+                // Send dispatch to update the number of bets.
                 updateBetCount(poolId, bets.length);
-                // calculate potential payout
-                const wonAndOpenBets = bets.filter(bet => bet.result !== 'lost' && bet.result !== 'draw');
-                const payout = wonAndOpenBets.reduce((acc, cur) => acc + parseFloat(cur.payout), 0.00);
-                // calculate total outlay
+                // Calculate potential payout and current outlay for the current user.
+                const incompleteBets = bets.filter(bet => bet.result !== 'lost' && bet.result !== 'draw' && bet.result !== 'won');
+                const payout = incompleteBets.reduce((acc, cur) => acc + parseFloat(cur.payout), 0.00);
                 const openBets = bets.filter(bet => bet.result !== 'lost' && bet.result !== 'won' & bet.result !== 'won');
                 const outlay = openBets.reduce((acc, cur) => acc + parseFloat(cur.amount), 0.00);
-                // sort the bets by date
+
+                // Sort the bets for displaying in ascending order.
                 const sortedBets = bets.sort((a, b) => Date.parse(a.gameDateTime) - Date.parse(b.gameDateTime));
+                console.log(sortedBets);
                 
-                // add bets to state
+                // Add the open bets to state.
                 setOpenBets(sortedBets);
-                setPotentialPayout(payout);
+                // Set the potential payout and outlay calculations to state.
+                setPotentialPayout(payout + myInfo.bank);
                 setOutlay(outlay);
                 setState('finished');
             })

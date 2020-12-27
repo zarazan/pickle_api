@@ -11,6 +11,8 @@ function useAuthHandler(loginInfo, setLoginInfo) {
       isLoading: false,
       isLoggedIn: false,
     });
+    // Reset Heap Analytics user identity.
+    window.heap.resetIdentity()
     history.push('/sign-in');
   }
 
@@ -22,6 +24,7 @@ function useAuthHandler(loginInfo, setLoginInfo) {
           isLoading: false,
           isLoggedIn: true,
         });
+        // Identify Heap Analytics user identity.
         window.heap.identify(data.email);
       }).catch(error => {
         redirectToSignIn();

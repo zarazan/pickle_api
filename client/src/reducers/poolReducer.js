@@ -26,6 +26,11 @@ function reducer(state = INITIAL_STATE, action) {
                 betCount: action.bets,
             };
         case type.SET_BANKROLL:
+            return { 
+                ...state,
+                poolId: action.poolId,
+                bank: action.bank,
+            };
         case type.PLACE_WAGER:
             return {
                 ...state,
