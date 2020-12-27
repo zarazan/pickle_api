@@ -13,7 +13,7 @@ class BetsController < ApplicationController
   private
 
   def bet_params
-    params.require(:bet).permit(:pool_id, :amount, odd_id, odd_ids:[])
+    params.require(:bet).permit(:pool_id, :amount, :odd_id, odd_ids:[])
   end
 
 end
