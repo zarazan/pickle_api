@@ -57,7 +57,7 @@ class Bet < ApplicationRecord
     bet_attributes[:entry] = entry
 
     if bet_attributes[:odd_id]
-      odds = [Odd.find(bet_attributes[:odd_id])]
+      odds = [Odd.find(bet_attributes.delete(:odd_id))]
     else
       odds = Odd.find(bet_attributes.delete(:odd_ids))
     end
