@@ -60,5 +60,20 @@ class BetTest < ActiveSupport::TestCase
       @fixture.change_status!('home_win')
       assert_equal 525, @entry.reload.bank
     end
+
+    it 'settles a parlay money_line and under bet' do
+      @odd2 = Odd.import({fixture: @fixture, type: UnderOdd.name, ratio: 1.7, metric: 60})
+      @bet = Bet.place_bet({
+        user: @user,
+        pool_id: @pool.id,
+        odd_ids: [@odd.id, @odd2.id],
+        amount: 50
+      })
+
+      @fixture.update(home_score: 52, away_score: 7)
+      @fixture.change_status!('home_win')
+
+      assert_equal 602.50, @entry.reload.bank
+    end
   end
 end
