@@ -1,8 +1,14 @@
-@bets.includes(odd: [:team, fixture: [:home_team, :away_team]]).order('fixtures.start_time').map do |bet|
+@bets.includes(odds: [:team, fixture: [:home_team, :away_team]]).order('fixtures.start_time').map do |bet|
+  
+  grouped_odds = bet.odds.group_by(&:fixture_id)
+
+  fixtures = grouped_odds.map do |fixture_id, odds|
+    odds.first.fixture.as_json.merge(odds: odds)
+  end
+  
   bet.as_json.merge({
-    homeTeamName: bet.odd.fixture.home_team.name,
-    awayTeamName: bet.odd.fixture.away_team.name,
-    odd: bet.odd,
-    fixture: bet.odd.fixture
+    fixtures: fixtures,
+    ratio: bet.ratio,
+    american: bet.american
   })
 end

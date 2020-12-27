@@ -83,7 +83,9 @@ class Fixture < ApplicationRecord
 
   def as_json(options = {})
     super.merge({
-      locked: locked?
+      locked: locked?,
+      homeTeamName: home_team.name,
+      awayTeamName: away_team.name,
     })
   end
 

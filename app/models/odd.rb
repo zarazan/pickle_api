@@ -9,7 +9,9 @@ class Odd < ApplicationRecord
 
   belongs_to :fixture
   belongs_to :team, optional: -> { !team_is_required }
-  has_many :bets
+
+  has_many :bet_odds
+  has_many :bets, through: :bet_odds
 
   validates :ratio, presence: true
 
@@ -21,6 +23,10 @@ class Odd < ApplicationRecord
     :under,
     :spread
   ]
+
+  def pending?
+    !fixture.complete?
+  end
 
   def odd_type
     self.class.name.underscore.chomp('_odd')
@@ -44,9 +50,25 @@ class Odd < ApplicationRecord
     end
   end
 
+  def won?
+    get_result_or_pending == :won
+  end
+
+  def draw?
+    get_result_or_pending == :draw
+  end
+
+  def lost?
+    get_result_or_pending == :lost
+  end
+
+  def won_or_draw?
+    [:won, :draw].include?(get_result_or_pending)
+  end
+
   # returns :won, :lost, :draw, or :pending
   def get_result_or_pending
-    return :pending unless fixture.complete?
+    return :pending if pending?
     get_result
   end
 
@@ -54,7 +76,7 @@ class Odd < ApplicationRecord
     false
   end
 
-  def american
+  def self.to_american(ratio)
     if ratio >= 2
       ((ratio - 1) * 100).round
     else
@@ -62,11 +84,16 @@ class Odd < ApplicationRecord
     end
   end
 
+  def american
+    self.class.to_american(ratio)
+  end
+
   def as_json(options = {})
     super.merge({
       type: odd_type,
       teamName: team&.name,
-      american: american
+      american: american,
+      result: get_result_or_pending,
     })
   end
 
