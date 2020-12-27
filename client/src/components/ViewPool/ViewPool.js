@@ -106,6 +106,7 @@ const ViewPool = () => {
                                                     <div className='pool-user-placement'>
                                                         <RowResult 
                                                             rank={myInfo.position + 1}
+                                                            isUser={true}
                                                             avatar={null}
                                                             name={myInfo.userName}
                                                             bankroll={myInfo.bankrollPlusActiveBets}
@@ -139,7 +140,7 @@ const ViewPool = () => {
                                                 <OpenBetCard
                                                     key={i} 
                                                     gameName={`${bet.awayTeamName} at ${bet.homeTeamName}`} 
-                                                    gameDateTime={null}
+                                                    gameDateTime={bet.fixture.startTime}
                                                     bet={bet} 
                                                     result={bet.result}
                                                 />
@@ -198,6 +199,7 @@ const ViewPool = () => {
 
                 // Sort the bets for displaying in ascending order.
                 const sortedBets = bets.sort((a, b) => Date.parse(a.gameDateTime) - Date.parse(b.gameDateTime));
+                console.log(sortedBets);
                 
                 // Add the open bets to state.
                 setOpenBets(sortedBets);
