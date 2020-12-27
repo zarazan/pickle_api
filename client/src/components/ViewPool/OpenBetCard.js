@@ -14,148 +14,151 @@ import { ReactComponent as Dot } from '../../icons/black-circle.svg';
 
 const OpenBets = ({ bet }) => {
     return (
-        <BetSlip className='betslip'>
-            <BetSlipHeader className='header'>
-                <div className='header__sport'>
-                    <div className='sport-banner'>
-                        <FootballIcon className='sport-banner__icon'/>
-                        <div>FOOTBALL</div>
-                    </div>
-                    <div className='sport-league'>NFL</div>
-                </div>
+        <BetSlipWrapper className='c-betslip l-column-flex'>
 
-                <BetSlipHeaderStatus className='header__info'>
-                    <div className={`bet-status 
-                        ${!bet.result || bet.result === '' // bet is open
+            <BetSlipHeader className='header l-row-flex l-column-flex__item'>
+                <SportBannerWrapper className='l-row-flex l-row-flex__item'>
+                    <SportBanner className='l-row-flex l-row-flex__item'>
+                        <FootballIcon className='c-betslip__sport-icon'/>
+                        <h4 className='c-betslip__sport-name'>Football</h4>
+                    </SportBanner>
+                    <LeagueBanner className='l-row-flex l-row-flex__item'>
+                        <h4 className='c-betslip__league-name'>NFL</h4>
+                    </LeagueBanner>
+                </SportBannerWrapper>
+
+                <StatusBanner className={`l-row-flex l-row-flex__item
+                        ${!bet.result || bet.result === '' // Bet is open.
                             ? 'open'
-                            : bet.result === 'in-progress' // bet is in progress
+                            : bet.result === 'in-progress'
                                 ? 'in-progress' 
-                                : bet.result === 'won' // bet is won
+                                : bet.result === 'won'
                                     ? 'win' 
-                                    : bet.result === 'lost' // bet is lost
+                                    : bet.result === 'lost'
                                         ? 'loss'
-                                        : 'draw' // bet is a draw
+                                        : 'draw'
                         }`
                     }>
-                        {!bet.result || bet.result === '' // no bet result
+                        {!bet.result || bet.result === ''
                             ? 
                                 <>
-                                    <span className='bet-status-label'>Scheduled</span>
-                                    <Calendar className='bet-status-icon'/>
+                                    <h4 className='c-betslip__bet-status--label'>Scheduled</h4>
+                                    <Calendar className='c-betslip__bet-status--icon'/>
                                 </>
                             : bet.result === 'in-progress'
                                 ? 
                                 <>
-                                    <span className='bet-status-label'>In-Progress</span>
-                                    <Clock className='bet-status-icon'/>
+                                    <h4 className='c-betslip__bet-status--label'>In-Progress</h4>
+                                    <Clock className='c-betslip__bet-status--icon'/>
                                 </>
                                 : bet.result === 'won'
                                     ?
                                         <>
-                                            <span className='bet-status-label'>Won</span>
-                                            <Check className='bet-status-icon'/>
+                                            <h4 className='c-betslip__bet-status--label'>Won</h4>
+                                            <Check className='c-betslip__bet-status--icon'/>
                                         </>
                                     : bet.result === 'lost'
                                         ?
                                             <>
-                                                <span className='bet-status-label'>Lost</span>
-                                                <Cancel className='bet-status-icon'/>
+                                                <h4 className='c-betslip__bet-status--label'>Lost</h4>
+                                                <Cancel className='c-betslip__bet-status--icon'/>
                                             </>
                                         :
                                             <>
-                                                <span className='bet-status-label'>Push</span>
-                                                <Equal className='bet-status-icon'/>
+                                                <h4 className='c-betslip__bet-status--label'>Push</h4>
+                                                <Equal className='c-betslip__bet-status--icon'/>
                                             </>
                         }
-                    </div>
-                </BetSlipHeaderStatus>
+                </StatusBanner>
 
             </BetSlipHeader>
 
-            <BetSlipContent className='content'>
+            <div className='content l-column-flex l-column-flex__item'>
+
                 {bet.fixtures.map((fix, index) => (
-                    <div className='l-column-flex'>
-                        <BetSlipGameInfo className='content__header content-row'>
-                            <span className='content__game'>{`${fix.awayTeamName} at ${fix.homeTeamName}`} </span>
-                            <span className='content__datetime'>{zuluToStringFormat(fix.startTime)}</span>
+                    
+                    <BetSlipRow className='row l-column-flex l-column-flex__item'>
+                        
+                        <BetSlipGameInfo className='l-column-flex l-column-flex__item'>
+                            <h4 className='c-betslip__game-name'>{`${fix.awayTeamName} at ${fix.homeTeamName}`} </h4>
+                            <h4 className='c-betslip__game-datetime'>{zuluToStringFormat(fix.startTime)}</h4>
                         </BetSlipGameInfo>
 
-                        {fix.bets.map((bet, index) => (
-                            <div className='l-column-flex l-colum-flex__item'>
+                        {fix.bets.map((sub, index) => (
+                            
+                            <div className='l-column-flex l-column-flex__item'>
     
-                                <BetSlipDetails className='content__bet content-row'>
-                                    <div className='betslip__bet-type'>
-                                        <Dot className={`betslip__sub-bet-status
-                                            ${!bet.result || bet.result === '' // bet is open
+                                <OddDetail className='odd-detail l-row-flex l-column-flex__item'>
+                                    <div className='l-row-flex l-row-flex__item'>
+                                        <Dot className={`c-betslip__odd-status
+                                            ${!sub.result || sub.result === ''
                                                 ? '--open'
-                                                : bet.result === 'in-progress' // bet is in progress
+                                                : sub.result === 'in-progress'
                                                     ? '--in-progress' 
-                                                    : bet.result === 'won' // bet is won
+                                                    : sub.result === 'won'
                                                         ? '--win' 
-                                                        : bet.result === 'lost' // bet is lost
+                                                        : sub.result === 'lost'
                                                             ? '--loss'
-                                                            : '--draw' // bet is a draw
+                                                            : '--draw'
                                             }`}
                                         />
-                                        {bet.odd.type === 'money_line'
-                                            ? <BetTypeLabel className='bet-type-label'>{'M/L'}</BetTypeLabel>
-                                            : bet.odd.type === 'spread'
-                                                ? <BetTypeLabel className='bet-type-label'>{'P/S'}</BetTypeLabel>
-                                                : <BetTypeLabel className='bet-type-label'>{'T/P'}</BetTypeLabel>
+                                        {sub.odd.type === 'money_line'
+                                            ? <BetTypeLabel className='l-row-flex l-row-flex__item'>{'M/L'}</BetTypeLabel>
+                                            : sub.odd.type === 'spread'
+                                                ? <BetTypeLabel className='l-row-flex l-row-flex__item'>{'P/S'}</BetTypeLabel>
+                                                : <BetTypeLabel className='l-row-flex l-row-flex__item'>{'T/P'}</BetTypeLabel>
                                         }
-                                        <div className='betslip__team-name'>
-                                            {bet.odd.type === 'over'
-                                                ? `Over ${bet.odd.metric}`
-                                                : bet.odd.type === 'under'
-                                                    ? `Under ${bet.odd.metric}`
-                                                    : bet.odd.teamName
+                                        <span className='betslip__team-name'>
+                                            {sub.odd.type === 'over'
+                                                ? `Over ${sub.odd.metric}`
+                                                : sub.odd.type === 'under'
+                                                    ? `Under ${sub.odd.metric}`
+                                                    : sub.odd.teamName
                                             }
-                                        </div>
+                                        </span>
                                     </div>
     
-                                    <div className='betslip__bet-odds'>
-                                        <div className='odds betslip__metric-ratio'>
-                                            {bet.odd.type === 'over' || bet.odd.type === 'under'
+                                    <div className='l-row-flex l-row-flex__item'>
+                                        <span className='odds betslip__metric-ratio'>
+                                            {sub.odd.type === 'over' || sub.odd.type === 'under'
                                                 ? ''
-                                                : bet.odd.metric
-                                                    ? bet.odd.metric > 0
-                                                        ? `+${bet.odd.metric}` 
-                                                        : bet.odd.metric
+                                                : sub.odd.metric
+                                                    ? sub.odd.metric > 0
+                                                        ? `+${sub.odd.metric}` 
+                                                        : sub.odd.metric
                                                     : ' '
                                             }
                                             {' '}
-                                            {bet.odd.american > 0 ? `(+${bet.odd.american})` : `(${bet.odd.american})`}
-                                        </div>
+                                            {sub.odd.american > 0 ? `(+${sub.odd.american})` : `(${sub.odd.american})`}
+                                        </span>
                                     </div>
-                                </BetSlipDetails>
+                                </OddDetail>
                             </div>
                         ))}
-                    </div>
+                    </BetSlipRow>
                 ))}
 
-                <BetSlipWager className='content__money content-row'>
-                    <div className='betslip__bet-amount'>
-                        <span className='content__money-label'>STAKE</span>
-                        <span className='content__money-data'>{currencyFormatter.format(bet.amount)}</span>
+                <BetSlipWager className='wager-detail l-grid l-column-flex__item'>
+                    <div className='l-column-flex l-grid__item'>
+                        <span className='c-betslip__content-label'>STAKE</span>
+                        <span className='c-betslip__content-data'>{currencyFormatter.format(bet.amount)}</span>
                     </div>
-                    <div className='betslip__bet-payout'>
-                        <span className='content__money-label'>TO WIN</span>
-                        <span className='content__money-data'>{currencyFormatter.format(bet.payout)}</span>
+                    <div className='l-column-flex l-grid__item'>
+                        <span className='c-betslip__content-label'>TO WIN</span>
+                        <span className='c-betslip__content-data'>{currencyFormatter.format(bet.payout)}</span>
                     </div>
-                    <div className='betslip__cash-out'>
-                        <span className='content__money-label'>CASH OUT</span>
-                        <button className='bet-cashout' disabled>{`$0.00`}</button>
+                    <div className='l-column-flex l-grid__item'>
+                        <span className='c-betslip__content-label'>CASH OUT</span>
+                        <button className='btn c_betslip__cashout-button' disabled>{`$0.00`}</button>
                     </div>
                 </BetSlipWager>
-            </BetSlipContent>
+            </div>
 
-        </BetSlip>
+        </BetSlipWrapper>
     );
 };
 
 OpenBets.propTypes = {
-    gameName: PropTypes.string.isRequired,
-    gameDateTime: PropTypes.string,
     bet: PropTypes.object.isRequired,
 };
 
@@ -165,68 +168,144 @@ OpenBets.defaultProps = {
 
 export default OpenBets;
 
-const BetSlip = styled.div`
-    margin-bottom: 0.5rem;
-    font-family: 'Inter', 'Sans Serif';
+const BetSlipWrapper = styled.div`
     box-sizing: border-box;
 
+    & div.l-grid {
+        display: grid;
+        box-sizing: border-box;
+    }
+
+    & div[class~='l-column-flex'] {
+        display: flex;
+        flex-flow: column nowrap;
+        box-sizing: border-box;
+    }
+
+    & div[class~='l-row-flex'] {
+        display: flex;
+        flex-flow: row nowrap;
+        box-sizing: border-box;
+    }
+
+    margin-bottom: 0.5rem;
+    font-family: 'Inter', 'Sans Serif';
     border-bottom: 1px solid #F2F2F2;
+
+    & h3 {
+        font-size: 15px;
+        font-weight: 300;
+        margin: 0;
+    }
+
+    & h4 {
+        font-size: 13px;
+        font-weight: 300;
+        margin: 0;
+    }
 `;
     
 const BetSlipHeader = styled.div`
-    display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    margin-bottom: 0.4rem;
+`;
 
-    .header__sport {
-        display: flex;
-        margin-top: 0.5rem;
-
-        & .sport-banner, .sport-league {
-            display: flex;
-            flex-flow: row nowrap;
-            box-sizing: border-box;
-            padding: 0.2rem 0.4rem 0.2rem 0.4rem;
-            font-size: 0.7rem;
-        }
+const SportBannerWrapper = styled.div`
+    & > div {
+        align-items: center;
+        padding: 0.2rem 0.4rem 0.2rem 0.4rem;
         
-        & .sport-banner {
-            align-items: center;
-            background: #D9D9D9;
-            color: #8C8C8C;
+    }
+`;
 
-            & > svg {
-                margin-right: 0.5rem;
-                fill: #8C8C8C;
-            }
-        }
+const LeagueBanner = styled.div`
+    align-items: center;
+    background: #f2f2f2;
+    color: #8C8C8C;
+`;
 
-        & .sport-league {
-            background: #f2f2f2;
+const SportBanner = styled.div`
+    background: #D9D9D9;
+    color: #8C8C8C;
+
+    & > svg {
+        margin-right: 0.5rem;
+        fill: #8C8C8C;
+    }
+`;
+
+const StatusBanner = styled.div`
+    align-items: center;
+    
+    & svg.c-betslip__bet-status--icon {
+        height: 16px;
+        width: auto;
+        margin-left: 8px;
+    }
+
+    &[class~='open'] {
+        color: #8C8C8C;
+        & svg { fill: #8C8C8C; }
+    }
+
+    &[class~='in-progress'] {
+        color: #F4A261;
+        & svg { fill: #F4A261; }
+    }
+
+    &[class~='win'] {
+        color: #49DEB2;
+        & svg { fill: #49DEB2; }
+    }
+
+    &[class~='loss'] {
+        color: #F03B58;
+        & svg { fill: #F03B58; }
+    }
+
+    &[class~='draw'] {
+        color: #49BCF6;
+        & svg { fill: #49BCF6; }
+    }
+`;
+
+const BetSlipRow = styled.div`
+    & > div.l-column-flex__item:first-of-type {
+        margin-bottom: 12px;
+    }
+
+    & > div.l-column-flex__item {
+        margin-bottom: 6px;
+    }
+`;
+
+const BetSlipGameInfo = styled.div`
+    color: #aaaaaa;
+    margin: 12px 0 12px 0;
+
+    & h4 {
+        color: #404040;
+        font-weight: 700;
+
+        &.c-betslip__game-datetime {
+            margin-top: 3px;
             color: #8C8C8C;
         }
     }
 `;
 
-const BetSlipContent = styled.div`
-    box-sizing: border-box;
-
-    & .content-row {
-        margin-bottom: 16px;
-    }
+const OddDetail = styled.div`
+    justify-content: space-between;
     
-    & .betslip__bet-type {
-        display: flex;
+    & > div {
         align-items: center;
-
-        & .betslip__team-name {
-            font-size: 1rem;
-            font-family: 'Poppins', 'Sans Serif';
-        }
     }
 
-    & svg.betslip__sub-bet-status {
+    & > div:not(:last-of-type) {
+        margin-bottom: 6px;
+    }
+
+    & svg.c-betslip__odd-status {
         height: 6px;
         width: 6px;
         margin-right: 8px;
@@ -249,55 +328,10 @@ const BetSlipContent = styled.div`
     }
 `;
 
-const BetSlipHeaderStatus = styled.div`
-    display: flex;
-    align-items: center;
-    margin-right: 0.5rem;
-    
-    & svg[class='bet-status-icon'] {
-        height: 16px;
-        width: auto;
-        margin-left: 8px;
-    }
-
-    & div[class~='bet-status'] {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 0.8rem;
-        
-        &[class~='open'] {
-            color: #8C8C8C;
-            & svg { fill: #8C8C8C; }
-        }
-
-        &[class~='in-progress'] {
-            color: #F4A261;
-            & svg { fill: #F4A261; }
-        }
-
-        &[class~='win'] {
-            color: #49DEB2;
-            & svg { fill: #49DEB2; }
-        }
-
-        &[class~='loss'] {
-            color: #F03B58;
-            & svg { fill: #F03B58; }
-        }
-
-        &[class~='draw'] {
-            color: #49BCF6;
-            & svg { fill: #49BCF6; }
-        }
-    }
-`;
-
 const BetTypeLabel = styled.div`
-    display: flex;
     justify-content: center;
     align-items: center;
-    box-sizing: border-box;
+
     padding: 0.2rem;
     margin-right: 0.5rem;
 
@@ -308,30 +342,29 @@ const BetTypeLabel = styled.div`
     color: #8b8c8f;
 `;
 
+
 const BetSlipWager = styled.div`
-    display: grid;
     grid-template-columns: repeat(3, 33%);
     grid-template-areas: 'stake payout cashout';
+    margin-bottom: 12px;
 
-    & > div {
-        display: flex;
-        flex-flow: column nowrap;
+    & > .l-grid__item {
         align-items: center;
     }
 
-    .content__money-label {
+    .c-betslip__content-label {
         font-size: 11px;
         color: #8C8C8C;
         margin-bottom: 6px;
     };
 
-    .content__money-data {
+    .c-betslip__content-label {
         font-size: 13px;
         color: #404040;
         margin: 6px 0 6px 0;
     };
 
-    button.bet-cashout {
+    button.c_betslip__cashout-button {
         font-family: 'Inter', sans-serif;
         font-size: 14px;
         border: none;
@@ -343,36 +376,6 @@ const BetSlipWager = styled.div`
         height: 100%;
         width: 80%;
         padding: 6px 8px;
-    }
-`;
-
-const BetSlipDetails = styled.div`
-    display: flex;
-    justify-content: space-between;
-
-    & .betslip__bet-type {
-        display: flex;
-        align-items: center;
-
-        & .betslip__team-name {
-            font-size: 1rem;
-            font-family: 'Poppins', 'Sans Serif';
-        }
-    }
-`;
-
-const BetSlipGameInfo = styled.div`
-    display: flex;
-    flex-flow: column nowrap;
-    font-size: 11px;
-    font-weight: 300;
-    color: #aaaaaa;
-
-    & span.content__game {
-        color: #404040;
-        font-size: 13px;
-        font-weight: 700;
-        margin: 10px 0 3px 0;
     }
 `;
 
