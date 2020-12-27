@@ -144,12 +144,12 @@ const OpenBets = ({ bet }) => {
                         <span className='c-betslip__content-data'>{currencyFormatter.format(bet.amount)}</span>
                     </div>
                     <div className='l-column-flex l-grid__item'>
-                        <span className='c-betslip__content-label'>TO WIN</span>
-                        <span className='c-betslip__content-data'>{currencyFormatter.format(bet.payout)}</span>
+                        <span className='c-betslip__content-label'>ODDS</span>
+                        <span className='c-betslip__content-data'>{bet.american > 0 ? `+${bet.american}` : `${bet.american}`}</span>
                     </div>
                     <div className='l-column-flex l-grid__item'>
-                        <span className='c-betslip__content-label'>CASH OUT</span>
-                        <button className='btn c_betslip__cashout-button' disabled>{`$0.00`}</button>
+                        <span className='c-betslip__content-label'>TO WIN</span>
+                        <span className='c-betslip__content-data'>{currencyFormatter.format(bet.payout)}</span>
                     </div>
                 </BetSlipWager>
             </div>
