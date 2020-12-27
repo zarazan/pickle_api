@@ -18,6 +18,10 @@ class Bet < ApplicationRecord
     ratios.reduce(1, :*).round(4)
   end
 
+  def american
+    Odd.to_american(ratio)
+  end
+
   def payout
     amount * ratio
   end
@@ -80,12 +84,6 @@ class Bet < ApplicationRecord
       end
       save!
     end
-  end
-
-  def as_json(options = {})
-    super.merge({
-      payout: payout
-    })
   end
 
 end
