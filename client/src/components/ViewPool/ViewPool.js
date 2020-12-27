@@ -6,6 +6,7 @@ import { UserContext } from '../../contexts/UserContext';
 import { usePoolDispatch } from '../../contexts/PoolContext';
 import pickleApi from '../../services/pickle_api';
 import { currencyFormatter } from '../../utilities/helpers';
+import MOCK_OPEN_BETS from '../../constants/mockOpenBet';
 
 import FullPageSpinner from '../App/FullPageSpinner';
 import OpenBetCard from './OpenBetCard';
@@ -136,13 +137,10 @@ const ViewPool = () => {
                                                     <span>No Bets Placed Yet</span>
                                                     <span>Your bet slips are emtpy. Go to the pool schedule to place a bet</span>
                                                 </BetsNullState>
-                                            : openBets.map((bet, i) => (
+                                            : MOCK_OPEN_BETS.map((bet, i) => (
                                                 <OpenBetCard
                                                     key={i} 
-                                                    gameName={`${bet.awayTeamName} at ${bet.homeTeamName}`} 
-                                                    gameDateTime={bet.fixture.startTime}
-                                                    bet={bet} 
-                                                    result={bet.result}
+                                                    bet={bet}
                                                 />
                                             ))}
                                         </BetSlipWrapper>

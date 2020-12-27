@@ -2,18 +2,18 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const BetButtonOverUnder = ({ className, which, metric, ratio, callback }) => {
+const BetButtonOverUnder = ({ className, whichSpreadType, metric, ratio, callback }) => {
     const [selected, setSelected] = useState(false);
 
     return (
-        <Odd className={`${className} ${selected ? 'selected' : ''}`}>
+        <Odd className={`${className} ${selected ? '--selected' : ''}`}>
             <ToggleButton
                 onClick={toggleSelected}
             >
                 <div>
                     <span>
                         {metric 
-                        ? which === 'over'
+                        ? whichSpreadType === 'over'
                             ? `O ${metric}`
                             : `U ${metric}`
                         : ''}
@@ -39,11 +39,16 @@ const BetButtonOverUnder = ({ className, which, metric, ratio, callback }) => {
 };
 
 BetButtonOverUnder.propTypes = {
-    className: PropTypes.string,
+    className: PropTypes.string.isRequired,
+    whichSpreadType: PropTypes.string.isRequired,
     metric: PropTypes.string,
     ratio: PropTypes.string.isRequired,
     callback: PropTypes.func.isRequired,
-};
+}
+
+BetButtonOverUnder.defaultProps = {
+    metric: '',
+}
 
 export default BetButtonOverUnder;
 
@@ -52,12 +57,6 @@ const Odd = styled.div`
     justify-content: center;
     align-items: center;
     padding: 0;
-
-    &.selected > button {
-        border: 2px solid #eaf3fd;
-        background-color: #2e8dfe;
-        color: white;
-    }
 `;
 
 const ToggleButton = styled.button`
@@ -67,8 +66,7 @@ const ToggleButton = styled.button`
     font-family: 'Poppins', 'Sans Serif';
     font-size: 0.7rem;
 
-    background-color: #f2f2f2;
-    color: black;
+    box-shadow: 0px 1px 2px 1px #DDD;
     border-radius: 0.2em;
     outline: none;
     border: none;

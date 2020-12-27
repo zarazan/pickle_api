@@ -1,76 +1,103 @@
-const MOCK_FIXTURES = [
+const MOCK_FIXTURES = {
+    "id": 1,
+    "sport": "americanfootball_nfl",
+    "startTime": "2020-12-22T00:32:24.344Z",
+    "homeTeamId": 1,
+    "awayTeamId": 2,
+    "homeScore": null,
+    "awayScore": null,
+    "status": "scheduled",
+    "createdAt": "2020-12-21T00:32:25.397Z",
+    "updatedAt": "2020-12-21T00:32:25.397Z",
+    "locked": false,
+    "homeTeamName": "Kansas City Chiefs",
+    "awayTeamName": "Denver Broncos",
+    "odds": [
     {
         "id": 1,
-        "sport": "americanfootball_nfl",
-        "start_time": "2020-10-28T22:01:02.337Z",
-        "home_team_id": 1,
-        "away_team_id": 2,
-        "home_score": null,
-        "away_score": null,
-        "status": "scheduled",
-        "created_at": "2020-10-27T22:01:03.162Z",
-        "updated_at": "2020-10-27T22:01:03.162Z",
-        "odds": [
-            {
-                "id": 1,
-                "fixture_id": 1,
-                "ratio": "1.5",
-                "metric": null,
-                "team_id": 1,
-                "player": null,
-                "active": true,
-                "created_at": "2020-10-27T22:01:03.183Z",
-                "updated_at": "2020-10-27T22:01:03.183Z"
-            },
-            {
-                "id": 2,
-                "fixture_id": 1,
-                "ratio": "2.3",
-                "metric": null,
-                "team_id": 2,
-                "player": null,
-                "active": true,
-                "created_at": "2020-10-27T22:01:03.188Z",
-                "updated_at": "2020-10-27T22:01:03.188Z"
-            }
-        ]
+        "type": "money_line",
+        "fixtureId": 1,
+        "ratio": "1.5",
+        "metric": null,
+        "teamId": 1,
+        "player": null,
+        "active": true,
+        "createdAt": "2020-12-21T00:32:25.436Z",
+        "updatedAt": "2020-12-21T00:32:25.436Z",
+        "teamName": "Kansas City Chiefs",
+        "american": -200
     },
     {
         "id": 2,
-        "sport": "americanfootball_nfl",
-        "start_time": "2020-10-29T22:01:02.337Z",
-        "home_team_id": 3,
-        "away_team_id": 4,
-        "home_score": null,
-        "away_score": null,
-        "status": "scheduled",
-        "created_at": "2020-10-27T22:01:03.197Z",
-        "updated_at": "2020-10-27T22:01:03.197Z",
-        "odds": [
-            {
-                "id": 3,
-                "fixture_id": 2,
-                "ratio": "1.9",
-                "metric": "-3.5",
-                "team_id": 4,
-                "player": null,
-                "active": true,
-                "created_at": "2020-10-27T22:01:03.207Z",
-                "updated_at": "2020-10-27T22:01:03.207Z"
-            },
-            {
-                "id": 4,
-                "fixture_id": 2,
-                "ratio": "1.9",
-                "metric": "3.5",
-                "team_id": 3,
-                "player": null,
-                "active": true,
-                "created_at": "2020-10-27T22:01:03.211Z",
-                "updated_at": "2020-10-27T22:01:03.211Z"
-            }
-        ]
+        "type": "money_line",
+        "fixtureId": 1,
+        "ratio": "2.3",
+        "metric": null,
+        "teamId": 2,
+        "player": null,
+        "active": true,
+        "createdAt": "2020-12-21T00:32:25.447Z",
+        "updatedAt": "2020-12-21T00:32:25.447Z",
+        "teamName": "Denver Broncos",
+        "american": 130
+    },
+    {
+        "id": 3,
+        "type": "spread",
+        "fixtureId": 1,
+        "ratio": "1.9",
+        "metric": "-3.5",
+        "teamId": 1,
+        "player": null,
+        "active": true,
+        "createdAt": "2020-12-21T00:32:25.467Z",
+        "updatedAt": "2020-12-21T00:32:25.467Z",
+        "teamName": "Kansas City Chiefs",
+        "american": -111
+    },
+    {
+        "id": 4,
+        "type": "spread",
+        "fixtureId": 1,
+        "ratio": "1.9",
+        "metric": "3.5",
+        "teamId": 2,
+        "player": null,
+        "active": true,
+        "createdAt": "2020-12-21T00:32:25.478Z",
+        "updatedAt": "2020-12-21T00:32:25.478Z",
+        "teamName": "Denver Broncos",
+        "american": -111
+    },
+    {
+        "id": 5,
+        "type": "over",
+        "fixtureId": 1,
+        "ratio": "1.9",
+        "metric": "50.5",
+        "teamId": null,
+        "player": null,
+        "active": true,
+        "createdAt": "2020-12-21T00:32:25.498Z",
+        "updatedAt": "2020-12-21T00:32:25.498Z",
+        "teamName": null,
+        "american": -111
+    },
+    {
+        "id": 6,
+        "type": "under",
+        "fixtureId": 1,
+        "ratio": "1.9",
+        "metric": "50.5",
+        "teamId": null,
+        "player": null,
+        "active": true,
+        "createdAt": "2020-12-21T00:32:25.519Z",
+        "updatedAt": "2020-12-21T00:32:25.519Z",
+        "teamName": null,
+        "american": -111
     }
-];
+    ],
+};
 
 export default MOCK_FIXTURES;
