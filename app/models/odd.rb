@@ -24,6 +24,10 @@ class Odd < ApplicationRecord
     :spread
   ]
 
+  def pending?
+    !fixture.complete?
+  end
+
   def odd_type
     self.class.name.underscore.chomp('_odd')
   end
@@ -46,9 +50,25 @@ class Odd < ApplicationRecord
     end
   end
 
+  def won?
+    get_result_or_pending == :won
+  end
+
+  def draw?
+    get_result_or_pending == :draw
+  end
+
+  def lost?
+    get_result_or_pending == :lost
+  end
+
+  def won_or_draw?
+    [:won, :draw].include?(get_result_or_pending)
+  end
+
   # returns :won, :lost, :draw, or :pending
   def get_result_or_pending
-    return :pending unless fixture.complete?
+    return :pending if pending?
     get_result
   end
 
