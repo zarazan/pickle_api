@@ -14,7 +14,8 @@ class Bet < ApplicationRecord
   def ratio
     return odds.first.ratio if odds.one?
     non_draw_odds = odds.select { |odd| odd.get_result_or_pending != :draw}
-    non_draw_odds.reduce(1, :*).round(4)
+    ratios = non_draw_odds.map(&:ratio)
+    ratios.reduce(1, :*).round(4)
   end
 
   def payout
@@ -54,8 +55,7 @@ class Bet < ApplicationRecord
     if bet_attributes[:odd_id]
       odds = [Odd.find(bet_attributes[:odd_id])]
     else
-      odds = Odd.find_by!(odd_id: bet_attributes.delete(:odd_ids))
-      bet_attributes[:odds] = odds
+      odds = Odd.find(bet_attributes.delete(:odd_ids))
     end
 
     transaction do
