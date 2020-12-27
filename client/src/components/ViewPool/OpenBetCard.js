@@ -10,8 +10,9 @@ import { ReactComponent as Cancel } from '../../icons/error.svg';
 import { ReactComponent as Clock } from '../../icons/time.svg';
 import { ReactComponent as Calendar } from '../../icons/calendar.svg';
 import { ReactComponent as Equal } from '../../icons/equal.svg';
+import { ReactComponent as Dot } from '../../icons/black-circle.svg';
 
-const OpenBets = ({ gameName, gameDateTime, bet }) => {
+const OpenBets = ({ bet }) => {
     return (
         <BetSlip className='betslip'>
             <BetSlipHeader className='header'>
@@ -22,6 +23,7 @@ const OpenBets = ({ gameName, gameDateTime, bet }) => {
                     </div>
                     <div className='sport-league'>NFL</div>
                 </div>
+
                 <BetSlipHeaderStatus className='header__info'>
                     <div className={`bet-status 
                         ${!bet.result || bet.result === '' // bet is open
@@ -67,48 +69,69 @@ const OpenBets = ({ gameName, gameDateTime, bet }) => {
                         }
                     </div>
                 </BetSlipHeaderStatus>
+
             </BetSlipHeader>
 
             <BetSlipContent className='content'>
-                <BetSlipGameInfo className='content__header content-row'>
-                    <span className='content__game'>{gameName}</span>
-                    <span className='content__datetime'>{zuluToStringFormat(gameDateTime)}</span>
-                </BetSlipGameInfo>
+                {bet.fixtures.map((fix, index) => (
+                    <div className='l-column-flex'>
+                        <BetSlipGameInfo className='content__header content-row'>
+                            <span className='content__game'>{`${fix.awayTeamName} at ${fix.homeTeamName}`} </span>
+                            <span className='content__datetime'>{zuluToStringFormat(fix.startTime)}</span>
+                        </BetSlipGameInfo>
 
-                <BetSlipDetails className='content__bet content-row'>
-                    <div className='betslip__bet-type'>
-                        {bet.odd.type === 'money_line'
-                            ? <BetTypeLabel className='bet-type-label'>{'M/L'}</BetTypeLabel>
-                            : bet.odd.type === 'spread'
-                                ? <BetTypeLabel className='bet-type-label'>{'P/S'}</BetTypeLabel>
-                                : <BetTypeLabel className='bet-type-label'>{'T/P'}</BetTypeLabel>
-                        }
-                        <div className='betslip__team-name'>
-                            {bet.odd.type === 'over'
-                                ? `Over ${bet.odd.metric}`
-                                : bet.odd.type === 'under'
-                                    ? `Under ${bet.odd.metric}`
-                                    : bet.odd.teamName
-                            }
-                        </div>
+                        {fix.bets.map((bet, index) => (
+                            <div className='l-column-flex l-colum-flex__item'>
+    
+                                <BetSlipDetails className='content__bet content-row'>
+                                    <div className='betslip__bet-type'>
+                                        <Dot className={`betslip__sub-bet-status
+                                            ${!bet.result || bet.result === '' // bet is open
+                                                ? '--open'
+                                                : bet.result === 'in-progress' // bet is in progress
+                                                    ? '--in-progress' 
+                                                    : bet.result === 'won' // bet is won
+                                                        ? '--win' 
+                                                        : bet.result === 'lost' // bet is lost
+                                                            ? '--loss'
+                                                            : '--draw' // bet is a draw
+                                            }`}
+                                        />
+                                        {bet.odd.type === 'money_line'
+                                            ? <BetTypeLabel className='bet-type-label'>{'M/L'}</BetTypeLabel>
+                                            : bet.odd.type === 'spread'
+                                                ? <BetTypeLabel className='bet-type-label'>{'P/S'}</BetTypeLabel>
+                                                : <BetTypeLabel className='bet-type-label'>{'T/P'}</BetTypeLabel>
+                                        }
+                                        <div className='betslip__team-name'>
+                                            {bet.odd.type === 'over'
+                                                ? `Over ${bet.odd.metric}`
+                                                : bet.odd.type === 'under'
+                                                    ? `Under ${bet.odd.metric}`
+                                                    : bet.odd.teamName
+                                            }
+                                        </div>
+                                    </div>
+    
+                                    <div className='betslip__bet-odds'>
+                                        <div className='odds betslip__metric-ratio'>
+                                            {bet.odd.type === 'over' || bet.odd.type === 'under'
+                                                ? ''
+                                                : bet.odd.metric
+                                                    ? bet.odd.metric > 0
+                                                        ? `+${bet.odd.metric}` 
+                                                        : bet.odd.metric
+                                                    : ' '
+                                            }
+                                            {' '}
+                                            {bet.odd.american > 0 ? `(+${bet.odd.american})` : `(${bet.odd.american})`}
+                                        </div>
+                                    </div>
+                                </BetSlipDetails>
+                            </div>
+                        ))}
                     </div>
-
-                    <div className='betslip__bet-odds'>
-                        <div className='odds betslip__metric-ratio'>
-                            {bet.odd.type === 'over' || bet.odd.type === 'under'
-                                ? ''
-                                : bet.odd.metric
-                                    ? bet.odd.metric > 0
-                                        ? `+${bet.odd.metric}` 
-                                        : bet.odd.metric
-                                    : ' '
-                            }
-                            {' '}
-                            {bet.odd.american > 0 ? `(+${bet.odd.american})` : `(${bet.odd.american})`}
-                        </div>
-                    </div>
-
-                </BetSlipDetails>
+                ))}
 
                 <BetSlipWager className='content__money content-row'>
                     <div className='betslip__bet-amount'>
@@ -200,6 +223,28 @@ const BetSlipContent = styled.div`
         & .betslip__team-name {
             font-size: 1rem;
             font-family: 'Poppins', 'Sans Serif';
+        }
+    }
+
+    & svg.betslip__sub-bet-status {
+        height: 6px;
+        width: 6px;
+        margin-right: 8px;
+        
+        &[class$='--open'] {
+            fill: #AAAAAA;
+        }
+        &[class$='--in-progress'] {
+            fill: #F4A261;
+        }
+        &[class$='--win'] {
+            fill: #49DEB2;
+        }
+        &[class$='--loss'] {
+            fill: #F03B58;
+        }
+        &[class$='--draw'] {
+            fill: #49BCF6;
         }
     }
 `;

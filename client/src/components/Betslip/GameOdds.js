@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import pickleApi from '../../services/pickle_api';
 import { usePoolDispatch, usePoolState } from '../../contexts/PoolContext';
 import { currencyFormatter } from '../../utilities/helpers';
-import MOCK_FIXTURES from '../../constants/mockFixtures';
 
 import BetCard from './BetCard';
 import EnterWager from './EnterWager';
@@ -30,7 +29,6 @@ const GameOdds = () => {
     const [toggleBetSlip, setToggleBetSlip] = useState(false); // used for toggling the bet slip entry form
     
     // parlay bet state
-    const [currentBet, setCurrentBet] = useState([]); // holds the current bet for sending bet info to enter wager
     const [betMode, setBetMode] = useState('SINGLE'); // defines the type of bet: single or accumulate
     const [betAccumulator, setBetAccumulator] = useState([]); // { fixture: ID, bet: ID }
 
@@ -39,18 +37,17 @@ const GameOdds = () => {
 
     /** Fetch all fixtures for the pool and add them to state. */
     useEffect(() => {
-        setState('loading');
+        setState('LOADING');
         fetchFixtures(poolId);
-
     }, []);
 
     return (
         <>
-            {componentState === 'error' 
+            {componentState === 'ERROR' 
                 ? <div>{errorMessage}</div>
-                : componentState === 'loading'
+                : componentState === 'LOADING'
                     ? <FullPageSpinner loading={true} optionalMessage={'Loading Odds'}/>
-                    : componentState === 'finished' &&
+                    : componentState === 'FINISHED' &&
 
                             <GameOddsWrapper className='c-game-odds l-grid'>
                                 <div className='l-grid__item'>
@@ -68,7 +65,6 @@ const GameOdds = () => {
                                     <GameOddsUserInformation className='l-column-flex'>
                                         <h4 className='c-game-odds__label'>{'Bankroll'}</h4>
                                         <h2 className='c-game-odds__text'>{currencyFormatter.format(state.bank)}</h2>
-                                        {/* <h4>{`${state.betCount} BETS`}</h4> */}
                                     </GameOddsUserInformation>
 
                                 </div>
@@ -210,12 +206,12 @@ const GameOdds = () => {
                 // sort the fixtures by date
                 const sortedFixtures = data.sort((a, b) => Date.parse(a.startTime) - Date.parse(b.startTime));
                 setFixtures(sortedFixtures);
-                setState('finished');
+                setState('FINISHED');
             })
             .catch(error => {
                 history.push('/sign-in');
                 setErrorMessage(error.toString());
-                setState('error');
+                setState('ERROR');
             });
     }
 
@@ -231,23 +227,22 @@ const GameOdds = () => {
         resp.odd_id = betIds;
         resp.amount = betAmount;
 
-        // TODO: uncomment to post data
-        // pickleApi.createBet(resp)
-        //     .then(data => {
-        //         setBetCount(betCount + 1);
-        //         placeWager(data.amount);
+        pickleApi.createBet(resp)
+            .then(data => {
+                setBetCount(betCount + 1);
+                placeWager(data.amount);
                 
-        //         setCurrentFixture(null); // Clear the current fixture.
-        //         setBetMode('SINGLE'); // Reset the bet mode.
-        //         setBetAccumulator([]); // Reset the bet cache.
-        //         setToggleBetSlip(false); // Reset the enter wager form.
-        //         setState('finished');
-        //     })
-        //     .catch(error => {
-        //         history.push('/sign-in');
-        //         setErrorMessage(error.toString());
-        //         setState('error');
-        //     });
+                setCurrentFixture(null); // Clear the current fixture.
+                setBetMode('SINGLE'); // Reset the bet mode.
+                setBetAccumulator([]); // Reset the bet cache.
+                setToggleBetSlip(false); // Reset the enter wager form.
+                setState('FINISHED');
+            })
+            .catch(error => {
+                history.push('/sign-in');
+                setErrorMessage(error.toString());
+                setState('ERROR');
+            });
     }
 };
 
