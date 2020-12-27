@@ -9,6 +9,7 @@
   bet.as_json.merge({
     fixtures: fixtures,
     ratio: bet.ratio,
-    american: bet.american
+    american: bet.american,
+    payout: bet.payout,
   })
 end
