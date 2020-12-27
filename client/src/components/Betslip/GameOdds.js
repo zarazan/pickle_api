@@ -169,9 +169,10 @@ const GameOdds = () => {
         setCurrentFixture(fixtureObject);
         // Get the bet object that was selected by the user and set it in state.
         const [ betObject ] = fixtureObject.odds.filter(odd => odd.id === betId);
-
+        let newBetObject = betObject;
+        newBetObject.gameName = `${fixtureObject.awayTeamName} at ${fixtureObject.homeTeamName}`;
         // Set the current bets to pass through as props to the EnterWager component.
-        updateBetAccumulatorCache(betObject);
+        updateBetAccumulatorCache(newBetObject);
         // Don't toggle the Enter Wager form if we're in accumulating mode
         if (betMode === 'SINGLE') {
             setToggleBetSlip(!toggleBetSlip);
@@ -252,10 +253,10 @@ const GameOdds = () => {
      */
     function placeBet(betIds, betAmount) {
         // create response body
-        let resp = {};
-        resp.pool_id = poolId;
-        betIds.length > 1 ? resp.odd_ids = betIds : resp.odd_id = betIds;
-        resp.amount = betAmount;
+        let resp = { bet: {}};
+        resp.bet.pool_id = poolId;
+        betIds.length > 1 ? resp.bet.odd_ids = betIds : resp.bet.odd_id = betIds;
+        resp.bet.amount = betAmount;
 
         pickleApi.createBet(resp)
             .then(data => {

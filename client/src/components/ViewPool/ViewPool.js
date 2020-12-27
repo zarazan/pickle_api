@@ -6,7 +6,6 @@ import { UserContext } from '../../contexts/UserContext';
 import { usePoolDispatch } from '../../contexts/PoolContext';
 import pickleApi from '../../services/pickle_api';
 import { currencyFormatter } from '../../utilities/helpers';
-import MOCK_OPEN_BETS from '../../constants/mockOpenBet';
 
 import FullPageSpinner from '../App/FullPageSpinner';
 import OpenBetCard from './OpenBetCard';
