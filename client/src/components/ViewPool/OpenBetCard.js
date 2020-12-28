@@ -90,16 +90,15 @@ const OpenBets = ({ bet }) => {
     
                                 <OddDetail className='odd-detail l-row-flex l-column-flex__item'>
                                     <div className='l-row-flex l-row-flex__item'>
-                                        <Dot className={`c-betslip__odd-status
-                                            ${!odd.result || odd.result === ''
-                                                ? '--open'
+                                        <Dot className={`c-betslip__odd-status ${!odd.result || odd.result === '' || odd.result === 'pending'
+                                                ? 'open'
                                                 : odd.result === 'in-progress'
-                                                    ? '--in-progress' 
+                                                    ? 'in-progress' 
                                                     : odd.result === 'won'
-                                                        ? '--win' 
+                                                        ? 'win' 
                                                         : odd.result === 'lost'
-                                                            ? '--loss'
-                                                            : '--draw'
+                                                            ? 'loss'
+                                                            : 'draw'
                                             }`}
                                         />
                                         {odd.type === 'money_line'
@@ -161,10 +160,6 @@ const OpenBets = ({ bet }) => {
 OpenBets.propTypes = {
     bet: PropTypes.object.isRequired,
 };
-
-OpenBets.defaultProps = {
-    gameDateTime: '2020-12-14T18:34:07.532Z',
-}
 
 export default OpenBets;
 
@@ -310,19 +305,19 @@ const OddDetail = styled.div`
         width: 6px;
         margin-right: 8px;
         
-        &[class$='--open'] {
+        &[class~='open'] {
             fill: #AAAAAA;
         }
-        &[class$='--in-progress'] {
+        &[class~='in-progress'] {
             fill: #F4A261;
         }
-        &[class$='--win'] {
+        &[class~='win'] {
             fill: #49DEB2;
         }
-        &[class$='--loss'] {
+        &[class~='loss'] {
             fill: #F03B58;
         }
-        &[class$='--draw'] {
+        &[class~='draw'] {
             fill: #49BCF6;
         }
     }
