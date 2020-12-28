@@ -6,7 +6,6 @@ import { UserContext } from '../../contexts/UserContext';
 import { usePoolDispatch } from '../../contexts/PoolContext';
 import pickleApi from '../../services/pickle_api';
 import { currencyFormatter } from '../../utilities/helpers';
-import MOCK_OPEN_BETS from '../../constants/mockOpenBet';
 
 import FullPageSpinner from '../App/FullPageSpinner';
 import OpenBetCard from './OpenBetCard';
@@ -137,7 +136,7 @@ const ViewPool = () => {
                                                     <span>No Bets Placed Yet</span>
                                                     <span>Your bet slips are emtpy. Go to the pool schedule to place a bet</span>
                                                 </BetsNullState>
-                                            : MOCK_OPEN_BETS.map((bet, i) => (
+                                            : openBets.map((bet, i) => (
                                                 <OpenBetCard
                                                     key={i} 
                                                     bet={bet}
@@ -197,7 +196,6 @@ const ViewPool = () => {
 
                 // Sort the bets for displaying in ascending order.
                 const sortedBets = bets.sort((a, b) => Date.parse(a.gameDateTime) - Date.parse(b.gameDateTime));
-                console.log(sortedBets);
                 
                 // Add the open bets to state.
                 setOpenBets(sortedBets);

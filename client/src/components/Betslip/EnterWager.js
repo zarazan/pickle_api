@@ -10,9 +10,8 @@ import { ReactComponent as Show } from '../../icons/show.svg';
 import { ReactComponent as Hide } from '../../icons/hide.svg';
 import { ReactComponent as Plus } from '../../icons/plus.svg';
 
-const EnterWager = ({ currentFixture, currentBets, placeBet, closeBetSlip, toggleBetMode, updateBetAccumulatorCache }) => { 
+const EnterWager = ({ currentBets, placeBet, closeBetSlip, toggleBetMode, updateBetAccumulatorCache }) => { 
     const { bank } = usePoolState();
-    const [game, setGame] = useState(''); // The name of the fixture (game) in the format {awayTeam} vs {homeTeam}.
     const [betCount, setBetCount] = useState(0); // The number of bets currently in the form.
     const [odd, setOdd] = useState(0.00);
     const [wager, setWager] = useState('0'); // The wager in dollars for the current bet.
@@ -24,9 +23,6 @@ const EnterWager = ({ currentFixture, currentBets, placeBet, closeBetSlip, toggl
 
     /** Calculate the payout whenever the wager changes. */
     useEffect(() => handlePayout(), [wager]);
-
-    /** Create the game name format for the wager entry form. */
-    useEffect(() => setGameName(), []);
 
     /** Use the single bet odd or create a cumulative if parlay or teaser. */
     useEffect(() => handleOddCalculation(), []);
@@ -150,11 +146,6 @@ const EnterWager = ({ currentFixture, currentBets, placeBet, closeBetSlip, toggl
         placeBet(betIds, parseInt(wager));
     }
 
-    /** setGameName: Sets the name of the game for display. */
-    function setGameName() {
-        setGame(`${currentFixture.awayTeamName} vs. ${currentFixture.homeTeamName}`);
-    }
-
     /** handlePayout: Handle payout based on the odds and entered wager. */
     function handlePayout(){
         setPayout(calculatePayout(parseFloat(wager), odd));
@@ -240,7 +231,6 @@ const EnterWager = ({ currentFixture, currentBets, placeBet, closeBetSlip, toggl
 };
 
 EnterWager.propTypes = {
-    currentFixture: PropTypes.object.isRequired, 
     currentBets: PropTypes.array.isRequired, 
     placeBet: PropTypes.func.isRequired, 
     closeBetSlip: PropTypes.func.isRequired, 

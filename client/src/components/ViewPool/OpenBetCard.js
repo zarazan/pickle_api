@@ -77,59 +77,58 @@ const OpenBets = ({ bet }) => {
 
                 {bet.fixtures.map((fix, index) => (
                     
-                    <BetSlipRow className='row l-column-flex l-column-flex__item'>
+                    <BetSlipRow key={index} className='row l-column-flex l-column-flex__item'>
                         
                         <BetSlipGameInfo className='l-column-flex l-column-flex__item'>
                             <h4 className='c-betslip__game-name'>{`${fix.awayTeamName} at ${fix.homeTeamName}`} </h4>
                             <h4 className='c-betslip__game-datetime'>{zuluToStringFormat(fix.startTime)}</h4>
                         </BetSlipGameInfo>
 
-                        {fix.bets.map((sub, index) => (
+                        {fix.odds.map((odd, index) => (
                             
-                            <div className='l-column-flex l-column-flex__item'>
+                            <div key={index} className='l-column-flex l-column-flex__item'>
     
                                 <OddDetail className='odd-detail l-row-flex l-column-flex__item'>
                                     <div className='l-row-flex l-row-flex__item'>
-                                        <Dot className={`c-betslip__odd-status
-                                            ${!sub.result || sub.result === ''
-                                                ? '--open'
-                                                : sub.result === 'in-progress'
-                                                    ? '--in-progress' 
-                                                    : sub.result === 'won'
-                                                        ? '--win' 
-                                                        : sub.result === 'lost'
-                                                            ? '--loss'
-                                                            : '--draw'
+                                        <Dot className={`c-betslip__odd-status ${!odd.result || odd.result === '' || odd.result === 'pending'
+                                                ? 'open'
+                                                : odd.result === 'in-progress'
+                                                    ? 'in-progress' 
+                                                    : odd.result === 'won'
+                                                        ? 'win' 
+                                                        : odd.result === 'lost'
+                                                            ? 'loss'
+                                                            : 'draw'
                                             }`}
                                         />
-                                        {sub.odd.type === 'money_line'
+                                        {odd.type === 'money_line'
                                             ? <BetTypeLabel className='l-row-flex l-row-flex__item'>{'M/L'}</BetTypeLabel>
-                                            : sub.odd.type === 'spread'
+                                            : odd.type === 'spread'
                                                 ? <BetTypeLabel className='l-row-flex l-row-flex__item'>{'P/S'}</BetTypeLabel>
                                                 : <BetTypeLabel className='l-row-flex l-row-flex__item'>{'T/P'}</BetTypeLabel>
                                         }
                                         <span className='betslip__team-name'>
-                                            {sub.odd.type === 'over'
-                                                ? `Over ${sub.odd.metric}`
-                                                : sub.odd.type === 'under'
-                                                    ? `Under ${sub.odd.metric}`
-                                                    : sub.odd.teamName
+                                            {odd.type === 'over'
+                                                ? `Over ${odd.metric}`
+                                                : odd.type === 'under'
+                                                    ? `Under ${odd.metric}`
+                                                    : odd.teamName
                                             }
                                         </span>
                                     </div>
     
                                     <div className='l-row-flex l-row-flex__item'>
                                         <span className='odds betslip__metric-ratio'>
-                                            {sub.odd.type === 'over' || sub.odd.type === 'under'
+                                            {odd.type === 'over' || odd.type === 'under'
                                                 ? ''
-                                                : sub.odd.metric
-                                                    ? sub.odd.metric > 0
-                                                        ? `+${sub.odd.metric}` 
-                                                        : sub.odd.metric
+                                                : odd.metric
+                                                    ? odd.metric > 0
+                                                        ? `+${odd.metric}` 
+                                                        : odd.metric
                                                     : ' '
                                             }
                                             {' '}
-                                            {sub.odd.american > 0 ? `(+${sub.odd.american})` : `(${sub.odd.american})`}
+                                            {odd.american > 0 ? `(+${odd.american})` : `(${odd.american})`}
                                         </span>
                                     </div>
                                 </OddDetail>
@@ -144,12 +143,12 @@ const OpenBets = ({ bet }) => {
                         <span className='c-betslip__content-data'>{currencyFormatter.format(bet.amount)}</span>
                     </div>
                     <div className='l-column-flex l-grid__item'>
-                        <span className='c-betslip__content-label'>TO WIN</span>
-                        <span className='c-betslip__content-data'>{currencyFormatter.format(bet.payout)}</span>
+                        <span className='c-betslip__content-label'>ODDS</span>
+                        <span className='c-betslip__content-data'>{bet.american > 0 ? `+${bet.american}` : `${bet.american}`}</span>
                     </div>
                     <div className='l-column-flex l-grid__item'>
-                        <span className='c-betslip__content-label'>CASH OUT</span>
-                        <button className='btn c_betslip__cashout-button' disabled>{`$0.00`}</button>
+                        <span className='c-betslip__content-label'>TO WIN</span>
+                        <span className='c-betslip__content-data'>{currencyFormatter.format(bet.payout)}</span>
                     </div>
                 </BetSlipWager>
             </div>
@@ -161,10 +160,6 @@ const OpenBets = ({ bet }) => {
 OpenBets.propTypes = {
     bet: PropTypes.object.isRequired,
 };
-
-OpenBets.defaultProps = {
-    gameDateTime: '2020-12-14T18:34:07.532Z',
-}
 
 export default OpenBets;
 
@@ -310,19 +305,19 @@ const OddDetail = styled.div`
         width: 6px;
         margin-right: 8px;
         
-        &[class$='--open'] {
+        &[class~='open'] {
             fill: #AAAAAA;
         }
-        &[class$='--in-progress'] {
+        &[class~='in-progress'] {
             fill: #F4A261;
         }
-        &[class$='--win'] {
+        &[class~='win'] {
             fill: #49DEB2;
         }
-        &[class$='--loss'] {
+        &[class~='loss'] {
             fill: #F03B58;
         }
-        &[class$='--draw'] {
+        &[class~='draw'] {
             fill: #49BCF6;
         }
     }
