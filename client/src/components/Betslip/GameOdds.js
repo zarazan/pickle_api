@@ -84,7 +84,6 @@ const GameOdds = () => {
                                             <EnterWager
                                                 className='enter-wager-form l-column-flex__item'
                                                 currentBets={betAccumulator}
-                                                currentFixture={currentFixture}
                                                 placeBet={placeBet}
                                                 closeBetSlip={closeBetSlip}
                                                 errors={errorMessage}
@@ -255,7 +254,12 @@ const GameOdds = () => {
         // create response body
         let resp = { bet: {}};
         resp.bet.pool_id = poolId;
-        betIds.length > 1 ? resp.bet.odd_ids = betIds : resp.bet.odd_id = betIds;
+        if (betIds.length > 1) {
+            resp.bet.odd_ids = betIds
+        } else {
+            const [ id ] = betIds;
+            resp.bet.odd_id = id;
+        }
         resp.bet.amount = betAmount;
 
         pickleApi.createBet(resp)

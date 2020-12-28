@@ -77,7 +77,7 @@ const OpenBets = ({ bet }) => {
 
                 {bet.fixtures.map((fix, index) => (
                     
-                    <BetSlipRow className='row l-column-flex l-column-flex__item'>
+                    <BetSlipRow key={index} className='row l-column-flex l-column-flex__item'>
                         
                         <BetSlipGameInfo className='l-column-flex l-column-flex__item'>
                             <h4 className='c-betslip__game-name'>{`${fix.awayTeamName} at ${fix.homeTeamName}`} </h4>
@@ -86,7 +86,7 @@ const OpenBets = ({ bet }) => {
 
                         {fix.odds.map((odd, index) => (
                             
-                            <div className='l-column-flex l-column-flex__item'>
+                            <div key={index} className='l-column-flex l-column-flex__item'>
     
                                 <OddDetail className='odd-detail l-row-flex l-column-flex__item'>
                                     <div className='l-row-flex l-row-flex__item'>

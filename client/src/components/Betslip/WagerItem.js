@@ -35,7 +35,6 @@ const WagerItem = ({ bet, handleBetRemoval }) => {
 WagerItem.propTypes = {
     bet: PropTypes.object.isRequired,
     handleBetRemoval: PropTypes.func.isRequired,
-    gameName: PropTypes.string.isRequired,
 }
 
 export default WagerItem
