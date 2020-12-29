@@ -63,9 +63,9 @@ class PickleApi {
   }
 
   signOut() {
-    sessionStorage.setItem('access-token', "");
-    sessionStorage.setItem('client', "");
-    sessionStorage.setItem('uid', "");
+    localStorage.setItem('access-token', "");
+    localStorage.setItem('client', "");
+    localStorage.setItem('uid', "");
   }
 
   sendRequest(options) {
@@ -86,23 +86,23 @@ class PickleApi {
   }
 
   setSessionData(headers) {
-    sessionStorage.setItem('access-token', headers['access-token']);
-    sessionStorage.setItem('client', headers['client']);
-    sessionStorage.setItem('uid', headers['uid']);
+    localStorage.setItem('access-token', headers['access-token']);
+    localStorage.setItem('client', headers['client']);
+    localStorage.setItem('uid', headers['uid']);
   }
 
   getAuthHeaders() {
     let headers = {}
-    headers['access-token'] = sessionStorage.getItem('access-token');
-    headers['client'] = sessionStorage.getItem('client');
-    headers['uid'] = sessionStorage.getItem('uid');
+    headers['access-token'] = localStorage.getItem('access-token');
+    headers['client'] = localStorage.getItem('client');
+    headers['uid'] = localStorage.getItem('uid');
     return headers;
   }
 
   hasSessionInfo() {
-    return !!sessionStorage.getItem('access-token') &&
-      !!sessionStorage.getItem('client') &&
-      !!sessionStorage.getItem('uid');
+    return !!localStorage.getItem('access-token') &&
+      !!localStorage.getItem('client') &&
+      !!localStorage.getItem('uid');
   }
 
   axios_client() {
