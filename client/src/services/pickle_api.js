@@ -63,9 +63,9 @@ class PickleApi {
   }
 
   signOut() {
-    sessionStorage.setItem('access-token', "");
-    sessionStorage.setItem('client', "");
-    sessionStorage.setItem('uid', "");
+    localStorage.setItem('access-token', "");
+    localStorage.setItem('client', "");
+    localStorage.setItem('uid', "");
   }
 
   sendRequest(options) {
