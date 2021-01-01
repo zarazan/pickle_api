@@ -82,6 +82,7 @@ const MyPoolsWrapper = styled.div`
     display: flex;
     flex-flow: column nowrap;
     box-sizing: border-box;
+    margin-bottom: 36px;
 
     & .loading-pools {
         display: flex;
