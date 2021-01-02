@@ -28,6 +28,10 @@ class Odd < ApplicationRecord
     !fixture.complete?
   end
 
+  def locked?
+    fixture.locked?
+  end
+
   def odd_type
     self.class.name.underscore.chomp('_odd')
   end

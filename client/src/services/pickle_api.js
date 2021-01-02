@@ -18,7 +18,7 @@ class PickleApi {
   }
 
   getBets(pool_id, params) {
-    const options = {method: 'get', url: `/pools/${pool_id}/bets`, data: params}
+    const options = {method: 'get', url: `/pools/${pool_id}/bets`, params: params}
     return this.sendRequest(options);
   }
 

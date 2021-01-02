@@ -7,7 +7,19 @@ class BetsController < ApplicationController
   end
 
   def pool_bets
-    @bets = current_user.bets.where(pool_id: params[:id])
+    @bets = Pool.find(params[:id]).bets.includes(odds: [:team, fixture: [:home_team, :away_team]])
+    @bets = @bets.where(user_id: params[:user_id]) if params[:user_id].present?
+    @bets = @bets.to_a
+
+    if params[:fixture_id].present?
+      @bets.select! do |bet|
+        bet.odds.any? { |odd| odd.fixture_id == params[:fixture_id].to_i }
+      end
+    end
+
+    @bets.select! do |bet|
+      bet.user_id == current_user.id || bet.public?
+    end
   end
 
   private

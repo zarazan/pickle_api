@@ -53,7 +53,7 @@ class Pool < ApplicationRecord
   end
 
   def fixtures
-    Fixture.where('start_time > ? AND start_time < ?', start_date, end_date)
+    Fixture.where('start_time > ? AND start_time < ?', start_date, end_date).where(sport: sports)
   end
 
   def get_entry_for_user(user)
