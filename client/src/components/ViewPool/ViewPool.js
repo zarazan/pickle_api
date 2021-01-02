@@ -184,7 +184,7 @@ const ViewPool = () => {
      * @param {id} id  - The ID for the current pool.
      */
     function fetchAndSetBets(id) {
-        pickleApi.getBets(id)
+        pickleApi.getBets(id, {user_id: user.id})
             .then(bets => {
                 // Send dispatch to update the number of bets.
                 updateBetCount(poolId, bets.length);

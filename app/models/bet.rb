@@ -30,6 +30,10 @@ class Bet < ApplicationRecord
     payout(amount) - amount
   end
 
+  def public?
+    odds.all?(&:locked?)
+  end
+
   def pending?
     odds.any?(&:pending?)
   end

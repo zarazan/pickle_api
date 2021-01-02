@@ -1,4 +1,4 @@
-@bets.includes(odds: [:team, fixture: [:home_team, :away_team]]).order('fixtures.start_time').map do |bet|
+@bets.map do |bet|
   
   grouped_odds = bet.odds.group_by(&:fixture_id)
 
@@ -11,5 +11,6 @@
     ratio: bet.ratio,
     american: bet.american,
     payout: bet.payout,
+    userName: bet.user.name
   })
 end
