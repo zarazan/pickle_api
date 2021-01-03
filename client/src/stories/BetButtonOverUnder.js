@@ -87,6 +87,10 @@ const ToggleButton = styled.button`
     outline: none;
     border: none;
 
+    &:disabled {
+        color: #aaa6a6;
+    }
+
     & > div {
         display: flex;
         flex-flow: column nowrap;
