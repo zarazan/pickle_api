@@ -1,14 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const BetButton = ({ className, metric, ratio, callback }) => {
     const [selected, setSelected] = useState(false);
+    const [buttonDisabled, setButtonDisabled] = useState(false); // Used to set the button to disabled if no bet data is available.
+
+    /** Executes checkForInvalidData() and sets buttonDisabled accordingly. */
+    useEffect(() => checkForInvalidData());
 
     return (
         <Odd className={`${className} ${selected ? '--selected' : ''}`}>
             <ToggleButton
                 onClick={toggleSelected}
+                disabled={buttonDisabled}
             >
                 <div>
                     <span>
@@ -19,9 +24,11 @@ const BetButton = ({ className, metric, ratio, callback }) => {
                         : ''}
                     </span>
                     <span>
-                        {ratio > 0
-                        ? `+${ratio}`
-                        : ratio
+                        {ratio === 'NaN'
+                            ? 'N/A'
+                            : ratio > 0
+                                ? `+${ratio}`
+                                : ratio
                         }
                     </span>
                 </div>
@@ -30,6 +37,15 @@ const BetButton = ({ className, metric, ratio, callback }) => {
         </Odd>
     );
 
+    /** checkForInvalidData: Checks for invalid data so that we can disable the button. */
+    function checkForInvalidData() {
+        if(ratio === 'NaN') {
+            setButtonDisabled(true);
+
+        }
+    }
+
+    /** toggleSelected: Executes the callback when the button is togggled. */
     function toggleSelected() {
         if(selected === false) {
             callback();
@@ -66,6 +82,10 @@ const ToggleButton = styled.button`
     border-radius: 0.2em;
     outline: none;
     border: none;
+
+    &:disabled {
+        color: #aaa6a6;
+    }
 
     & > div {
         display: flex;
