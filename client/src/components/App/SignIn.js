@@ -2,9 +2,8 @@ import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 
 import { UserContext } from '../../contexts/UserContext';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import pickleApi from '../../services/pickle_api';
-import useAuthHandler from '../../hooks/AuthHandler';
 
 import { ReactComponent as Logo } from '../../icons/pickle.svg';
 
@@ -12,6 +11,7 @@ const SignIn = () => {
   const history = useHistory();
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
+  // REVIEW: Do we need the isLoading state?
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -20,15 +20,17 @@ const SignIn = () => {
   const invalidInputs = !userEmail || !userPassword;
 
   return (
-  	<LoginWrapper className='login'>
-		<Banner className='brand-banner'>
-			<LogoIcon />
-			<h3>pickle skin</h3>
+  	<LoginWrapper className='c-login'>
+		<Banner className='l-row-flex'>
+			<Logo className='c-login__logo' style={{ height: '20px', width: '20px'}}/>
+			<h3 className='c-login__brand-name'>pickle skin</h3>
 		</Banner>
-		<Heading2>Sign In</Heading2>
-		<LoginForm className='login-form' onSubmit={handleLogin}>
-			<div className='input-option'>
-			<label htmlFor='email'>EMAIL ADDRESS</label>
+
+		<PageHeading>Sign In</PageHeading>
+
+		<LoginForm className='login-form l-column-flex' onSubmit={handleLogin}>
+			<div className='l-column-flex l-column-flex__item'>
+				<label htmlFor='email'>EMAIL ADDRESS</label>
 				<input 
 					type='email' 
 					name='email' 
@@ -37,7 +39,7 @@ const SignIn = () => {
 					onChange={e => setUserEmail(e.target.value)}
 				/>
 			</div>
-			<div className='input-option'>
+			<div className='l-column-flex l-column-flex__item'>
 				<label htmlFor='email'>PASSWORD</label>
 				<input 
 					type='password' 
@@ -48,17 +50,18 @@ const SignIn = () => {
 				/>
 			</div>
 			<SignInButton
-				className='form-submit'
+				className='c-login__submit'
 				type='submit'
 				disabled={invalidInputs ? true : false}
 			>
 				Sign In
 			</SignInButton>
 		</LoginForm>
-		<h3>{errorMessage}</h3>
-		<div className='forgot-password'>
-			<ForgotPasswordLink href='' >Forgot Password?</ForgotPasswordLink>
-		</div>
+		<LoginFooter className='l-column-flex'>
+			<h3 className='c-login__error-message'>{errorMessage}</h3>
+			<h3 className='c-login__sign-up'>Need an account? <Link to={'/sign-up'}>Sign up here</Link></h3>
+			<Link to={'/forgot-password'} className='c-login__forgot-password'>Forgot Password?</Link>
+		</LoginFooter>
 	</LoginWrapper>
   );
 
@@ -74,20 +77,20 @@ const SignIn = () => {
 		pickleApi.signIn(userEmail, userPassword)
 			.then(data => {
 				setLoginInfo({
-          user: data,
-          isLoading: false,
-          isLoggedIn: true,
-        });
+					user: data,
+					isLoading: false,
+					isLoggedIn: true,
+        		});
 				window.heap.identify(data.email);
 				history.push('/');
 			})
 			.catch(error => {
 				setErrorMessage(error.toString());
 				setLoginInfo({
-          user: {},
-          isLoading: false,
-          isLoggedIn: false,
-        });
+					user: {},
+					isLoading: false,
+					isLoggedIn: false,
+        		});
 			});
 	};
 };
@@ -95,21 +98,29 @@ const SignIn = () => {
 export default SignIn;
 
 const LoginWrapper = styled.div`
-  display: flex;
-  flex-flow: column nowrap;
-  height: 100%;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 2rem;
-
-  & > div[class='forgot-password'] {
 	display: flex;
-	justify-content: center;
-}
+	flex-flow: column nowrap;
+	height: 100%;
+	width: 100%;
+	box-sizing: border-box;
+	padding: 2rem;
+
+	& div.l-grid {
+		display: grid;
+	}
+
+	& div[class~='l-column-flex'] {
+		display: flex;
+		flex-flow: column nowrap;
+	}
+
+	& div[class~='l-row-flex'] {
+		display: flex;
+		flex-flow: row nowrap;
+	}
 `;
 
 const Banner = styled.div`
-	display: flex;
 	align-items: center;
 	margin-bottom: 4rem;
 	
@@ -124,27 +135,17 @@ const Banner = styled.div`
 	}
 `;
 
-const LogoIcon = styled(Logo)`
-    height: 1.5rem;
-    width: 1.5rem;
-`;
-
-const Heading2 = styled.h2`
+const PageHeading = styled.h2`
 	font-family: 'Poppins', sans-serif;
 	margin-bottom: 2rem;
 `;
 
 const LoginForm = styled.form`
-	display: flex;
-	flex-flow: column nowrap;
 	align-items: center;
 	flex-flow: column nowrap;
 	width: 100%;
 
-	& div[class='input-option'] {
-		width: 100%;
-		display: flex;
-		flex-flow: column nowrap;
+	& > div.l-column-flex__item {
 		align-items: stretch;
 
 		& label {
@@ -154,7 +155,7 @@ const LoginForm = styled.form`
 			letter-spacing: 0.1rem;
 			color: #767b7f;
 		}
-
+	
 		& input {
 			margin-bottom: 1.5rem;
 			font-family: 'Inter', sans-serif;
@@ -165,8 +166,6 @@ const LoginForm = styled.form`
 			border-radius: 0.2rem;
 		}
 	}
-
-	
 `;
 
 const SignInButton = styled.button`
@@ -187,9 +186,27 @@ const SignInButton = styled.button`
 	}
 `;
 
-const ForgotPasswordLink = styled.a`
+const LoginFooter = styled.div`
+	align-items: center;
+
 	font-family: 'Inter', 'Sans Serif';
-    font-size: .8125rem;
-	color: #379559;
-	text-decoration: none;
+	font-size: .8125rem;
+	color: #000000;
+	
+	& a {
+        &:link {
+            color: #379559;
+            text-decoration: none;
+        }
+
+        &:visited {
+            color: #379559;
+            text-decoration: none;
+        }
+
+        &:hover, :active {
+            color: #1c4a2d;
+            text-decoration: none;
+        }
+    }
 `;
