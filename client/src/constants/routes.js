@@ -18,6 +18,7 @@ const AUTH_ROUTES = [
     { path: '/pools/:poolId/leaderboard', key: 'LEADERBOARD', component: Leaderboard },
     { path: '/pools/:poolId', key: 'VIEW_POOL', component: ViewPool },
     { path: '/admin/scores/:poolId', key: 'EDIT_SCORES', component: EditScores },
+    { path: '/reset-password', key: 'RESET_PASSWORD', exact: true, component: CreatePassword },
 ];
 
 const UNAUTH_ROUTES = [
@@ -25,7 +26,6 @@ const UNAUTH_ROUTES = [
     { path: '/sign-up', key: 'REGISTER', exact: true, component: Register },
     { path: '/sign-in', key: 'SIGN_IN', exact: true, component: SignIn },
     { path: '/forgot-password', key: 'FORGOT_PASSWORD', exact: true, component: ForgotPassword },
-    { path: '/reset-password', key: 'RESET_PASSWORD', exact: true, component: CreatePassword },
 ];
 
 export { AUTH_ROUTES, UNAUTH_ROUTES };

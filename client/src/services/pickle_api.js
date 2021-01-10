@@ -52,6 +52,12 @@ class PickleApi {
     return this.sendRequest(options);
   }
 
+  updatePassword(password, passwordConfirmation) {
+    const data = {password: password, password_confirmation: passwordConfirmation}
+    const options = {method: 'patch', url: '/auth/password', data: data, authRoute: true}
+    return this.sendRequest(options);
+  }
+
   signIn(email, password) {
     const data = {email: email, password: password }
     const options = {method: 'post', url: '/auth/sign_in', data: data}
@@ -69,7 +75,7 @@ class PickleApi {
   }
 
   sendRequest(options) {
-    options.url = '/api' + options.url;
+    if(!options.authRoute) { options.url = '/api' + options.url }
     options = { ...options, headers: this.getAuthHeaders() };
     return this.client.request(options)
     .then(response => {

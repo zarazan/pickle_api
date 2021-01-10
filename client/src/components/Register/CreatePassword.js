@@ -79,18 +79,15 @@ const CreatePassword = () => {
     /** handlePasswordReset: Attempts to create a new password for the user. */
     function handlePasswordReset() {
         setErrorMessage('');
-        
-        // TODO: create user 
-        // pickleApi.createUser(email, passwordOne)
-        //     .then(data => {
-        //         setEmail('');
-        //         setPasswordOne('');
-        //         setPasswordTwo('');
-                    toggleDisplaySuccess(true);          
-        //     })
-        //     .catch(error => {
-        //         setErrorMessage(error.toString());
-        //     })
+        pickleApi.updatePassword(passwordOne, passwordTwo)
+            .then(data => {
+                setPasswordOne('');
+                setPasswordTwo('');
+                toggleDisplaySuccess(true);
+            })
+            .catch(error => {
+                setErrorMessage(error.toString());
+            })
     }
 }
 
