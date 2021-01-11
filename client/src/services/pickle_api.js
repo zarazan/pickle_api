@@ -58,6 +58,18 @@ class PickleApi {
     return this.sendRequest(options);
   }
 
+  createUser(email, name, password, passwordConfirmation) {
+    const data = {
+      email: email,
+      name: name,
+      password: password,
+      password_confirmation: passwordConfirmation,
+      confirm_success_url: ''
+    }
+    const options = {method: 'post', url: '/auth', data: data, authRoute: true}
+    return this.sendRequest(options);
+  }
+
   signIn(email, password) {
     const data = {email: email, password: password }
     const options = {method: 'post', url: '/auth/sign_in', data: data}

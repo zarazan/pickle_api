@@ -6,16 +6,28 @@ import pickleApi from '../../services/pickle_api';
 
 import { ReactComponent as Logo } from '../../icons/pickle.svg';
 
+// Remove user context when sign up is made public
+import { UserContext } from '../../contexts/UserContext';
+import { useEffect, useContext } from 'react';
+
 const Register = () => {
     const history = useHistory();
     const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
     const [passwordOne, setPasswordOne] = useState('');
     const [passwordTwo, setPasswordTwo] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [displaySuccess, toggleDisplaySuccess] = useState(false);
 
+    // Remove user context when sign up is made public
+    const [{user}] = useContext(UserContext);
+
     const passwordValid = passwordOne && passwordTwo && (passwordOne === passwordTwo);
     const validInputs = email && passwordValid;
+
+    useEffect(() => {
+        if(!user.admin) { history.push('/') }
+    }, []);
 
     return (
         <RegisterWrapper className='c-register'>
@@ -40,6 +52,18 @@ const Register = () => {
                                     value={email} 
                                     placeholder='name@mail.com' 
                                     onChange={e => setEmail(e.target.value)}
+                                />
+                            </div>
+                            <div className='l-column-flex l-column-flex__item'>
+                                <label htmlFor='email'>FULL NAME</label>
+                                <input
+                                    className='c-register__name'
+                                    data-testid='register-name'
+                                    type='text'
+                                    name='name'
+                                    value={name} 
+                                    placeholder='Patrick Mahomes' 
+                                    onChange={e => setName(e.target.value)}
                                 />
                             </div>
                             <div className='l-column-flex l-column-flex__item'>
@@ -98,18 +122,17 @@ const Register = () => {
     function handleRegister(e) {
         e.preventDefault();
         setErrorMessage('');
-        
-        // TODO: create user 
-        // pickleApi.createUser(email, passwordOne)
-        //     .then(data => {
-        //         setEmail('');
-        //         setPasswordOne('');
-        //         setPasswordTwo('');
-                    toggleDisplaySuccess(true);          
-        //     })
-        //     .catch(error => {
-        //         setErrorMessage(error.toString());
-        //     })
+        pickleApi.createUser(email, name, passwordOne, passwordTwo)
+            .then(data => {
+                setEmail('');
+                setName('')
+                setPasswordOne('');
+                setPasswordTwo('');
+                toggleDisplaySuccess(true);
+            })
+            .catch(error => {
+                setErrorMessage(error.toString());
+            })
     }
 }
 

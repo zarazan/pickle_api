@@ -19,11 +19,11 @@ const AUTH_ROUTES = [
     { path: '/pools/:poolId', key: 'VIEW_POOL', component: ViewPool },
     { path: '/admin/scores/:poolId', key: 'EDIT_SCORES', component: EditScores },
     { path: '/reset-password', key: 'RESET_PASSWORD', exact: true, component: CreatePassword },
+    { path: '/sign-up', key: 'REGISTER', exact: true, component: Register },
 ];
 
 const UNAUTH_ROUTES = [
     { path: '/', key: 'ROOT', exact: true, component: SignIn },
-    { path: '/sign-up', key: 'REGISTER', exact: true, component: Register },
     { path: '/sign-in', key: 'SIGN_IN', exact: true, component: SignIn },
     { path: '/forgot-password', key: 'FORGOT_PASSWORD', exact: true, component: ForgotPassword },
 ];
