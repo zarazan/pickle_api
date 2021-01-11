@@ -4,6 +4,7 @@ class LoadOddsService
     'americanfootball_ncaaf',
     'americanfootball_nfl',
     'baseball_mlb',
+    'icehockey_nhl'
   ]
 
   ODD_TYPES = [
@@ -30,7 +31,7 @@ class LoadOddsService
 
   def populate_odds(sport, odd_type)
     response = ApiClients::TheOddsApi::Client.new.get_odds(sport, odd_type)
-    raise 'API Request Failed' if !response.success?
+    raise response['msg'] if !response.success?
 
     fixtures_attributes = response.parse_fixtures
     load_fixtures(fixtures_attributes)

@@ -22,6 +22,7 @@ class Pool < ApplicationRecord
     'americanfootball_ncaaf',
     'americanfootball_nfl',
     'baseball_mlb',
+    'icehockey_nhl'
   ]
 
   def self.create_and_enter(attributes)
