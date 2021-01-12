@@ -7,6 +7,9 @@ import SignIn from '../components/App/SignIn';
 import ViewPool from '../components/ViewPool/ViewPool';
 import EditScores from '../components/Admin/EditScores';
 import GameOdds from '../components/Betslip/GameOdds';
+import Register from '../components/Register/Register';
+import ForgotPassword from '../components/Register/ForgotPassword';
+import CreatePassword from '../components/Register/CreatePassword';
 
 const AUTH_ROUTES = [
     { path: '/', key: 'ROOT', exact: true, component: Dashboard },
@@ -15,13 +18,14 @@ const AUTH_ROUTES = [
     { path: '/pools/:poolId/leaderboard', key: 'LEADERBOARD', component: Leaderboard },
     { path: '/pools/:poolId', key: 'VIEW_POOL', component: ViewPool },
     { path: '/admin/scores/:poolId', key: 'EDIT_SCORES', component: EditScores },
+    { path: '/reset-password', key: 'RESET_PASSWORD', exact: true, component: CreatePassword },
+    { path: '/sign-up', key: 'REGISTER', exact: true, component: Register },
 ];
 
 const UNAUTH_ROUTES = [
+    { path: '/', key: 'ROOT', exact: true, component: SignIn },
     { path: '/sign-in', key: 'SIGN_IN', exact: true, component: SignIn },
-    { path: '/', key: 'SIGN_IN', exact: true, component: SignIn },
-    // { path: '/sign-up', key: 'CREATE_POOL', exact: true, component: PoolCreate },
-    // { path: '/forgot-password', key: 'ROOT', exact: true, component: Dashboard },
+    { path: '/forgot-password', key: 'FORGOT_PASSWORD', exact: true, component: ForgotPassword },
 ];
 
 export { AUTH_ROUTES, UNAUTH_ROUTES };

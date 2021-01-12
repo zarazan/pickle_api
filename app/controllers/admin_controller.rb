@@ -29,9 +29,4 @@ class AdminController < ApplicationController
     }
   end
 
-  def verify_admin
-    return if current_user.admin
-    raise 'Authentication Error'
-  end
-
 end

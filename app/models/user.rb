@@ -8,6 +8,8 @@ class User < ApplicationRecord
 
   before_save -> { skip_confirmation! }
 
+  validates :name, presence: true
+
   has_many :bets
   has_many :entries
   has_many :pools
