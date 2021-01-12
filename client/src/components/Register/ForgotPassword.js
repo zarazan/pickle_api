@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import pickleApi from '../../services/pickle_api';
 
 import { ReactComponent as Logo } from '../../icons/pickle.svg';
@@ -47,14 +47,12 @@ const ForgotPassword = () => {
                 :
                     <SuccessMessage className='success-message l-column-flex'>
                         <h3 className='forgot-password__text'>{'Please check your inbox and click in the received link to reset your password.'}</h3>
-                        <LoginButton 
-                            className='forgot-password__back-to-login'
-                            onClick={() => history.push('/sign-in')}
-                        >
-                            Back to Sign-in
-                        </LoginButton>
                     </SuccessMessage>
             }
+            <Footer className='l-column-flex'>
+			    <h3 className='c-forgot-password__error-message'>{errorMessage}</h3>
+			    <Link to={'/sign-in'} className='c-login__forgot-password'>Back to sign in</Link>
+		    </Footer>
         </ForgotPasswordWrapper>
     )
 
@@ -199,5 +197,30 @@ const SuccessMessage = styled.div`
         font-size: .8125rem;
         color: #767b7f;
         font-weight: 300;
+    }
+`;
+
+const Footer = styled.div`
+	align-items: center;
+
+	font-family: 'Inter', 'Sans Serif';
+	font-size: .8125rem;
+	color: #000000;
+	
+	& a {
+        &:link {
+            color: #379559;
+            text-decoration: none;
+        }
+
+        &:visited {
+            color: #379559;
+            text-decoration: none;
+        }
+
+        &:hover, :active {
+            color: #1c4a2d;
+            text-decoration: none;
+        }
     }
 `;
