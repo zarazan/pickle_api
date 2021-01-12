@@ -12,7 +12,6 @@ import ForgotPassword from '../components/Register/ForgotPassword';
 import CreatePassword from '../components/Register/CreatePassword';
 
 const AUTH_ROUTES = [
-    { path: '/', key: 'ROOT', exact: true, component: Dashboard },
     { path: '/create-pool', key: 'CREATE_POOL', exact: true, component: PoolCreate },
     { path: '/pools/:poolId/schedule', key: 'GAME_ODDS', component: GameOdds },
     { path: '/pools/:poolId/leaderboard', key: 'LEADERBOARD', component: Leaderboard },
@@ -20,6 +19,7 @@ const AUTH_ROUTES = [
     { path: '/admin/scores/:poolId', key: 'EDIT_SCORES', component: EditScores },
     { path: '/reset-password', key: 'RESET_PASSWORD', exact: true, component: CreatePassword },
     { path: '/sign-up', key: 'REGISTER', exact: true, component: Register },
+    { path: '/', key: 'ROOT', exact: true, component: Dashboard },
 ];
 
 const UNAUTH_ROUTES = [
