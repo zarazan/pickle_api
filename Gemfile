@@ -15,6 +15,8 @@ gem 'rack-cors'
 
 gem 'jb'
 
+gem 'newrelic_rpm'
+
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 
