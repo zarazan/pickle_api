@@ -26,7 +26,7 @@ const ViewPool = () => {
     const { url } = useRouteMatch(); // path and url for route matching
     const history = useHistory();
 
-    const [state, setState] = useState('idle'); // used for component state tracking
+    const [state, setState] = useState('IDLE'); // used for component state tracking
     const [errorMessage, setErrorMessage] = useState(''); // used for displaying errors
 
     const [winnersCircle, setWinnersCircle] = useState([]); // array of top placers of the leaderboard
@@ -40,22 +40,22 @@ const ViewPool = () => {
     }, []);
 
     useEffect(() => {
-        setState('loading');
+        setState('LOADING');
         fetchAndSetEntries(poolId);
     }, []);
 
     useEffect(() => {
-        setState('loading');
+        setState('LOADING');
         fetchAndSetBets(poolId);
     }, []);
 
     return (
         <ViewPoolWrapper className='pool-view-container'>
-            {state === 'error' 
+            {state === 'ERROR' 
                 ? <div>{errorMessage}</div>
-                : state === 'loading'
+                : state === 'LOADING'
                         ? <FullPageSpinner loading={true} optionalMessage={'Loading Your Pool'}/>
-                    : state === 'finished'
+                    : state === 'FINISHED'
                         ?
                             <>
                                 <PoolContent className='pool-content'>
@@ -169,13 +169,13 @@ const ViewPool = () => {
                 setMyInfo(currentUser);
                 // Add the top 3 entries to the winner's circle state.
                 setWinnersCircle(topEntries);
-                setState('finished');
+                setState('FINISHED');
         })
         .catch(error => {
             console.log(error.toString());
             history.push('/sign-in');
             setErrorMessage(error.toString());
-            setState('error');
+            setState('ERROR');
         });
     }
 
@@ -202,13 +202,13 @@ const ViewPool = () => {
                 // Set the potential payout and outlay calculations to state.
                 setPotentialPayout(payout + myInfo.bank);
                 setOutlay(outlay);
-                setState('finished');
+                setState('FINISHED');
             })
             .catch(error => {
                 console.log(error.toString());
                 history.push('/sign-in');
                 setErrorMessage(error.toString());
-                setState('error');
+                setState('ERROR');
             });
     }
 };

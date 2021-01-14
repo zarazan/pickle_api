@@ -11,24 +11,24 @@ const MyPools = ({ displayPool }) => {
     const history = useHistory();
 
     const [pools, setPools] = useState([]);
-    const [state, setState] = useState('idle');
+    const [state, setState] = useState('IDLE');
     const [errorMessage, setErrorMessage] = useState(null);
     
     useEffect(() => {
-        setState('loading');
+        setState('LOADING');
         fetchAndSetPools();
       }, []);
 
     return (
         <MyPoolsWrapper className='my-pools-container'>
-            {state === 'error'
+            {state === 'ERROR'
                 ? <div>{errorMessage}</div>
-                : state === 'loading'
+                : state === 'LOADING'
                     ? 
                         <div className='loading-pools'>
                             <FullPageSpinner size={20} loading={true} optionalMessage={'Loading Your Pools'}/>
                         </div>
-                    : state === 'finished' &&
+                    : state === 'FINISHED' &&
                     <>
                         {!pools || pools.length < 1
                             ?
@@ -61,12 +61,12 @@ const MyPools = ({ displayPool }) => {
         pickleApi.getPools()
             .then(data => {
                 setPools(data);
-                setState('finished');
+                setState('FINISHED');
             })
             .catch(error => {
                 history.push('/sign-in');
                 setErrorMessage(error.toString());
-                setState('error');
+                setState('ERROR');
             });
     }
 

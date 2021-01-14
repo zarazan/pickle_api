@@ -17,7 +17,7 @@ const Leaderboard = () => {
     const history = useHistory();
     const [loginInfo] = useContext(UserContext);
 
-    const [componentState, setComponentState] = useState('idle');
+    const [componentState, setComponentState] = useState('IDLE');
     const [errorMessage, setErrorMessage] = useState(''); // used for displaying errors
     const [entries, setEntries] = useState([]); // array of entries
 
@@ -26,17 +26,17 @@ const Leaderboard = () => {
     }, []);
 
     useEffect(() => {
-        setComponentState('loading');
+        setComponentState('LOADING');
         fetchAndSetEntries(poolId);
     }, []);
 
     return (
         <LeaderboardWrapper className='leaderboard-container'>
-            {componentState === 'error'
+            {componentState === 'ERROR'
                 ? <div>{errorMessage}</div>
-                : componentState === 'loading'
+                : componentState === 'LOADING'
                     ? <FullPageSpinner loading={true} optionalMessage={'Loading Leaderboard'}/>
-                    : componentState === 'finished'
+                    : componentState === 'FINISHED'
                         ? 
                             <>
                                 <Header>
@@ -86,12 +86,12 @@ const Leaderboard = () => {
             .then(entries => {
                 // add entries to state
                 setEntries(entries);
-                setComponentState('finished');
+                setComponentState('FINISHED');
         })
         .catch(error => {
             history.push('/sign-in');
             setErrorMessage(error.toString());
-            setComponentState('error');
+            setComponentState('ERROR');
         });
     }
 };
