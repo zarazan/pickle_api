@@ -1,11 +1,4 @@
 class LoadOddsService
- 
-  SPORTS = [
-    'americanfootball_ncaaf',
-    'americanfootball_nfl',
-    'baseball_mlb',
-    'icehockey_nhl'
-  ]
 
   ODD_TYPES = [
     'h2h',
@@ -18,7 +11,7 @@ class LoadOddsService
   end
 
   def populate_all_sports
-    SPORTS.each do |sport|
+    Pool::SPORTS.each do |sport|
       populate_sport(sport)
     end
   end

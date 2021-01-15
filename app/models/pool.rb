@@ -28,28 +28,15 @@ class Pool < ApplicationRecord
   def self.create_and_enter(attributes)
     user = attributes[:user]
     attributes[:private] = true
-
-    # TODO - date = turn into start and end of day
-
-    # MVP - REMOVE AFTER
-    attributes[:email_invites] = User.the_first_four.map(&:email)
-
     pool = user.pools.new(attributes)
     return pool unless pool.save
     pool.enter_pool(user)
-
-    # MVP - REMOVE AFTER
-    User.the_first_four.each { |user| pool.enter_pool(user) }
-
     pool
   end
 
   def enter_pool(user)
-    if !email_invites.include?(user.email)
-      self.errors << PickleException::UnauthorizedEntry.new.message
-      return false
-    end
-    return true if get_entry_for_user(user)
+    existing_entry = get_entry_for_user(user)
+    return existing_entry if existing_entry
     Entry.create(user: user, pool: self, bank: bankroll)
   end
 
