@@ -38,7 +38,7 @@ class Fixture < ApplicationRecord
   def change_status!(new_status)
     return if status == new_status
 
-    if new_status == 'in_progress' && status == 'scheduled'
+    if status == 'scheduled' && new_status == 'in_progress'
       update!(status: new_status)
       return
     end
@@ -49,10 +49,9 @@ class Fixture < ApplicationRecord
       return
     end
 
-    if ['home_win', 'away_win', 'draw'].include?(status) && ['home_win', 'away_win', 'draw'].include?(new_status)
+    if ['home_win', 'away_win', 'draw'].include?(status) && new_status == 'in_progress'
       unsettle_bets
       update!(status: new_status)
-      settle_bets
     end
   end
 

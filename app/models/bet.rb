@@ -77,6 +77,7 @@ class Bet < ApplicationRecord
   end
 
   def settle
+    reload
     return true if result
     return false if pending?
     transaction do
@@ -91,7 +92,8 @@ class Bet < ApplicationRecord
   end
 
   def unsettle
-    return false if !result 
+    reload
+    return false if !result
     transaction do
       if(result.to_sym == :won)
         entry.update!(bank: entry.bank - payout)
