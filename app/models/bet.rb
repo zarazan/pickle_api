@@ -90,4 +90,17 @@ class Bet < ApplicationRecord
     end
   end
 
+  def unsettle
+    return false if !result 
+    transaction do
+      if(result.to_sym == :won)
+        entry.update!(bank: entry.bank - payout)
+      elsif(result.to_sym == :draw)
+        entry.update!(bank: entry.bank - amount)
+      end
+      self.result = nil
+      save!
+    end
+  end
+
 end
