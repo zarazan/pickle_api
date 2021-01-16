@@ -36,19 +36,34 @@ class Fixture < ApplicationRecord
   end
 
   def change_status!(new_status)
-    if new_status == 'in_progress' && self.status == 'scheduled'
+    return if status == new_status
+
+    if status == 'scheduled' && new_status == 'in_progress'
       update!(status: new_status)
+      return
     end
 
-    if ['scheduled', 'in_progress'].include?(self.status) && ['home_win', 'away_win', 'draw'].include?(new_status)
+    if ['scheduled', 'in_progress'].include?(status) && ['home_win', 'away_win', 'draw'].include?(new_status)
       update!(status: new_status)
       settle_bets
+      return
+    end
+
+    if ['home_win', 'away_win', 'draw'].include?(status) && new_status == 'in_progress'
+      unsettle_bets
+      update!(status: new_status)
     end
   end
 
   def settle_bets
     odds.each do |odd|
       odd.bets.map(&:settle)
+    end
+  end
+
+  def unsettle_bets
+    odds.each do |odd|
+      odd.bets.map(&:unsettle)
     end
   end
 

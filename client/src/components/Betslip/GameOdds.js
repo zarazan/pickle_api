@@ -40,13 +40,13 @@ const GameOdds = () => {
 
     /** Fetch and load the pool fixtures. */
     useEffect(() => {
-        setState('loading');
+        setState('LOADING');
         fetchFixtures(poolId);
     }, []);
 
     /** Initialize the users's bankroll in case they refresh the page. */
     useEffect(() => {
-        setState('loading');
+        setState('LOADING');
         fetchCurrentUser(poolId);
     }, []);
 
@@ -216,13 +216,13 @@ const GameOdds = () => {
                 const [ currentUser ] = entries.filter(entry => entry.userId === loginInfo.user.id);
                 // Send dispatch to update pool context state with the current user's bankroll.
                 setBankroll(poolId, currentUser.bank);
-                setState('finished');
+                setState('FINISHED');
         })
         .catch(error => {
             console.log(error.toString());
             history.push('/sign-in');
             setErrorMessage(error.toString());
-            setState('error');
+            setState('ERROR');
         });
     }
 
