@@ -143,7 +143,7 @@ const EnterWager = ({ currentBets, placeBet, closeBetSlip, toggleBetMode, update
         const bets = [ ...currentBets ];
         let betIds = bets.map(betObject => betObject.id);
         // Send request to parent
-        placeBet(betIds, parseInt(wager));
+        placeBet(betIds, parseFloat(wager));
     }
 
     /** handlePayout: Handle payout based on the odds and entered wager. */
