@@ -58,9 +58,9 @@ const PoolOptionList = ({
                 <h2 className='form__subheading'>Bet Types</h2>
                 <span className='description'>Set the allowable bet types for the pool</span>
                 <div className='checkbox-grp'>
-                    <Checkbox label='Point Spread' handleCheckChange={handleCheckChange} />
-                    <Checkbox label='Total Points' handleCheckChange={handleCheckChange} />
-                    <Checkbox label='Money Line' handleCheckChange={handleCheckChange} />
+                    <Checkbox label='Point Spread' value='spread' handleCheckChange={handleCheckChange} />
+                    <Checkbox label='Total Points' value='total_points' handleCheckChange={handleCheckChange} />
+                    <Checkbox label='Money Line' value='money_line' handleCheckChange={handleCheckChange} />
                 </div>
             </SubSection>
 
@@ -68,9 +68,8 @@ const PoolOptionList = ({
                 <h2 className='form__subheading'>Sports</h2>
                 <span className='description'>Set the sports available in the pool</span>
                 <div className='checkbox-grp'>
-                    <Checkbox label='NFL' handleCheckChange={handleSportChange} />
-                    <Checkbox label='NHL' handleCheckChange={handleSportChange} />
-                    <Checkbox label='PGA' handleCheckChange={handleSportChange} />
+                    <Checkbox label='NFL' value='americanfootball_nfl' handleCheckChange={handleSportChange} />
+                    <Checkbox label='NHL' value='icehockey_nhl' handleCheckChange={handleSportChange} />
                 </div>
             </SubSection>
 

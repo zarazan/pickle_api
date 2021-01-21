@@ -14,8 +14,8 @@ const PoolCreate = props => {
     const [poolType, setpoolType] = useState(null);
     const [poolName, setPoolName] = useState(null);
     const [bankroll, setbankroll] = useState(500);
-    const [poolStart, setPoolStart] = useState(null);
-    const [poolEnd, setPoolEnd] = useState(null);
+    const [poolStart, setPoolStart] = useState('');
+    const [poolEnd, setPoolEnd] = useState('');
     const [betTypes, setBetTypes] = useState([]);
     const [sports, setSports] = useState([]);
 
@@ -71,8 +71,8 @@ const PoolCreate = props => {
                                 setName={setName}
                                 startValue={poolStart}
                                 endValue={poolEnd}
-                                setStart={setStart}
-                                setEnd={setEnd}
+                                setStart={setPoolStart}
+                                setEnd={setPoolEnd}
                                 bankroll={bankroll}
                                 setBankroll={setBankroll}
                                 bets={betTypes}
@@ -104,7 +104,6 @@ const PoolCreate = props => {
                                 sports={sports}
                             />
                             <button
-                                disabled={!poolType}
                                 onClick={() => createPool()}
                                 className='btn pool-create'
                             >
@@ -121,7 +120,7 @@ const PoolCreate = props => {
 
     /** incrementStep: Increments the pool configuration step. **/
     function incrementStep() {
-        if (step < 1) {
+        if (step < 2) {
             setStep(step + 1);
         }
     }
