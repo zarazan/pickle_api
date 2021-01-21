@@ -27,9 +27,6 @@ class Pool < ApplicationRecord
 
   def self.create_and_enter(attributes)
     user = attributes.delete(:user)
-    attributes[:private] = true
-    attributes[:bet_types] = attributes[:bet_types].map { |bet_type| bet_type.delete(' ').underscore }
-    attributes[:sports] = attributes[:sports].map { |sport| sport.delete(' ').underscore }
     pool = user.pools.new(attributes)
     return pool unless pool.save
     pool.enter_pool(user)
