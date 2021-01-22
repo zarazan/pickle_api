@@ -1,5 +1,5 @@
 if Rails.env.development?
-  ActiveRecordQueryTrace.enabled = true
+  ActiveRecordQueryTrace.enabled = false
   ActiveRecordQueryTrace.level = :app
-  ActiveRecordQueryTrace.lines = 10
+  ActiveRecordQueryTrace.lines = 5
 end
