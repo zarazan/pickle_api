@@ -158,9 +158,7 @@ const ViewPool = () => {
 
     function enterPool() {
         pickleApi.enterPool(poolId)
-            .then(data => {
-                loadAll()
-            });
+            .then(loadAll);
     }
 
     /**
