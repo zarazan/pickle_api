@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
 
-  match '(*any)', to: redirect(subdomain: 'www'), via: :all, constraints: {subdomain: ''}
-
   mount_devise_token_auth_for 'User', at: 'auth'
 
   scope '/api' do
