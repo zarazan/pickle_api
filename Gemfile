@@ -14,8 +14,8 @@ gem 'omniauth'
 gem 'rack-cors'
 
 gem 'jb'
-
 gem 'newrelic_rpm'
+gem 'sidekiq'
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
