@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Checkbox = ({ label, handleCheckChange }) => {
+const Checkbox = ({ label, value, handleCheckChange }) => {
     const [isChecked, setisChecked] = useState(false);
 
     return (
@@ -8,6 +8,7 @@ const Checkbox = ({ label, handleCheckChange }) => {
           <input
             type='checkbox'
             name={label}
+            value={value}
             checked={isChecked}
             onChange={(e) => toggleCheckbox(e)}
             className='form-check-input'
@@ -19,7 +20,7 @@ const Checkbox = ({ label, handleCheckChange }) => {
     /** toggleCheckbox: Toggles the checkbox selected state. */
     function toggleCheckbox(e) {
         setisChecked(!isChecked);
-        handleCheckChange(e.target.name, );
+        handleCheckChange(e.target.value, );
     }
 }
 

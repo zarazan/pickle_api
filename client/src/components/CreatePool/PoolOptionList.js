@@ -1,14 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import RadioButton from '../../stories/RadioButton';
 import DatePicker from '../../stories/DatePicker';
 import Checkbox from '../../stories/Checkbox';
 
 const PoolOptionList = ({ 
     setName, 
-    visibility, 
-    setVisibility, 
     startValue, 
     endValue, 
     setStart, 
@@ -24,27 +21,6 @@ const PoolOptionList = ({
                 <h2 className='form__subheading'>Pool Name</h2>
                 <span className='description'>Give your pool a unique name</span>
                 <Input id='pool-name' type='text' onBlur={(e) => setName(e.target.value)} />
-            </SubSection>
-
-            <SubSection className='subsection visibility'>
-                <h2 className='form__subheading'>Visibility</h2>
-                <span className='description'>Define who can see your pool</span>
-                <div className='radio-btn-container'>
-                    <RadioButton 
-                        changed={e => setVisibility(e.target.id)} 
-                        id='private' 
-                        isSelected={visibility === 'private'} 
-                        label='Private' 
-                        value='Private' 
-                    />
-                    <RadioButton 
-                        changed={e => setVisibility(e.target.id)} 
-                        id='public' 
-                        isSelected={visibility === 'public'} 
-                        label='Public' 
-                        value='Public' 
-                    />
-                </div>
             </SubSection>
 
             <SubSection className='subsection duration'>
@@ -82,9 +58,9 @@ const PoolOptionList = ({
                 <h2 className='form__subheading'>Bet Types</h2>
                 <span className='description'>Set the allowable bet types for the pool</span>
                 <div className='checkbox-grp'>
-                    <Checkbox label='Point Spread' handleCheckChange={handleCheckChange} />
-                    <Checkbox label='Total Points' handleCheckChange={handleCheckChange} />
-                    <Checkbox label='Money Line' handleCheckChange={handleCheckChange} />
+                    <Checkbox label='Point Spread' value='spread' handleCheckChange={handleCheckChange} />
+                    <Checkbox label='Total Points' value='total_points' handleCheckChange={handleCheckChange} />
+                    <Checkbox label='Money Line' value='money_line' handleCheckChange={handleCheckChange} />
                 </div>
             </SubSection>
 
@@ -92,9 +68,8 @@ const PoolOptionList = ({
                 <h2 className='form__subheading'>Sports</h2>
                 <span className='description'>Set the sports available in the pool</span>
                 <div className='checkbox-grp'>
-                    <Checkbox label='NFL' handleCheckChange={handleSportChange} />
-                    <Checkbox label='NHL' handleCheckChange={handleSportChange} />
-                    <Checkbox label='PGA' handleCheckChange={handleSportChange} />
+                    <Checkbox label='NFL' value='americanfootball_nfl' handleCheckChange={handleSportChange} />
+                    <Checkbox label='NHL' value='icehockey_nhl' handleCheckChange={handleSportChange} />
                 </div>
             </SubSection>
 
@@ -104,8 +79,6 @@ const PoolOptionList = ({
 
 PoolOptionList.propTypes = {
     setName: PropTypes.func,
-    visibility: PropTypes.bool, 
-    setVisibility: PropTypes.func,
     setStart: PropTypes.func,
     setEnd: PropTypes.func,
     poolAmount: PropTypes.number,

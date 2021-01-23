@@ -11,18 +11,15 @@ import VerifyPool from './VerifyPool';
 const PoolCreate = props => {
     const [step, setStep] = useState(1); // used for tracking the current step of the create flow
     const [errorMessage, setErrorMessage] = useState('');
-
-    let history = useHistory();
-    // POOL CONFIGURATION
     const [poolType, setpoolType] = useState(null);
     const [poolName, setPoolName] = useState(null);
     const [bankroll, setbankroll] = useState(500);
-    const [visibility, setPoolVisibility] = useState(true);
-    const [poolStart, setPoolStart] = useState(null);
-    const [poolEnd, setPoolEnd] = useState(null);
+    const [poolStart, setPoolStart] = useState('');
+    const [poolEnd, setPoolEnd] = useState('');
     const [betTypes, setBetTypes] = useState([]);
     const [sports, setSports] = useState([]);
-    const [participants, setParticipants] = useState(['troy.c.jennings@gmail.com', 'knowak14@gmail.com', 'Bezektaylor@gmail.com', 'zarazan@gmail.com']);
+
+    let history = useHistory();
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -35,15 +32,15 @@ const PoolCreate = props => {
                     <FontAwesomeIcon icon={faArrowLeft} size="2x" />
                 </button>
                 <Header>
-                {step && step === 1 ? 'Select a Type'
-                : step && step === 2
+                {step && step === 'SKIP' ? 'Select a Type'
+                : step && step === 1
                     ? 'Select Options'
-                    : step && step === 3
+                    : step && step === 'SKIP'
                         ? 'Invite Participants'
                         : 'Summary'
                 }
                 </Header>
-                {step < 4 
+                {step < 2 
                 ? 
                     <button className='btn btn__forward' onClick={() => incrementStep()}>
                         <FontAwesomeIcon icon={faArrowRight} size="2x" />
@@ -53,7 +50,7 @@ const PoolCreate = props => {
             </FormControls>
 
             <MainWrapper>
-                {step && step === 1
+                {step && step === 'SKIP'
                     ? (
                         <>
                             <StepTitle className='step'>
@@ -64,7 +61,7 @@ const PoolCreate = props => {
                                 poolType={poolType}
                             />
                         </>)
-                    : step && step === 2
+                    : step && step === 1
                     ? (
                         <>
                             <StepTitle className='step'>
@@ -72,12 +69,10 @@ const PoolCreate = props => {
                             </StepTitle>
                             <PoolOptionList 
                                 setName={setName}
-                                visibility={visibility}
-                                setVisibility={setVisibility}
                                 startValue={poolStart}
                                 endValue={poolEnd}
-                                setStart={setStart}
-                                setEnd={setEnd}
+                                setStart={setPoolStart}
+                                setEnd={setPoolEnd}
                                 bankroll={bankroll}
                                 setBankroll={setBankroll}
                                 bets={betTypes}
@@ -85,7 +80,7 @@ const PoolCreate = props => {
                                 handleSportChange={handleSportChange}
                             />
                         </>) 
-                    : step && step === 3
+                    : step && step === 'SKIP'
                     ? (
                         <>
                             <StepTitle className='step'>
@@ -102,17 +97,13 @@ const PoolCreate = props => {
                             </StepTitle>
                             <VerifyPool 
                                 name={poolName}
-                                visibility={visibility}
                                 bankroll={bankroll}
                                 start={poolStart}
                                 end={poolEnd}
                                 bets={betTypes}
                                 sports={sports}
-                                participants={participants}
-
                             />
                             <button
-                                disabled={!poolType}
                                 onClick={() => createPool()}
                                 className='btn pool-create'
                             >
@@ -129,7 +120,7 @@ const PoolCreate = props => {
 
     /** incrementStep: Increments the pool configuration step. **/
     function incrementStep() {
-        if (step < 4) {
+        if (step < 2) {
             setStep(step + 1);
         }
     }
@@ -150,10 +141,6 @@ const PoolCreate = props => {
     /** setbankroll: Sets the starting pool bankroll. **/
     function setBankroll(amount) {
         setbankroll(amount);
-    }
-    /** setVisibility: Toggles the pool between private and public. **/
-    function setVisibility(visibility) {
-        setPoolVisibility(visibility);
     }
     /** setStart: Sets the pool start date. **/
     function setStart(date) {

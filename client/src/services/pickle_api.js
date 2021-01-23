@@ -47,6 +47,11 @@ class PickleApi {
     return this.sendRequest(options);
   }
 
+  enterPool(pool_id) {
+    const options = {method: 'post', url: `/pools/${pool_id}/enter_pool`}
+    return this.sendRequest(options);
+  }
+
   getAuth() {
     const options = {method: 'get', url: '/user'}
     return this.sendRequest(options);

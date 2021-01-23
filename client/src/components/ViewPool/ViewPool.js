@@ -34,19 +34,11 @@ const ViewPool = () => {
     const [poolName, setPoolName] = useState(`Pool ${poolId}`);
     const [potentialPayout, setPotentialPayout] = useState(0); // for rendering potential payout
     const [outlay, setOutlay] = useState(0); // for rendering total bet outlay
+    const [isEntered, setIsEntered] = useState(false)
 
     useEffect(() => {
         window.scrollTo(0, 0);
-    }, []);
-
-    useEffect(() => {
-        setState('LOADING');
-        fetchAndSetEntries(poolId);
-    }, []);
-
-    useEffect(() => {
-        setState('LOADING');
-        fetchAndSetBets(poolId);
+        loadAll();
     }, []);
 
     return (
@@ -122,7 +114,14 @@ const ViewPool = () => {
                                             <h3>{'SCHEDULE & BETS'}</h3>
                                         </div>
                                         <div className='pool-fixture-schedule'>
-                                            <div className='btn schedule-btn'><button onClick={() => history.push(`${url}/schedule`)}>View Full Schedule</button></div>
+                                            <div className='btn schedule-btn'>
+                                                {isEntered
+                                                ?
+                                                    <button onClick={() => history.push(`${url}/schedule`)}>View Full Schedule</button>
+                                                :
+                                                    <button onClick={enterPool()}>Enter Pool</button>
+                                                }
+                                            </div>
                                         </div>
                                     </div>
                                     <div>
@@ -151,22 +150,35 @@ const ViewPool = () => {
         </ViewPoolWrapper>  
     );
 
+    function loadAll() {
+        setState('LOADING');
+        fetchAndSetEntries(poolId);
+        fetchAndSetBets(poolId);
+    }
+
+    function enterPool() {
+        pickleApi.enterPool(poolId)
+            .then(loadAll);
+    }
+
     /**
      * fetchAndSetEntries: Fetches the entries for the pool and adds them to state.
-     * @param {id} id - The ID for the current pool. 
      */
-    function fetchAndSetEntries(id) {
-        pickleApi.getEntries(id)
+    function fetchAndSetEntries() {
+        pickleApi.getEntries(poolId)
             .then(entries => {
                 // Get the entry for the current user by their ID.
                 const [ currentUser ] = entries.filter(entry => entry.userId === user.id);
                 const topEntries = entries.filter(entry => entry.position < 3);
-                // Send dispatch to update pool context state with the current user's bankroll.
-                setBankroll(poolId, currentUser.bank);
-                // Set the pool name.
-                if(currentUser) setPoolName(currentUser.poolName);
-                // Add current user's info to my info state.
-                setMyInfo(currentUser);
+                if(currentUser) {
+                    setIsEntered(true);
+                    // Send dispatch to update pool context state with the current user's bankroll.
+                    setBankroll(poolId, currentUser.bank);
+                    // Set the pool name.
+                    setPoolName(currentUser.poolName);
+                    // Add current user's info to my info state.
+                    setMyInfo(currentUser);
+                }
                 // Add the top 3 entries to the winner's circle state.
                 setWinnersCircle(topEntries);
                 setState('FINISHED');
@@ -181,10 +193,9 @@ const ViewPool = () => {
 
     /**
      * fetchAndSetBets: Fetches the user open bets for the pool and adds them to state.
-     * @param {id} id  - The ID for the current pool.
      */
-    function fetchAndSetBets(id) {
-        pickleApi.getBets(id, {user_id: user.id})
+    function fetchAndSetBets() {
+        pickleApi.getBets(poolId, {user_id: user.id})
             .then(bets => {
                 // Send dispatch to update the number of bets.
                 updateBetCount(poolId, bets.length);

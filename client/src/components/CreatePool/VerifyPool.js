@@ -13,11 +13,6 @@ const VerifyPool = (props) => {
             </SettingWrapper>
 
             <SettingWrapper className='setting'>
-                <span className='setting__title'>Visibility</span>
-                <span className='setting__value'>{props.visibility}</span>
-            </SettingWrapper>
-
-            <SettingWrapper className='setting'>
                 <span className='setting__title'>Start Date</span>
                 <span className='setting__value'>{props.start}</span>
             </SettingWrapper>

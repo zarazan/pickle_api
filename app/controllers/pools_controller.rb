@@ -9,7 +9,11 @@ class PoolsController < ApplicationController
   end
 
   def show
-    @pool = current_user.entries.find_by(pool_id: params[:id])&.pool
+    # private
+    # @pool = current_user.entries.find_by(pool_id: params[:id])&.pool
+
+    # public
+    @pool = Pool.find(params[:id])
   end
 
   def create
