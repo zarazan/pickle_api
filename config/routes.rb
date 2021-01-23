@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
   constraints(:host => /pickle-skin.herokuapp/) do
-    match "/(*path)" => redirect {|params, req| "http://www.pickle-skin.com/#{params[:path]}"},  via: [:get, :post]
+    match "/(*path)" => redirect {|params, req| "https://www.pickle-skin.com/#{params[:path]}"},  via: [:get, :post]
   end
 
   match '(*any)', to: redirect(subdomain: 'www'), via: :all, constraints: {subdomain: ''}
