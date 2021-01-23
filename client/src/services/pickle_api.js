@@ -129,7 +129,7 @@ class PickleApi {
   }
 
   axios_client() {
-    const baseUrl = process.env.NODE_ENV === 'production' ? 'https://www.pickle-skin.com' : 'http://localhost:3001'
+    const baseUrl = process.env.NODE_ENV === 'production' ? 'https://pickle-skin.herokuapp.com' : 'http://localhost:3001'
     return axios.create({
       baseURL: baseUrl
     });
