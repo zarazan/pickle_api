@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  constraints(:host => /pickle-skin.herokuapp.com/) do
+    match "/(*path)" => redirect {|params, req| "https://www.pickle-skin.com/#{params[:path]}"},  via: [:get, :post]
+  end
+
   mount_devise_token_auth_for 'User', at: 'auth'
 
   scope '/api' do
