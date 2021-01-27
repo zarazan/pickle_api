@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
-  constraints(subdomain: 'pickle-skin') do
-    match "/(*path)" => redirect {|params, req| "https://www.pickle-skin.com/#{params[:path]}"},  via: [:get]
+  constraints(host: 'pickle-skin.herokuapp.com') do
+    get '*path' => redirect('https://www.pickle-skin.com/')
   end
 
   mount_devise_token_auth_for 'User', at: 'auth'
