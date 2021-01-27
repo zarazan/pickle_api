@@ -216,16 +216,16 @@ const PoolsNullState = styled.div`
     padding: 32px 0px;
 
     & span:first-of-type {
-        font-size: 1rem;
+        font-size: 0.8125rem;
         font-weight: 700;
         margin-bottom: .7rem;
     }
 
     & span:last-of-type {
-        font-size: 0.85rem;
-        color: #bdbdc1;
+        font-size: 0.8125rem;
+        color: #bfbfbf;
         text-align: center;
-        width: 70%
+        width: 70%;
     }
 `;
 
@@ -240,9 +240,8 @@ const MyPoolsHeader = styled.div`
 
     & > h3 {
         font-family: 'Poppins', 'Sans Serif';
-        font-size: 1.25rem;
-        font-weight: 700;
-        letter-spacing: .0625em;
+        font-size: 1rem;
+        font-weight: 500;
         color: #101315;
         margin: 0;
     }
@@ -250,10 +249,10 @@ const MyPoolsHeader = styled.div`
     & > button {
         box-sizing: border-box;
         height: fit-content;
-        padding: 8px 16px;
+        padding: 4px 16px;
         background-color: #ffffff;
         border: 1px solid #c7cccf;
-        border-radius: 0.8rem;
+        border-radius: 12px;
         outline: none;
         font-family: 'Inter', 'Sans Serif';
         font-size: 12px;
@@ -280,7 +279,7 @@ const MyPoolsFilters = styled.div`
             border: none;
             border-radius: 12px;
             font-family: 'Inter', 'Sans Serif';
-            font-size: 14px;
+            font-size: 12px;
             color: #101315;
             font-weight: 500;
             color: #aeaeae;

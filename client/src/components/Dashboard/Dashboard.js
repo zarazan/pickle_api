@@ -21,7 +21,7 @@ const Dashboard = () => {
                 <span className='welcome__name'>{user.name}</span>
             </Welcome>
             <StatsWrapper className='stats'>
-                <StatsHeader className='stats__header'>MY STATS</StatsHeader>
+                <StatsHeader className='stats__header'>My Stats</StatsHeader>
                     {!userStats || userStats.length < 1
                         ?
                             <StatsNullState className='null-state'>
@@ -76,11 +76,12 @@ const Welcome = styled.section`
     margin-top: 1rem;
 
     font-family: 'Poppins', 'Sans Serif';
-    font-size: 1.25em;
+    font-size: 1em;
     color: #7e858c;
 
     & .welcome__name {
-        color: #47515d;
+        font-weight: 700;
+        color: #101315;
     }
 `;
 
@@ -99,9 +100,10 @@ const StatsWrapper = styled.section`
 
 const StatsHeader = styled.h3`
     font-family: 'Poppins', 'Sans Serif';
-    font-size: .8125rem;
-    letter-spacing: .0625em;
-    color: #8b8c8f;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #101315;
+    margin: 0;
 `;
 
 const StatsNullState = styled.div`
@@ -109,7 +111,7 @@ const StatsNullState = styled.div`
     flex-flow: column nowrap;
     justify-content: center;
     align-items center;
-    padding-bottom: 0.7rem;
+    padding: 32px;
 
     & > svg.null-state__icon {
         height: 1.25rem;
