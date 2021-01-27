@@ -143,7 +143,7 @@ fixtures_attributes = [
     sport: 'americanfootball_nfl',
     home_team_name: 'New York Giants',
     away_team_name: 'New England Patriots',
-    start_time: '2021-01-31T00:18:18.032Z',
+    start_time: (@now - 3.days),
     odds: [
       {
         type: 'MoneyLineOdd',
@@ -183,7 +183,7 @@ fixtures_attributes = [
     sport: 'americanfootball_nfl',
     home_team_name: 'New York Jets',
     away_team_name: 'Houston Texans',
-    start_time: '2021-01-31T01:18:18.032Z',
+    start_time: (@now - 1.days),
     odds: [
       {
         type: 'MoneyLineOdd',

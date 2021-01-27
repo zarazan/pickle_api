@@ -1,26 +1,30 @@
-const TEST_POOLS = [
-    {
-        index: 1,
-        name: "Friends & Family",
-        amount: 500,
-        status: "active",
-        privacy: "private",
-        startDate: "2020-10-11T02:56:08Z",
-        endDate: "2020-10-17T02:56:08Z",
-        sports: ["NFL", "NBA", "NHL"],
-        bets: ["ps", "tp", "ml"],
-        participants: 3,
+const MOCK_POOLS = [
+    { // date in the past; multi-sport
+        'id': 1,
+        'name': 'Past Pool',
+        'userId': 2,
+        'startDate': '2020-01-01T00:00:00.000Z',
+        'endDate': '2020-01-08T00:00:00.000Z',
+        'bankroll': '500.0',
+        'betTypes': ['spread','total_points','money_line'],
+        'sports': ['americanfootball_nfl', 'icehockey_nhl'],
+        'emailInvites': 6,
+        'private': true,
+        'userCount': 1
     },
-    {
-        index: 2,
-        name: "Pickle Test",
-        amount: 500,
-        status: "inactive",
-        privacy: "private",
-        startDate: "2020-09-15T02:56:08Z",
-        endDate: "2020-09-22T02:56:08Z",
-        sports: ["NFL"],
-        bets: ["ps", "tp", "ml"],
-        participants: 6,
+    { // date in the future; single sport
+        'id': 1,
+        'name': 'Future Pool',
+        'userId': 2,
+        'startDate': '2021-12-23T00:00:00.000Z',
+        'endDate': '2021-12-30T00:00:00.000Z',
+        'bankroll': '500.0',
+        'betTypes': ['spread','total_points','money_line'],
+        'sports': ['americanfootball_nfl'],
+        'emailInvites': 6,
+        'private': false,
+        'userCount': 12
     },
 ];
+
+export default MOCK_POOLS;

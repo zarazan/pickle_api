@@ -11,6 +11,11 @@ const zuluToStringFormat = (date) => {
     return `${d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }).replace(',', '')} ${d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit'})}`
 }
 
+const zuluToDateFormat = (date) => {
+    let d = new Date(date);
+    return `${d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }).replace(',', '')}`
+}
+
 const currencyFormatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -63,6 +68,7 @@ const formatBetMetric = (betType, metric) => {
 export {
     decToAmerican,
     zuluToStringFormat,
+    zuluToDateFormat,
     currencyFormatter,
     calculatePayout,
     formatBetMetric,
