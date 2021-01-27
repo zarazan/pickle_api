@@ -21,7 +21,7 @@ const Dashboard = () => {
                 <span className='welcome__name'>{user.name}</span>
             </Welcome>
             <StatsWrapper className='stats'>
-                <StatsHeader className='stats__header'>MY STATS</StatsHeader>
+                <StatsHeader className='stats__header'>My Stats</StatsHeader>
                     {!userStats || userStats.length < 1
                         ?
                             <StatsNullState className='null-state'>
@@ -47,11 +47,6 @@ const Dashboard = () => {
                     }
             </StatsWrapper>
             <MainWrapper>
-                <PoolsHeader className='my-pools__header'>MY POOLS</PoolsHeader>
-                <CreatePoolButton
-                    onClick={() => history.push('/create-pool')}>Create Pool
-                </CreatePoolButton>
-
                 <MyPools />
             </MainWrapper>
         </DashboardWrapper>
@@ -81,11 +76,12 @@ const Welcome = styled.section`
     margin-top: 1rem;
 
     font-family: 'Poppins', 'Sans Serif';
-    font-size: 1.25em;
+    font-size: 1em;
     color: #7e858c;
 
     & .welcome__name {
-        color: #47515d;
+        font-weight: 700;
+        color: #101315;
     }
 `;
 
@@ -104,9 +100,10 @@ const StatsWrapper = styled.section`
 
 const StatsHeader = styled.h3`
     font-family: 'Poppins', 'Sans Serif';
-    font-size: .8125rem;
-    letter-spacing: .0625em;
-    color: #8b8c8f;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #101315;
+    margin: 0;
 `;
 
 const StatsNullState = styled.div`
@@ -114,7 +111,7 @@ const StatsNullState = styled.div`
     flex-flow: column nowrap;
     justify-content: center;
     align-items center;
-    padding-bottom: 0.7rem;
+    padding: 32px;
 
     & > svg.null-state__icon {
         height: 1.25rem;
@@ -133,40 +130,4 @@ const StatsNullState = styled.div`
 
 const MainWrapper = styled.section`
     grid-area: main;
-`;
-
-const PoolsHeader = styled.h3`
-    font-family: 'Poppins', 'Sans Serif';
-    font-size: .8125rem;
-    letter-spacing: .0625em;
-    color: #8b8c8f;
-
-    margin: 1.25rem 0 1.25rem 0;
-`;
-
-const CreatePoolButton = styled.button`
-    box-sizing: border-box;
-    padding: 1rem 0 1rem;
-    width: 100%;
-    background-color: #26CF9C;
-    box-shadow: 0px 2px 6px 1px #DDDDDD;
-    border-radius: 0.2rem;
-    outline: none;
-    border: none;
-    font-family: 'Inter', 'Sans Serif';
-    font-size: .8125rem;
-    color: #f2f2f2;
-    font-weight: 500;
-
-    &:active {
-        & button {
-            background-color: #23BE8F;
-        }
-    }
-
-    &:hover {
-        & button {
-            background-color: #53DFB5;
-        }
-    }
 `;
