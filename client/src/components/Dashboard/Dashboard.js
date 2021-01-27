@@ -47,11 +47,6 @@ const Dashboard = () => {
                     }
             </StatsWrapper>
             <MainWrapper>
-                <PoolsHeader className='my-pools__header'>MY POOLS</PoolsHeader>
-                <CreatePoolButton
-                    onClick={() => history.push('/create-pool')}>Create Pool
-                </CreatePoolButton>
-
                 <MyPools />
             </MainWrapper>
         </DashboardWrapper>
@@ -133,40 +128,4 @@ const StatsNullState = styled.div`
 
 const MainWrapper = styled.section`
     grid-area: main;
-`;
-
-const PoolsHeader = styled.h3`
-    font-family: 'Poppins', 'Sans Serif';
-    font-size: .8125rem;
-    letter-spacing: .0625em;
-    color: #8b8c8f;
-
-    margin: 1.25rem 0 1.25rem 0;
-`;
-
-const CreatePoolButton = styled.button`
-    box-sizing: border-box;
-    padding: 1rem 0 1rem;
-    width: 100%;
-    background-color: #26CF9C;
-    box-shadow: 0px 2px 6px 1px #DDDDDD;
-    border-radius: 0.2rem;
-    outline: none;
-    border: none;
-    font-family: 'Inter', 'Sans Serif';
-    font-size: .8125rem;
-    color: #f2f2f2;
-    font-weight: 500;
-
-    &:active {
-        & button {
-            background-color: #23BE8F;
-        }
-    }
-
-    &:hover {
-        & button {
-            background-color: #53DFB5;
-        }
-    }
 `;
