@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
 
   constraints(host: 'pickle-skin.herokuapp.com') do
-    root to: redirect('https://www.pickle-skin.com/')
-    match '*path', to: redirect('https://www.pickle-skin.com/'), via: :all
+    # root to: redirect('https://www.pickle-skin.com/')
+    # match '*path', to: redirect('https://www.pickle-skin.com/'), via: :all
+
+    match '*', to: redirect('https://www.pickle-skin.com/'), via: :all
   end
 
   mount_devise_token_auth_for 'User', at: 'auth'
