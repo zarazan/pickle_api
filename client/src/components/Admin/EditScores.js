@@ -109,6 +109,7 @@ const EditScores = props => {
                 <option value="home_win">Home Win</option>
                 <option value="away_win">Away Win</option>
                 <option value="draw">Draw</option>
+                <option value="cancelled">Cancelled</option>
             </select>
         )
     }

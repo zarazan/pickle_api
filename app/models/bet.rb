@@ -105,4 +105,14 @@ class Bet < ApplicationRecord
     end
   end
 
+  def unwind
+    reload
+    return false if result
+    transaction do
+      self.result = :draw
+      entry.update!(bank: entry.bank + amount)
+      save!
+    end
+  end
+
 end

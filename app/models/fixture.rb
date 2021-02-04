@@ -6,7 +6,7 @@ class Fixture < ApplicationRecord
   # away_score
   # status
 
-  FIXTURE_STATUS = [:home_win, :away_win, :draw, :in_process, :scheduled]
+  FIXTURE_STATUS = [:home_win, :away_win, :draw, :in_process, :scheduled, :cancelled]
 
   SPORTS = [
     'americanfootball_nfl',
@@ -52,6 +52,13 @@ class Fixture < ApplicationRecord
     if ['home_win', 'away_win', 'draw'].include?(status) && new_status == 'in_progress'
       unsettle_bets
       update!(status: new_status)
+      return
+    end
+
+    if ['scheduled', 'in_progress'].include?(status) && new_status == 'cancelled'
+      update!(status: new_status)
+      unwind_bets
+      return
     end
   end
 
@@ -64,6 +71,12 @@ class Fixture < ApplicationRecord
   def unsettle_bets
     odds.each do |odd|
       odd.bets.map(&:unsettle)
+    end
+  end
+
+  def unwind_bets
+    odds.each do |odd|
+      odd.bets.map(&:unwind)
     end
   end
 
