@@ -25,6 +25,7 @@ const AUTH_ROUTES = [
 const UNAUTH_ROUTES = [
     { path: '/', key: 'ROOT', exact: true, component: SignIn },
     { path: '/sign-in', key: 'SIGN_IN', exact: true, component: SignIn },
+    { path: '/sign-up', key: 'REGISTER', exact: true, component: Register },
     { path: '/forgot-password', key: 'FORGOT_PASSWORD', exact: true, component: ForgotPassword },
 ];
 

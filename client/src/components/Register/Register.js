@@ -6,10 +6,6 @@ import pickleApi from '../../services/pickle_api';
 
 import { ReactComponent as Logo } from '../../icons/pickle.svg';
 
-// Remove user context when sign up is made public
-import { UserContext } from '../../contexts/UserContext';
-import { useEffect, useContext } from 'react';
-
 const Register = () => {
     const history = useHistory();
     const [email, setEmail] = useState('');
@@ -19,15 +15,8 @@ const Register = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [displaySuccess, toggleDisplaySuccess] = useState(false);
 
-    // Remove user context when sign up is made public
-    const [{user}] = useContext(UserContext);
-
     const passwordValid = passwordOne && passwordTwo && (passwordOne === passwordTwo);
     const validInputs = email && passwordValid;
-
-    useEffect(() => {
-        if(!user.admin) { history.push('/') }
-    }, []);
 
     return (
         <RegisterWrapper className='c-register'>
