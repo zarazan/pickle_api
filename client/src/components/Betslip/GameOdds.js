@@ -119,7 +119,9 @@ const GameOdds = () => {
                                                 </GameOddsColumnHeaders>
                                                 
                                                 <BetCardList className='game-odds-cardlist l-column-flex__item'>
-                                                    {fixtures.map((fixture, index) => (
+                                                    {fixtures
+                                                        .filter(fixture => fixture.status !== 'cancelled')
+                                                        .map((fixture, index) => (
                                                             <BetCard 
                                                                 key={index}
                                                                 fixture={fixture}
