@@ -141,11 +141,7 @@ const MyPools = ({ displayPool }) => {
     /** filterPools: Filters the current pool objects based on the user-selected filter. */
     function filterPools() {
         const currentFilter = selectedFilter;
-        switch(currentFilter) {
-            case 'ACTIVE':
-                // filter out pools with date before today
-                setPools(poolCache.filter(p => Date.parse(p.endDate) >= Date.now()));
-                break
+        switch(currentFilter) {                
             case 'WON':
                 break
             case 'PAST':
@@ -158,7 +154,9 @@ const MyPools = ({ displayPool }) => {
                 setPools(allPools);
                 break
             default:
-                return
+                // filter out pools with date before today
+                setPools(poolCache.filter(p => Date.parse(p.endDate) >= Date.now()));
+                break
         }
     }
 
@@ -168,7 +166,6 @@ const MyPools = ({ displayPool }) => {
             .then(data => {
                 setPools(data);
                 setPoolCache(data);
-                filterPools();
                 setState('FINISHED');
             })
             .catch(error => {
